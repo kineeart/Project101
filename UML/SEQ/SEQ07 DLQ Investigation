@@ -1,0 +1,89 @@
+@startuml
+!theme cerulean
+
+actor User
+
+boundary "DLQ UI" as UI
+control "DLQ Service" as Service
+database "DLQ Store" as DLQ
+control "Audit Service" as Audit
+control "Notification Service" as Notify
+control "Report Service" as Report
+
+User -> UI : Access DLQ Management
+UI -> Service : Get Failed Messages()
+Service -> DLQ : Query Messages
+DLQ --> Service : Failed Messages
+Service --> UI : Display List
+
+User -> UI : Select Action
+
+opt A2 Export Report
+    UI -> Report : Generate Excel/JSON
+    Report --> User : Download Report
+end
+
+User -> UI : Search / Select Message
+UI -> Service : Get Message Details()
+Service -> DLQ : Load Payload Details
+DLQ --> Service : Payload + Error Stack
+Service --> UI : Display Details
+
+alt E2 Insufficient Permission
+
+    Service --> UI : Reject Request
+    Service -> Audit : Log Security Event
+
+else Authorized
+
+    alt Archive Message
+
+        UI -> Service : Archive()
+        Service -> DLQ : Update Status(Archived)
+        Service -> Audit : Write Audit Log
+
+    else Reprocess Message
+
+        alt E3 Message Too Old
+
+            Service --> UI : Display Warning
+
+            opt User Chooses Archive
+                Service -> DLQ : Update Status(Archived)
+                Service -> Audit : Write Audit Log
+            end
+
+        else Valid Message
+
+            alt A1 Bulk Reprocessing
+
+                User -> UI : Select Multiple Messages
+                UI -> Service : Batch Reprocess()
+
+            else Single Reprocessing
+
+                UI -> Service : Reprocess()
+
+            end
+
+            alt E1 Reprocessing Failed Again
+
+                Service -> DLQ : Return To DLQ
+                Service -> DLQ : Increment Error Count
+                Service -> Notify : Notify Operator
+                Service -> Audit : Write Audit Log
+
+            else Reprocess Success
+
+                Service -> DLQ : Update Status
+                Service -> Audit : Write Audit Log
+
+            end
+
+        end
+
+    end
+
+end
+
+@enduml

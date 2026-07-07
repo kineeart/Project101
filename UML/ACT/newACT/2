@@ -1,0 +1,91 @@
+@startuml
+
+start
+
+:1. Perform Login Authentication;
+
+:2. User accesses Module\nManage Table & Field Mappings;
+
+:3. Display Table Mappings list;
+
+:4. Select an action;
+
+if (A1: Bulk Field Import?) then (Yes)
+
+    :A1.1 Import JSON/Excel template;
+
+    :Load imported mappings;
+
+endif
+
+if (A2: Clone Existing?) then (Yes)
+
+    :A2.1 Select existing table mapping;
+
+    :Copy mappings from source table;
+
+endif
+
+:5. Display corresponding form;
+
+:6. Enter Source Table,\nTarget File Pattern,\nProfile;
+
+:7. Perform validation\n(required, format, uniqueness);
+
+if (Invalid Table Mapping?) then (Yes)
+
+    :Display validation errors;
+
+    --> :6. Enter Source Table,\nTarget File Pattern,\nProfile;
+
+endif
+
+:8. Select Field Mappings;
+
+:9. Display target fields;
+
+:10. Define each data field;
+
+:11. Perform validation;
+
+if (E1: Duplicate Target Field?) then (Yes)
+
+    :Report duplicate target field;
+
+    :Prevent saving;
+
+    --> :10. Define each data field;
+endif
+
+:12. Confirm and save;
+
+:13. Save pending + Audit Log;
+
+if (Approved?) then (Yes)
+
+    :14. Activate Mapping;
+
+    :Trigger Cache Refresh;
+endif
+
+if (Deactivate Mapping?) then (Yes)
+
+    if (E2: Dependency Exists?) then (Yes)
+
+        :Display active Field Mappings;
+
+        :Prevent deactivation;
+
+        --> :4. Select an action;
+
+    else (No)
+
+        :Deactivate Mapping;
+
+    endif
+
+endif
+
+stop
+
+@enduml

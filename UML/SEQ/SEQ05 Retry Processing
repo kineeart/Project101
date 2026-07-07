@@ -1,0 +1,61 @@
+@startuml
+!theme cerulean
+
+participant "Ingestion Layer" as Ingest
+participant "Mapping Engine" as Engine
+collections "Meta Cache" as Cache
+participant "XREF Service" as XREF
+queue "DLQ" as DLQ
+participant "Audit Service" as Audit
+
+Ingest -> Engine : Send Raw Record
+
+Engine -> Cache : Load Field Rules
+
+alt E3 Cache Miss
+
+    Engine -> Cache : Reload Cache
+    Cache --> Engine : Rules Reloaded
+    Engine -> Cache : Reload Field Rules
+
+end
+
+Engine -> Engine : Initialize Target Record
+
+loop For Each Target Field
+
+    Engine -> Engine : Trim Value
+
+    opt Apply XREF
+        Engine -> XREF : Translate Value
+        XREF --> Engine : Translated Value
+    end
+
+    Engine -> Engine : Type Casting
+
+    alt E2 Type Casting Failed
+
+        Engine -> Audit : Log Error
+
+        alt Default Available
+            Engine -> Engine : Apply Default Value
+        else No Default
+            Engine ->> DLQ : Push Record
+            break
+        end
+
+    end
+
+    Engine -> Engine : Validate Required Field
+
+    alt E1 Validation Failed
+        Engine ->> DLQ : Push Record
+        Engine -> Audit : Log Details
+        break
+    end
+
+end
+
+Engine --> Ingest : Return Transformed Record
+
+@enduml

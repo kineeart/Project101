@@ -1,0 +1,54 @@
+@startuml
+!theme cerulean
+title UC-04 - Activity Diagram: Manage Table & Field Mappings
+
+start
+
+:1. Maker (BA/DE) accesses Table & Field Mapping Module;
+
+:2. System displays list of existing Table Mappings;
+
+if (Action?) then (Create Table Mapping)
+  :3. Select Integration Profile;
+  :4. Enter Source Table & Target File Name Pattern;
+  :5. System validates uniqueness;
+
+elseif (Action?) then (Edit Table Mapping)
+  :3. Select existing Table Mapping;
+  :4. Modify information;
+
+elseif (Action?) then (Deactivate)
+  :3. Select Table Mapping;
+  :4. System performs Dependency Check;
+  if (Has Active Fields?) then (Yes)
+    :Show error + list of dependent fields;
+    detach
+  else (No)
+    :5. Set status = Inactive;
+  endif
+
+endif
+
+:6. Enter / Manage Field Mappings (Target-Driven);
+:7. For each field: Define source_field, target_field, data_type, required, default_value, XREF, date_format...;
+:8. System performs validation (duplicate target, required fields...);
+
+:9. Save changes with Pending status + Audit Log;
+
+if (Production?) then (Yes)
+  :10. Send for Checker Approval;
+  if (Approved?) then (Yes)
+    :11. Activate changes;
+    :12. Trigger Meta-Schema Cache Refresh;
+  else (No)
+    :Reject & notify Maker;
+    detach
+  endif
+else
+  :11. Activate immediately;
+  :12. Trigger Cache Refresh;
+endif
+
+stop
+
+@enduml

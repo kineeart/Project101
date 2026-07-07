@@ -1,0 +1,17 @@
+@startuml
+!theme cerulean
+title UC-03 Configure Integration Profile
+
+actor "Business Analyst"
+
+rectangle ADIM {
+
+usecase "Create Profile"
+usecase "Update Profile"
+usecase "Delete Profile"
+usecase "Activate Profile"
+usecase "View Profile"
+
+}
+
+@enduml

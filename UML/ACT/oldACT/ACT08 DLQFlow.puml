@@ -1,0 +1,40 @@
+@startuml
+!theme cerulean
+title UC-09 - Activity Diagram: Manage Dead Letter Queue (DLQ)
+
+start
+
+:1. System Operator accesses DLQ Management Module;
+
+:2. System displays list of failed messages (with error reason, timestamp, profile);
+
+if (Action?) then (Search)
+  :3. Enter search criteria (Profile, Error Type, Date Range...);
+  :4. System returns filtered results;
+
+elseif (Action?) then (View Detail)
+  :3. Select a message;
+  :4. System shows full payload and error details;
+
+elseif (Action?) then (Reprocess)
+  :3. Select message(s);
+  :4. System performs validation & dependency check;
+  if (Can Reprocess?) then (Yes)
+    :5. Send message back to Mapping Engine;
+    :6. Update status = Reprocessing;
+  else (No)
+    :Show warning;
+    detach
+  endif
+
+elseif (Action?) then (Archive / Delete)
+  :3. Select message(s);
+  :4. Confirm action;
+  :5. System archives message (Soft Delete) and records reason;
+endif
+
+:7. System logs full audit trail (who, what, when, before/after);
+
+stop
+
+@enduml

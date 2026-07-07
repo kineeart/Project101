@@ -1,0 +1,15 @@
+@startuml
+!theme cerulean
+title UC-07 Reload Cache
+
+actor "System Operator"
+
+rectangle ADIM {
+
+usecase "Refresh Meta Schema"
+usecase "Rebuild Cache"
+usecase "Replace Cache"
+
+}
+
+@enduml

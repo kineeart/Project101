@@ -1,0 +1,211 @@
+@startuml
+!theme cerulean
+
+actor User
+
+boundary "Mapping UI" as UI
+control "Authentication Service" as Auth
+control "Mapping Service" as Service
+database "Mapping Repository" as MappingDB
+database "Field Mapping Repository" as FieldDB
+control "Audit Service" as Audit
+control "Cache Service" as Cache
+
+User -> UI : Login
+activate UI
+
+UI -> Auth : Authenticate()
+activate Auth
+Auth --> UI : Authentication Success
+deactivate Auth
+
+User -> UI : Access Manage Table & Field Mappings
+UI -> Service : GetTableMappings()
+activate Service
+
+Service -> MappingDB : FindAllMappings()
+activate MappingDB
+MappingDB --> Service : Mapping List
+deactivate MappingDB
+
+Service --> UI : Display Mapping List
+deactivate Service
+
+
+opt A1: Bulk Field Import
+
+    User -> UI : Import JSON/Excel Template
+
+    UI -> Service : ImportMappings(file)
+    activate Service
+
+    Service --> UI : Imported Mappings
+
+    deactivate Service
+
+end
+
+
+opt A2: Clone Existing Mapping
+
+    User -> UI : Select Existing Mapping
+
+    UI -> Service : CloneMapping(mappingId)
+    activate Service
+
+    Service -> MappingDB : FindById(mappingId)
+    activate MappingDB
+    MappingDB --> Service : Existing Mapping
+    deactivate MappingDB
+
+    Service --> UI : Copied Mappings
+
+    deactivate Service
+
+end
+
+
+User -> UI : Select Action
+
+UI -> Service : Load Form()
+activate Service
+Service --> UI : Display Form
+deactivate Service
+
+
+loop Until Table Mapping Valid
+
+    User -> UI : Enter Source Table,\nTarget Pattern,\nProfile
+
+    UI -> Service : Validate Table Mapping()
+    activate Service
+
+    Service -> MappingDB : Check Uniqueness()
+    activate MappingDB
+    MappingDB --> Service : Validation Result
+    deactivate MappingDB
+
+    alt Invalid Table Mapping
+
+        Service --> UI : Validation Errors
+
+    else Valid Mapping
+
+        Service --> UI : Validation Success
+
+    end
+
+    deactivate Service
+
+end
+
+
+User -> UI : Select Field Mappings
+
+UI -> Service : Get Target Fields()
+activate Service
+
+Service -> FieldDB : Find Target Fields()
+activate FieldDB
+FieldDB --> Service : Field List
+deactivate FieldDB
+
+Service --> UI : Display Target Fields
+deactivate Service
+
+
+loop For Each Field
+
+    User -> UI : Define Data Field
+
+    UI -> Service : Validate Field Mapping()
+    activate Service
+
+    Service -> FieldDB : Check Duplicate Target Field()
+    activate FieldDB
+    FieldDB --> Service : Result
+    deactivate FieldDB
+
+    alt E1: Duplicate Target Field
+
+        Service --> UI : Report Duplicate Field
+        Service --> UI : Prevent Saving
+
+    else Valid Field
+
+        Service --> UI : Validation Success
+
+    end
+
+    deactivate Service
+
+end
+
+
+User -> UI : Confirm Save
+
+UI -> Service : Save Mapping()
+activate Service
+
+Service -> MappingDB : Save(PENDING)
+activate MappingDB
+MappingDB --> Service : Saved
+deactivate MappingDB
+
+Service -> Audit : Write Audit Log()
+activate Audit
+Audit --> Service : Logged
+deactivate Audit
+
+
+alt Approved
+
+    Service -> MappingDB : Activate Mapping()
+    activate MappingDB
+    MappingDB --> Service : Activated
+    deactivate MappingDB
+
+    Service -> Cache : Refresh Cache()
+    activate Cache
+    Cache --> Service : Cache Refreshed
+    deactivate Cache
+
+end
+
+
+opt Deactivate Mapping
+
+    User -> UI : Deactivate Mapping
+
+    UI -> Service : Deactivate()
+    activate Service
+
+    Service -> FieldDB : Check Dependencies()
+    activate FieldDB
+    FieldDB --> Service : Dependency Result
+    deactivate FieldDB
+
+    alt E2: Dependency Exists
+
+        Service --> UI : Display Active Field Mappings
+        Service --> UI : Prevent Deactivation
+
+    else No Dependency
+
+        Service -> MappingDB : Deactivate()
+        activate MappingDB
+        MappingDB --> Service : Success
+        deactivate MappingDB
+
+        Service --> UI : Mapping Deactivated
+
+    end
+
+    deactivate Service
+
+end
+
+Service --> UI : Success Message
+deactivate UI
+
+@enduml

@@ -1,0 +1,36 @@
+@startuml
+!theme cerulean
+title UC-05 - Activity Diagram: Generate Flat File Output
+
+start
+
+:1. Receive transformed data from Mapping Engine;
+
+:2. Determine Target Format from Integration Profile;
+
+:3. Select Output Writer Strategy 
+   (CSV_Xcenter, CSV_Dataloader, XML, etc.);
+
+:4. Apply File Naming Pattern 
+   (e.g. ITEM_MASTER_YYYYMMDDHHmm.csv);
+
+:5. Generate file content 
+   (Header + Data rows with delimiter);
+
+:6. Write file to output directory;
+
+if (Write successful?) then (Yes)
+  :7. Validate file integrity 
+     (row count, format check);
+  :8. Update processing status = Success;
+  :9. Notify Target System (optional);
+else (No)
+  :Push to DLQ with error details;
+  detach
+endif
+
+:10. Log audit trail (file name, size, duration);
+
+stop
+
+@enduml

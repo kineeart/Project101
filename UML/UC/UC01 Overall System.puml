@@ -1,0 +1,33 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+
+actor "Business Analyst" as BA
+actor "Data Engineer" as DE
+
+rectangle "Integration Profile Module" {
+
+    usecase "Configure Integration Profile" as UC1
+    usecase "Search & View Profile" as UC2
+    usecase "Validate Configuration" as UC3
+    usecase "Activate Profile" as UC4
+    usecase "View Dependency Mapping" as UC5
+    usecase "Correct Configuration" as UC6
+}
+
+BA --> UC1
+DE --> UC1
+
+BA --> UC2
+DE --> UC2
+
+UC1 ..> UC3 : <<include>>
+UC1 ..> UC4 : <<include>>
+
+UC3 ..> UC6 : <<extend>>
+UC4 ..> UC5 : <<extend>>
+
+
+
+@enduml

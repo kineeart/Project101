@@ -1,0 +1,15 @@
+@startuml
+!theme cerulean
+title UC-08 Retry Failed Message
+
+actor "System Operator"
+
+rectangle ADIM {
+
+usecase "Retry Message"
+usecase "Retry Batch"
+usecase "View Retry Result"
+
+}
+
+@enduml

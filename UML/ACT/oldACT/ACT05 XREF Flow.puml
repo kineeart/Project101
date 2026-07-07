@@ -1,0 +1,51 @@
+@startuml
+!theme cerulean
+
+start
+
+:1. Maker (BA/DE) accesses XREF Management Module;
+
+if (Action?) then (Create)
+  :2. Enter Source Value, Target Value, Profile, Field;
+  :3. System performs validation;
+  :4. System saves as Pending status;
+
+elseif (Action?) then (Edit)
+  :2. Search & select entry;
+  :3. Modify values;
+  :4. System saves as Pending status;
+
+elseif (Action?) then (Deactivate)
+  :2. Search & select active entry;
+  :3. System performs Dependency Check;
+  if (Has Dependency?) then (Yes)
+    :Show error: "Cannot deactivate - still used in active mappings";
+    detach
+  else (No)
+    :4. Set status = Inactive (Soft Delete);
+  endif
+
+else (Search/View)
+  :2. Enter criteria;
+  :3. System displays results (including status);
+endif
+
+:5. System creates audit log;
+
+if (Production Environment?) then (Yes)
+  :6. Send for Approval to Checker;
+  if (Checker Approved?) then (Yes)
+    :7. Activate / Apply changes;
+    :8. Refresh Meta-Schema Cache;
+  else (No)
+    :Reject & notify Maker;
+    detach
+  endif
+else (Non-Production)
+  :7. Activate immediately;
+  :8. Refresh Cache;
+endif
+
+stop
+
+@enduml

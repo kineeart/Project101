@@ -1,0 +1,8 @@
+@startuml
+start
+:Detect Mapping Update;
+:Reload Schema;
+:Rebuild Cache;
+:Replace Cache;
+stop
+@enduml

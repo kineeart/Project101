@@ -1,0 +1,65 @@
+@startuml
+!theme cerulean
+
+
+start
+
+:1. User accesses Configure Integration Profile Module;
+
+:2. System displays existing profiles;
+
+if (A1: Search & View ?) then (Yes)
+
+    :A1.1 User selects Search & View;
+
+    :A1.2 System displays full list;
+
+    :A1.3 User selects filters;
+
+    :A1.4 System displays filtered list;
+
+endif
+
+:3. User selects an action;
+
+:4. System displays corresponding form/list;
+
+:5. User enters/edits information;
+
+:6. System validates configuration;
+
+if (E2: Invalid Configuration?) then (Yes)
+
+    :Display validation errors;
+
+    :Require correction;
+
+    --> :5. User enters/edits information;
+
+endif
+
+:7. User confirms changes;
+
+if (Deactivate Profile?) then (Yes)
+
+    if (E1: Dependency Exists?) then (Yes)
+
+        :Display dependent Table Mappings;
+
+        :Deactivation not permitted;
+
+        --> :3. User selects an action;
+
+    else (No)
+
+        :Deactivate Profile;
+
+    endif
+
+endif
+
+:8. Activate Profile;
+
+stop
+
+@enduml

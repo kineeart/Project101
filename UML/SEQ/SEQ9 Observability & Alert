@@ -1,0 +1,67 @@
+@startuml
+!theme cerulean
+
+actor Operator
+actor "IT / Support Team" as IT
+
+boundary "Monitoring Dashboard" as Dashboard
+control "Monitoring Service" as Monitor
+control "Alert Service" as Alert
+participant "Email Service (SMTP)" as Email
+
+Operator -> Dashboard : Access Dashboard
+Dashboard -> Monitor : Get Metrics()
+Monitor --> Dashboard : Metrics & Operational Status
+
+opt A1 Configure Alerts
+    Operator -> Dashboard : Define Thresholds
+    Operator -> Dashboard : Select Notification Channels
+    Operator -> Dashboard : Add Recipient List
+end
+
+loop Continuous Monitoring
+
+    Monitor -> Monitor : Check Thresholds
+
+    alt Incident Detected
+
+        Monitor -> Alert : Create Alert
+        Alert -> Email : Send Email
+
+        alt E2 SMTP Service Down
+
+            Alert --> Operator : Urgent Notification
+
+        else SMTP Available
+
+            alt E1 Email Sending Failed
+
+                loop Retry up to 3 times
+                    Alert -> Email : Retry Send Email
+                end
+
+                alt Email Still Failed
+                    Alert -> Alert : Log Error
+                else Email Sent
+                    Email --> IT : Alert Email
+                    IT --> Alert : Incident Processing
+                    Operator -> Dashboard : Acknowledge Alert
+                end
+
+            else Email Sent Successfully
+
+                Email --> IT : Alert Email
+                IT --> Alert : Incident Processing
+                Operator -> Dashboard : Acknowledge Alert
+
+            end
+
+        end
+
+    else No Incident Detected
+        Monitor -> Monitor : Continue Monitoring
+    end
+
+end
+
+@enduml

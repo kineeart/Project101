@@ -1,0 +1,16 @@
+@startuml
+!theme cerulean
+title UC-09 Manage DLQ
+
+actor "System Operator"
+
+rectangle ADIM {
+
+usecase "View DLQ"
+usecase "Search Failed Record"
+usecase "Reprocess Message"
+usecase "Delete Message"
+
+}
+
+@enduml

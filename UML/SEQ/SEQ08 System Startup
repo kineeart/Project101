@@ -1,0 +1,55 @@
+@startuml
+!theme cerulean
+
+actor "Operator / Data Engineer" as User
+
+boundary "Cache Management UI" as UI
+control "Cache Service" as Service
+database "Meta-Schema DB" as DB
+collections "In-Memory Cache" as Cache
+control "Audit & Monitoring" as Monitor
+
+User -> UI : Trigger Cache Reload
+UI -> Service : Reload Request()
+
+opt A1 View Cache Status
+    Service -> Cache : Get Cache Status
+    Cache --> Service : Version, Refresh Time, Rule Count
+    Service --> UI : Display Status
+end
+
+Service -> DB : Load Meta-Schema
+
+alt E1 Database Unavailable
+
+    Service -> Cache : Use Existing Cache
+    Service -> Monitor : Send Error Notification
+
+    loop Backoff Retry
+        Service -> DB : Retry Load Meta-Schema
+        DB --> Service : Response
+    end
+
+else Database Available
+
+    DB --> Service : Meta-Schema
+
+    Service -> Service : Validate Configuration
+
+    alt E2 Schema Validation Failed
+
+        Service -> Cache : Retain Existing Cache
+        Service -> Monitor : Notify Operator
+
+    else Validation Success
+
+        Service -> Cache : Rebuild New Cache
+        Service -> Cache : Replace Old Cache
+        Service -> Monitor : Write Audit Log
+        Service -> Monitor : Update Metrics
+
+    end
+
+end
+
+@enduml

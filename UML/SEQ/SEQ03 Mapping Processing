@@ -1,0 +1,67 @@
+@startuml
+!theme cerulean
+
+actor User
+boundary "XREF UI" as UI
+control "XREF Service" as Service
+database "Database" as DB
+control "Audit Service" as Audit
+
+User -> UI : Login & Access Module
+UI -> Service : Get XREF List()
+Service -> DB : Query XREF
+DB --> Service : XREF List
+Service --> UI : Display List
+
+opt A1 View History
+    User -> UI : View History/Status
+    UI -> Service : Get History()
+    Service -> DB : Query History
+    DB --> Service : History Data
+    Service --> UI : Display History
+end
+
+User -> UI : Select Action
+UI -> Service : Open Form()
+
+loop Until Valid
+    User -> UI : Enter/Edit Information
+    UI -> Service : Validate()
+
+    alt E2 Duplicate Source
+        Service --> UI : Error + Require Correction
+    else Valid
+        Service --> UI : Validation Success
+    end
+end
+
+User -> UI : Confirm Action
+
+alt Deactivate XREF
+
+    UI -> Service : Deactivate()
+
+    Service -> DB : Check Dependency
+    DB --> Service : Result
+
+    alt E1 Dependency Exists
+        Service --> UI : Display Field Mappings
+        Service --> UI : Deactivation Not Permitted
+    else No Dependency
+        Service -> DB : Deactivate XREF
+        DB --> Service : Success
+    end
+
+else Save XREF
+
+    Service -> DB : Save XREF
+    DB --> Service : Success
+
+    Service -> Audit : Write Audit Log
+
+end
+
+Service --> UI : Success Message
+UI --> User : Display Result
+
+@enduml

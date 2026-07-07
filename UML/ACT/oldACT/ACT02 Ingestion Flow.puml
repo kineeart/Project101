@@ -1,0 +1,29 @@
+@startuml
+!theme cerulean
+
+start
+
+:1. Receive incoming request/data\n(REST API / Webhook / CSV File);
+
+:2. Parse payload according to source type;
+
+if (Payload format valid?) then (yes)
+    :3. Validate basic schema & mandatory fields;
+
+    if (Validation passed?) then (yes)
+        :4. Normalize to standard RawEvent format;
+        :5. Enrich with metadata (timestamp, sourceId, traceId);
+        :6. Publish to raw.events topic;
+    else (no)
+        :7. Log rejection details;
+        :8. Send to DLQ or return error response;
+    endif
+
+else (no)
+    :7. Log rejection details;
+    :8. Send to DLQ or return error response;
+endif
+
+stop
+
+@enduml

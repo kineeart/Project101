@@ -1,0 +1,35 @@
+@startuml
+!theme cerulean
+title UC-10 - Activity Diagram: Monitoring & Alerting
+
+start
+
+:1. System Operator / Data Engineer accesses Monitoring Dashboard;
+
+:2. System displays real-time metrics 
+   (Throughput, Latency, Error Rate, DLQ size...);
+
+if (Action?) then (View Logs)
+  :3. Filter logs by time, profile, error type;
+  :4. System shows structured logs + trace ID;
+
+elseif (Action?) then (Health Check)
+  :3. System performs health check 
+     (DB, Cache, Disk, Integration Profiles);
+  :4. Display status (Healthy / Degraded / Down);
+
+elseif (Action?) then (Configure Alert Rules)
+  :3. Define thresholds (Error rate > 2%, Latency > 500ms...);
+  :4. System saves alert configuration;
+
+else (Receive Alert)
+  :3. System detects anomaly;
+  :4. Send notification (Slack/Telegram/Email);
+  :5. Operator acknowledges alert;
+endif
+
+:6. System logs all monitoring activities;
+
+stop
+
+@enduml

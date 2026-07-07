@@ -1,0 +1,67 @@
+@startuml
+
+start
+
+:1. Ingestion Layer sends raw record;
+
+:2. Mapping Engine receives data;
+
+:3. Load field rules from cache;
+
+if (E3: Cache Miss?) then (Yes)
+
+    :Trigger cache reload;
+
+    :Reload cache;
+
+    --> :3. Load field rules from cache;
+
+endif
+
+:4. Initialize target record;
+
+:5. Review each Target Field Rule;
+
+repeat
+
+:6. Trimming + Apply XREF;
+
+:7. Type Casting + Default Value;
+
+if (E2: Type Casting Failed?) then (Yes)
+
+    :Log error;
+
+    if (Default value available?) then (Yes)
+
+        :Apply default value;
+
+    else (No)
+
+        :Push record to DLQ;
+
+        stop
+
+    endif
+
+endif
+
+:8. Validate required fields;
+
+if (E1: Required Field Missing\nor Validation Fail?) then (Yes)
+
+    :Push record to DLQ;
+
+    :Log details;
+
+    stop
+
+endif
+
+repeat while (More Target Fields?)
+
+:9. Return clean,\ntransformed record;
+
+stop
+
+@enduml

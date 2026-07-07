@@ -1,0 +1,55 @@
+@startuml
+
+start
+
+:1. Mapping Engine sends transformed data;
+
+:2. Receive data batch;
+
+:3. Determine Target Format from Profile;
+
+if (E3: Invalid Target Format?) then (Yes)
+
+    :Issue warning;
+
+    :Use default strategy;
+
+endif
+
+:4. Select appropriate\nOutputWriter strategy;
+
+:5. Apply File Naming Pattern;
+
+:6. Generate content\n(Header + Rows);
+
+:7. Write file to\noutput directory;
+
+if (E1: Write File Failed?) then (Yes)
+
+    :Push entire batch to DLQ;
+
+    :Notify operator;
+
+    stop
+
+endif
+
+:8. Validate file\n(format, row count);
+
+if (E2: Format Validation Failed?) then (Yes)
+
+    :Log detailed error;
+
+    :Push batch to DLQ;
+
+    stop
+
+endif
+
+:9. Write Audit Log;
+
+:Update status;
+
+stop
+
+@enduml

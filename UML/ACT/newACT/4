@@ -1,0 +1,57 @@
+@startuml
+
+start
+
+:1. Source system sends data;
+
+if (A1: Large CSV file?) then (Yes)
+    :A1.1 Receive CSV file;
+    :A1.2 Process file in chunks;
+endif
+
+:2. Receive Request &
+Parse Payload;
+
+if (E3: Source type not supported?) then (Yes)
+    :Return 501 Not Implemented;
+    stop
+endif
+
+:3. Validate basic format &
+schema;
+
+if (E1: Invalid payload or
+missing mandatory field?) then (Yes)
+
+    :Reject request;
+    :Log event;
+    :Send error notification;
+    stop
+
+endif
+
+:4. Normalize Event
+(add timestamp,
+idempotency key,
+source info);
+
+repeat
+
+:5. Publish normalized event
+to raw.events Topic;
+
+if (Publish successful?) then (Yes)
+    break
+else (No)
+    :Retry publish;
+endif
+
+repeat while (Retry count < 3?)
+
+if (Retry exhausted?) then (Yes)
+    :E2 Send event to DLQ;
+endif
+
+stop
+
+@enduml

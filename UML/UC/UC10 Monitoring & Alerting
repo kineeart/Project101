@@ -1,0 +1,16 @@
+@startuml
+!theme cerulean
+title UC-10 Monitoring & Alerting
+
+actor "System Operator"
+
+rectangle ADIM {
+
+usecase "View Metrics"
+usecase "View Logs"
+usecase "Receive Alert"
+usecase "Health Check"
+
+}
+
+@enduml

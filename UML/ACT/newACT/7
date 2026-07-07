@@ -1,0 +1,105 @@
+@startuml
+
+start
+
+:1. Users access DLQ Management;
+
+:2. System displays list of failed messages;
+
+:3. User selects action\n(View/Search/Reprocess/Archive);
+
+:4. Display corresponding interface;
+
+if (A2: Export Report?) then (Yes)
+
+    :Generate Excel/JSON report;
+
+    :Download report;
+
+    stop
+
+endif
+
+:5. User enters search criteria\nor selects a message;
+
+:6. System displays payload details,\nerror stack and timestamp;
+
+if (E2: Insufficient Permission?) then (Yes)
+
+    :Reject request;
+
+    :Log security event;
+
+    stop
+
+endif
+
+if (Archive?) then (Yes)
+
+    :Archive message;
+
+    :9. Update message status;
+
+    :10. Record audit log;
+
+    stop
+endif
+
+if (Reprocess?) then (Yes)
+
+    if (E3: Message Too Old?) then (Yes)
+
+        :Display expiration warning;
+
+        if (Continue Reprocess?) then (Yes)
+        else (No)
+
+            :Archive message;
+
+            :9. Update message status;
+
+            :10. Record audit log;
+
+            stop
+
+        endif
+    endif
+
+    if (A1: Bulk Reprocessing?) then (Yes)
+
+        :Select multiple messages;
+
+        :Perform batch reprocessing;
+
+    else (No)
+
+        :Reprocess selected message;
+
+    endif
+
+    :8. Perform action and validation;
+
+    if (E1: Reprocessing Failed Again?) then (Yes)
+
+        :Return message to DLQ;
+
+        :Increase error count by 1;
+
+        :Notify operator;
+
+        :9. Update message status;
+
+        :10. Record audit log;
+
+        stop
+    endif
+
+    :9. Update message status;
+
+    :10. Record audit log;
+
+endif
+
+stop
+
+@enduml

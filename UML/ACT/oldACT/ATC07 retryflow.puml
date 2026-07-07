@@ -1,0 +1,13 @@
+@startuml
+start
+:Receive Failure;
+:Retry Count++;
+
+if (Retry < 3?) then (Yes)
+:Retry Delivery;
+else
+:Send DLQ;
+endif
+
+stop
+@enduml

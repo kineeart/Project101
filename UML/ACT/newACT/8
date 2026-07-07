@@ -1,0 +1,63 @@
+@startuml
+
+start
+
+:1. Operator/Data Engineer\ntriggers Cache Reload;
+
+:2. Register request and\ninitiate reload process;
+
+if (A1: View Cache Status?) then (Yes)
+
+    :Display cache version;
+
+    :Display last refresh time;
+
+    :Display number of rules;
+
+endif
+
+:3. Load entire Meta-Schema\nfrom database;
+
+if (E1: Database Unavailable?) then (Yes)
+
+    :Use existing cache;
+
+    :Issue error notification;
+
+    repeat
+        :Retry reload using\nbackoff mechanism;
+        :Load entire Meta-Schema\nfrom database;
+    repeat while (Database still unavailable?)
+
+    if (Database available?) then (Yes)
+
+    else (No)
+        --> END
+    endif
+
+endif
+
+:4. Validate configuration\ndata integrity;
+
+if (E2: Schema Validation Failed?) then (Yes)
+
+    :Abort reload;
+
+    :Retain existing cache;
+
+    :Notify operator with\nerror details;
+
+    --> END
+
+endif
+
+:5. Rebuild new cache\nin memory;
+
+:6. Replace old cache\nwith new cache;
+
+:7. Write audit logs and\nupdate metrics;
+
+label END
+stop
+
+@enduml

@@ -1,0 +1,46 @@
+@startuml
+!theme cerulean
+left to right direction
+title UC-06 Manage XREF Dictionary\n(Agnostic Data Integration Middleware - Enterprise)
+
+actor "Input Actors" as Input
+actor "Business Analyst\n(Maker)" as BA
+actor "Data Engineer\n(Maker)" as DE
+actor "Approver / Checker" as Checker
+
+actor "Output Actors" as Output
+actor "System Operator" as OPS
+
+rectangle "ADIM Middleware" as ADIM {
+
+    usecase "Manage XREF Dictionary" as UC6
+    usecase "Create XREF Entry" as UC61
+    usecase "Edit XREF Entry" as UC62
+    usecase "Deactivate XREF Entry" as UC63
+    usecase "Search / View XREF" as UC64
+    usecase "Approve / Reject Changes" as UC65
+}
+
+Input --> BA
+Input --> DE
+
+BA --> UC6
+DE --> UC6
+Checker --> UC65
+
+UC6 ..> UC61 : <<include>>
+UC6 ..> UC62 : <<include>>
+UC6 ..> UC63 : <<include>>
+UC6 ..> UC64 : <<include>>
+UC6 ..> UC65 : <<extend>> "Production Environment"
+
+OPS --> UC64
+
+note right of UC6
+  • Soft Delete (Deactivate)
+  • Dependency Check
+  • Maker-Checker Approval
+  • Full Audit Trail
+end note
+
+@enduml

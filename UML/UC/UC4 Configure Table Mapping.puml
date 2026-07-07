@@ -1,0 +1,46 @@
+@startuml
+!theme cerulean
+left to right direction
+title UC-04 Configure Table Mapping\n(Agnostic Data Integration Middleware)
+
+' === ACTORS - Phân nhóm 2 phía ===
+actor "Data Engineer / Admin" as DE
+actor "Business Analyst" as BA
+actor "System Operator" as OPS
+
+actor "Target Systems\n(Xcenter / Dataloader)" as TARGET
+
+rectangle "ADIM Middleware\n(Configuration Management)" as ADIM {
+
+    usecase "Create Table Mapping" as UCCreate
+    usecase "Edit Table Mapping" as UCEdit
+    usecase "Disable / Activate Mapping" as UCDisable
+    usecase "View Table Mappings" as UCView
+    usecase "Refresh Meta-Schema Cache" as UCRefresh
+
+}
+
+' Relationships
+DE --> UCCreate
+DE --> UCEdit
+DE --> UCDisable
+BA --> UCView
+BA --> UCEdit
+
+OPS --> UCRefresh
+
+' Include & Extend
+UCCreate ..> UCView : <<include>>
+UCEdit ..> UCView : <<include>>
+UCDisable ..> UCView : <<include>>
+UCEdit ..> UCRefresh : <<extend>> "Significant change"
+UCCreate ..> UCRefresh : <<extend>> "New mapping"
+
+note right of UCCreate
+  Mapping between source table 
+  and target file (CSV for Xcenter)
+end note
+
+TARGET --> UCView : "Reference for validation"
+
+@enduml

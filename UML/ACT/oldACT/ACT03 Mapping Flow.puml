@@ -1,0 +1,42 @@
+@startuml
+!theme cerulean
+
+start
+
+:1. User logs into ADIM Configuration Console\n(or uses API/JSON import);
+:2. System displays the list of existing Table Mappings
+
+:3. Select or create new Integration Profile;
+:4. load a template or existing data.
+:5. Choose source table / entity;
+
+if (Table already exists?) then (yes)
+    :4. Load existing mapping;
+else (no)
+    :4. Initialize new mapping template;
+endif
+
+:5. Define target file name pattern\n(e.g. ITEM_MASTER_{timestamp}.csv);
+
+repeat
+    :6. Add/Edit Field Mapping\n(source_field → target_field, data_type, required, default, XREF...);
+    :7. Validate field configuration;
+    if (Validation passed?) then (yes)
+        :8. Save field rule;
+    else (no)
+        :9. Show validation error;
+        :10. Return to edit field;
+    endif
+repeat while (More fields to map?) is (yes)
+
+:11. Save complete Table Mapping;
+
+:12. (Optional) Trigger Refresh Meta-Schema Cache;
+
+note right
+  Changes take effect after cache refresh
+end note
+
+stop
+
+@enduml

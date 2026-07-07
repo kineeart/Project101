@@ -1,0 +1,36 @@
+@startuml
+!theme cerulean
+title UC-05 - Activity Diagram: Perform Data Transformation & Mapping
+
+start
+
+:1. Receive raw record from Ingestion Layer;
+
+:2. Load compiled Field Rules from Meta-Schema Cache 
+   (Target-Driven);
+
+:3. Initialize target record (optimized size);
+
+repeat
+  :4. For each Target Field Rule;
+  :5. Get source value;
+  if (Value exists?) then (Yes)
+    :6. Trim whitespace;
+    :7. Apply XREF (if configured);
+    :8. Perform Type Casting;
+  else (No)
+    :9. Apply Default Value;
+  endif
+
+  :10. Validate required field;
+  if (Validation Failed?) then (Yes)
+    :Push record to DLQ;
+    detach
+  endif
+repeat while (More fields?)
+
+:11. Return clean transformed record;
+
+stop
+
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+!theme cerulean
+title UC-02 Data Ingestion
+
+actor "POS" as POS
+actor "ERP" as ERP
+actor "WMS" as WMS
+actor "E-Commerce" as ECO
+actor "Supplier Portal" as SUP
+
+rectangle "Ingestion Service" {
+
+usecase "Receive REST API" as UC1
+usecase "Receive Webhook" as UC2
+usecase "Receive CSV File" as UC3
+usecase "Normalize Event" as UC4
+usecase "Publish raw.events" as UC5
+
+}
+
+POS --> UC1
+ERP --> UC1
+WMS --> UC2
+ECO --> UC2
+SUP --> UC3
+
+UC1 --> UC4
+UC2 --> UC4
+UC3 --> UC4
+UC4 --> UC5
+
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+!theme cerulean
+title UC-05 Configure Field Mapping
+
+actor "Business Analyst"
+
+rectangle ADIM {
+
+usecase "Create Field Rule"
+usecase "Set Default Value"
+usecase "Set Required"
+usecase "Configure Data Type"
+usecase "Configure Date Pattern"
+
+}
+
+@enduml

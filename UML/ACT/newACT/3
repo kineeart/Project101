@@ -1,0 +1,65 @@
+@startuml
+
+start
+
+:1. Perform Login Authentication;
+
+:2. User accesses the\nManage XREF Dictionary Module;
+
+:3. Display XREF list with\npagination and filtering;
+
+if (A1: View change history?) then (Yes)
+
+    :A1.1 User selects view history\nand status;
+
+    :A1.2 System displays\nhistory and status information;
+
+endif
+
+:4. Select an action;
+
+:5. Display corresponding form\nor confirmation;
+
+:6. Enter/Edit information\n(Source, Target,\nProfile, Field);
+
+:7. Perform validation\n(required, format, uniqueness);
+
+if (E2: Duplicate Source Value?) then (Yes)
+
+    :Report duplicate source value;
+
+    :Request correction;
+
+    --> :6. Enter/Edit information\n(Source, Target,\nProfile, Field);
+
+endif
+
+:8. Confirm action;
+
+if (Deactivate XREF?) then (Yes)
+
+    if (E1: Dependency Exists?) then (Yes)
+
+        :Display Field Mappings\nusing this XREF;
+
+        :Deactivation is not permitted;
+
+        --> :4. Select an action;
+
+    else (No)
+
+        :Deactivate XREF;
+
+        stop;
+
+    endif
+
+endif
+
+:9. Save record\nwith status Active;
+
+:10. Write Audit Log;
+
+stop
+
+@enduml

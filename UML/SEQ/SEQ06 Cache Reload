@@ -1,0 +1,51 @@
+@startuml
+!theme cerulean
+
+participant "Mapping Engine" as Engine
+participant "Output Generator" as Output
+participant "Profile Service" as Profile
+collections "File System" as FS
+queue "DLQ" as DLQ
+participant "Audit Service" as Audit
+participant "Notification Service" as Notify
+
+Engine -> Output : Send Transformed Data Batch
+
+Output -> Profile : Get Target Format
+Profile --> Output : Format Configuration
+
+alt E3 Invalid Target Format
+    Output -> Output : Issue Warning
+    Output -> Output : Use Default Strategy
+end
+
+Output -> Output : Select OutputWriter
+Output -> Output : Apply File Naming Pattern
+Output -> Output : Generate Content
+
+Output -> FS : Write File
+
+alt E1 Write File Failed
+
+    Output ->> DLQ : Push Entire Batch
+    Output -> Notify : Notify Operator
+
+else File Written
+
+    Output -> FS : Validate File
+
+    alt E2 Format Validation Failed
+
+        Output -> Audit : Log Error
+        Output ->> DLQ : Push Batch
+
+    else Validation Success
+
+        Output -> Audit : Write Audit Log
+        Output -> Output : Update Status
+
+    end
+
+end
+
+@enduml

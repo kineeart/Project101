@@ -1,0 +1,50 @@
+@startuml
+!theme cerulean
+
+actor "Source System" as Source
+participant "Ingestion Service" as Ingest
+queue "raw.events" as Kafka
+queue "DLQ" as DLQ
+participant "Notification Service" as Notify
+
+Source -> Ingest : Send Data
+
+opt A1 Large CSV
+    Ingest -> Ingest : Process CSV in Chunks
+end
+
+Ingest -> Ingest : Parse Payload
+
+alt E3 Unsupported Source
+    Ingest --> Source : 501 Not Implemented
+
+else Supported Source
+
+    Ingest -> Ingest : Validate Payload
+
+    alt E1 Invalid Payload
+        Ingest --> Source : Reject Request
+        Ingest -> Ingest : Log Event
+        Ingest -> Notify : Send Error Notification
+
+    else Valid Payload
+
+        Ingest -> Ingest : Normalize Event
+
+        loop Retry <= 3
+            Ingest ->> Kafka : Publish Event
+
+            alt Publish Success
+                break
+            end
+        end
+
+        alt E2 Retry Exhausted
+            Ingest ->> DLQ : Send Message
+        end
+
+    end
+
+end
+
+@enduml

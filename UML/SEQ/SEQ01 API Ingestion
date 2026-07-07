@@ -1,0 +1,130 @@
+@startuml
+!theme cerulean
+
+actor User
+
+boundary "Profile UI" as UI
+control "Profile Service" as Service
+database "Profile Repository" as ProfileDB
+database "Table Mapping Repository" as MappingDB
+
+User -> UI : Access Configure Integration Profile Module
+activate UI
+
+UI -> Service : Get Existing Profiles()
+activate Service
+
+Service -> ProfileDB : FindAllProfiles()
+activate ProfileDB
+ProfileDB --> Service : Profile List
+deactivate ProfileDB
+
+Service --> UI : Display Existing Profiles()
+deactivate Service
+
+opt A1: Search & View
+
+    User -> UI : Select Search & View
+
+    UI -> Service : SearchProfiles(criteria)
+    activate Service
+
+    Service -> ProfileDB : Search(criteria)
+    activate ProfileDB
+    ProfileDB --> Service : Filtered Profiles
+    deactivate ProfileDB
+
+    Service --> UI : Display Full List
+
+    User -> UI : Select Filters
+
+    UI -> Service : FilterProfiles()
+    activate Service
+
+    Service -> ProfileDB : FindByCriteria()
+    activate ProfileDB
+    ProfileDB --> Service : Filtered Result
+    deactivate ProfileDB
+
+    Service --> UI : Display Filtered List
+    deactivate Service
+
+end
+
+User -> UI : Select Action
+
+UI -> Service : Load Form()
+activate Service
+Service --> UI : Display Form
+deactivate Service
+
+loop Until Configuration Valid
+
+    User -> UI : Enter/Edit Information
+
+    UI -> Service : Validate Configuration(data)
+    activate Service
+
+    alt E2: Invalid Configuration
+
+        Service --> UI : Validation Errors
+        UI --> User : Require Correction
+
+    else Valid Configuration
+
+        Service --> UI : Validation Success
+
+    end
+
+    deactivate Service
+
+end
+
+User -> UI : Confirm Changes
+
+alt Deactivate Profile
+
+    UI -> Service : Deactivate Profile
+    activate Service
+
+    Service -> MappingDB : Check Dependencies()
+    activate MappingDB
+    MappingDB --> Service : Dependency Result
+    deactivate MappingDB
+
+    alt E1: Dependency Exists
+
+        Service --> UI : Display Dependent Table Mappings
+        Service --> UI : Deactivation Not Permitted
+        UI --> User : Select Another Action
+
+    else No Dependency
+
+        Service -> ProfileDB : Deactivate()
+        activate ProfileDB
+        ProfileDB --> Service : Success
+        deactivate ProfileDB
+
+        Service --> UI : Profile Deactivated
+
+    end
+
+    deactivate Service
+
+end
+
+UI -> Service : Activate Profile()
+activate Service
+
+Service -> ProfileDB : Update Status = ACTIVE
+activate ProfileDB
+ProfileDB --> Service : Success
+deactivate ProfileDB
+
+Service --> UI : Profile Activated
+deactivate Service
+
+UI --> User : Display Success Message
+deactivate UI
+
+@enduml

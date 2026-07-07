@@ -1,0 +1,25 @@
+@startuml
+!theme cerulean
+title AD-01 Main Flow - Data Integration Process\n(Agnostic Data Integration Middleware)
+
+start
+
+:1. Receive Raw Data\n(Ingestion Layer);
+:2. Normalize & Validate Format;
+:3. Load Mapping Rules from Cache;
+
+:4. Transform & Map Data\n(Target-Driven);
+:5. Apply Data Trimming;
+:6. Apply XREF + Default Value + Type Casting;
+
+if (Validation OK?) then (yes)
+    :7. Generate Flat File Output\n(.csv for Xcenter/Dataloader);
+    :8. Write File to Output Directory;
+    stop
+else (no)
+    :Store Record to DLQ;
+    :Log Error;
+    stop
+endif
+
+@enduml

@@ -1,0 +1,58 @@
+@startuml
+
+start
+
+:1. Operator accesses\nMonitoring Dashboard;
+
+:2. Display metrics and\noperational status;
+
+if (A1: Configure Alerts?) then (Yes)
+
+fork
+    :Define alert thresholds;
+fork again
+    :Select notification channels;
+fork again
+    :Add recipient list;
+end fork
+
+endif
+
+:3. System continuously\nchecks thresholds;
+
+if (Incident detected?) then (Yes)
+
+    :4. Create alert;
+
+    :5. Send email to\nIT/Support Team;
+
+    if (E2: SMTP Service Down?) then (Yes)
+
+        :Urgent notification\nto operator;
+
+        --> END
+
+    endif
+
+    if (E1: Email Sending Failed?) then (Yes)
+
+        repeat
+            :Retry send email;
+        repeat while (Retry count < 3?)
+
+        if (Email still failed?) then (Yes)
+            :Log error;
+            --> END
+        endif
+    endif
+
+    :6. IT/Support Team receives\nand processes email;
+
+    :7. Operator acknowledges\nalert in system;
+
+endif
+
+label END
+stop
+
+@enduml

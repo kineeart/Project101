@@ -1,0 +1,14 @@
+@startuml
+start
+:Read Required Rule;
+
+if (Field Missing?) then (Yes)
+:Create Error;
+:Send DLQ;
+stop
+else
+:Continue;
+stop
+endif
+
+@enduml
