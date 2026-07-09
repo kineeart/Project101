@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PipelineContext {
-
+    private String filePath;
     private RawEvent rawEvent;
 
     private TransformedEvent transformedEvent;
@@ -20,20 +20,20 @@ public class PipelineContext {
 
     private final Map<String, Object> attributes = new HashMap<>();
 
-    public PipelineContext() {
-    }
+ public PipelineContext() {
+}
 
-    public PipelineContext(
-            RawEvent rawEvent,
-            TransformedEvent transformedEvent,
-            MappingContext mappingContext,
-            Execution execution) {
+public PipelineContext(
+        RawEvent rawEvent,
+        TransformedEvent transformedEvent,
+        MappingContext mappingContext,
+        Execution execution) {
 
-        this.rawEvent = rawEvent;
-        this.transformedEvent = transformedEvent;
-        this.mappingContext = mappingContext;
-        this.execution = execution;
-    }
+    this.rawEvent = rawEvent;
+    this.transformedEvent = transformedEvent;
+    this.mappingContext = mappingContext;
+    this.execution = execution;
+}
 
     public RawEvent getRawEvent() {
         return rawEvent;
@@ -86,4 +86,12 @@ public class PipelineContext {
     public boolean hasExecution() {
         return execution != null;
     }
+
+public String getFilePath() {
+    return filePath;
+}
+
+public void setFilePath(String filePath) {
+    this.filePath = filePath;
+}
 }

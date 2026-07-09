@@ -2,13 +2,11 @@ package com.example.middleware.feature.processing.application;
 import com.example.middleware.feature.delivery.application.port.DeliveryPort;
 import com.example.middleware.feature.audit.application.port.AuditPort;
 import com.example.middleware.feature.ingestion.application.ReceiveEventUseCase;
-import com.example.middleware.feature.processing.application.port.IdempotencyPort;
 import com.example.middleware.feature.processing.application.port.RetryPort;
 import com.example.middleware.feature.processing.domain.context.MappingContext;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
 import com.example.middleware.feature.processing.domain.exception.DuplicateEventException;
-import com.example.middleware.feature.ingestion.application.RequestValidationService;
 import com.example.middleware.feature.orchestration.application.Pipeline;
 import com.example.middleware.feature.orchestration.application.PipelineContext;
 import com.example.middleware.feature.orchestration.domain.Execution;
@@ -22,25 +20,19 @@ import java.util.Map;
 public class ProcessingService implements ReceiveEventUseCase {
 	private final Pipeline pipeline;
     private final MappingContext context;
-    private final RequestValidationService requestValidationService;
     private final AuditPort auditPort;
-    private final IdempotencyPort idempotencyPort;
     private final RetryPort retryPort;
 	private final DeliveryPort deliveryPort;
 	
     public ProcessingService(
 	    MappingContext context,
-	    RequestValidationService requestValidationService,
 	    AuditPort auditPort,
-	    IdempotencyPort idempotencyPort,
 	    RetryPort retryPort,
 	    DeliveryPort deliveryPort,
 	Pipeline pipeline) {
 
 	this.context = context;
-	this.requestValidationService = requestValidationService;
 	this.auditPort = auditPort;
-	this.idempotencyPort = idempotencyPort;
 	this.retryPort = retryPort;
 	this.deliveryPort = deliveryPort;
 	this.pipeline = pipeline;
