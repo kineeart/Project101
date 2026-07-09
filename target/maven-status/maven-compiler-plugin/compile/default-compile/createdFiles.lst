@@ -16,6 +16,8 @@ com\example\middleware\feature\processing\application\port\RetryPort.class
 com\example\middleware\feature\metadata\application\port\MetadataRepository.class
 com\example\middleware\feature\metadata\domain\MappingProfile.class
 com\example\middleware\feature\processing\domain\transformation\DataTypeTransformer.class
+com\example\middleware\feature\orchestration\application\stage\impl\MappingStage.class
+com\example\middleware\feature\processing\application\usecase\DefaultValidationUseCase$DefaultMappingUseCase.class
 com\example\middleware\feature\processing\domain\event\RawEvent.class
 com\example\middleware\feature\orchestration\application\StageResult.class
 com\example\middleware\feature\delivery\application\registry\DeliveryPluginRegistry.class
@@ -46,6 +48,7 @@ com\example\middleware\feature\metadata\application\MetadataPort.class
 com\example\middleware\feature\audit\domain\ProcessingLog.class
 com\example\middleware\feature\delivery\application\port\DeliveryPlugin.class
 com\example\middleware\feature\monitoring\application\HealthService.class
+com\example\middleware\feature\processing\application\usecase\MappingUseCase.class
 com\example\middleware\feature\processing\domain\transformation\XrefTransformer.class
 com\example\middleware\feature\orchestration\domain\ExecutionStatus.class
 com\example\middleware\feature\audit\domain\ErrorLog.class

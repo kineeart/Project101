@@ -3,7 +3,10 @@ import com.example.middleware.feature.orchestration.application.StageResult;
 import com.example.middleware.feature.ingestion.application.RequestValidationService;
 import com.example.middleware.feature.orchestration.application.PipelineContext;
 import com.example.middleware.feature.processing.application.port.IdempotencyPort;
+import com.example.middleware.feature.processing.application.port.MappingPort;
+import com.example.middleware.feature.processing.domain.context.MappingContext;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
+import com.example.middleware.feature.processing.domain.event.TransformedEvent;
 import com.example.middleware.feature.processing.domain.exception.DuplicateEventException;
 
 import org.springframework.stereotype.Service;
@@ -35,5 +38,34 @@ public StageResult validate(PipelineContext context) {
     }
 
     return StageResult.SUCCESS;
+}
+@Service
+public class DefaultMappingUseCase implements MappingUseCase {
+
+    private final MappingPort mappingPort;
+
+    public DefaultMappingUseCase(MappingPort mappingPort) {
+        this.mappingPort = mappingPort;
+    }
+
+    @Override
+    public StageResult map(PipelineContext context) {
+
+        RawEvent event = context.getRawEvent();
+
+        MappingContext mappingContext =
+                context.getMappingContext();
+
+        TransformedEvent transformed =
+                mappingPort.transform(
+                        event,
+                        mappingContext
+                );
+
+        context.setTransformedEvent(transformed);
+
+        return StageResult.SUCCESS;
+    }
+
 }
 }
