@@ -6,6 +6,7 @@ com\example\middleware\feature\processing\domain\event\TransformedEvent.class
 com\example\middleware\feature\metadata\domain\RuleDefinition.class
 com\example\middleware\feature\processing\domain\exception\ValidationException.class
 com\example\middleware\infrastructure\persistence\InfrastructureMarker.class
+com\example\middleware\feature\delivery\application\service\DeliveryService.class
 com\example\middleware\feature\processing\application\port\MappingPort.class
 com\example\middleware\feature\monitoring\application\MetricsService.class
 com\example\middleware\infrastructure\scheduler\InfrastructureMarker.class
@@ -21,9 +22,9 @@ com\example\middleware\feature\processing\domain\exception\MappingRuleNotFoundEx
 com\example\middleware\feature\orchestration\domain\Execution.class
 com\example\middleware\feature\processing\application\ProcessingService.class
 com\example\middleware\infrastructure\filesystem\InfrastructureMarker.class
-com\example\middleware\feature\processing\domain\validation\IdempotencyValidator.class
 com\example\middleware\feature\delivery\infrastructure\plugin\DataLoaderMntPlugin.class
 com\example\middleware\core\dlq\DeadLetterEvent.class
+com\example\middleware\feature\delivery\application\port\DeliveryPort.class
 com\example\middleware\feature\metadata\domain\DeliveryProfile.class
 com\example\middleware\feature\ingestion\api\MappingController.class
 com\example\middleware\feature\ingestion\application\ReceiveEventUseCase.class
@@ -47,6 +48,7 @@ com\example\middleware\feature\metadata\domain\TableRule.class
 com\example\middleware\feature\delivery\infrastructure\formatter\CsvFormatter.class
 com\example\middleware\feature\processing\domain\validation\RequiredValidator.class
 com\example\middleware\configuration\MappingContextConfiguration.class
+com\example\middleware\feature\processing\infrastructure\idempotency\IdempotencyValidator.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalEvent.class
 com\example\middleware\feature\metadata\domain\ColumnDescriptor.class
 com\example\middleware\feature\ingestion\application\RequestValidationService.class

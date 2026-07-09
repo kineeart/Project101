@@ -1,4 +1,4 @@
-package com.example.middleware.feature.processing.domain.validation;
+package com.example.middleware.feature.processing.infrastructure.idempotency;
 
 import com.example.middleware.feature.processing.application.port.IdempotencyPort;
 import org.springframework.stereotype.Component;

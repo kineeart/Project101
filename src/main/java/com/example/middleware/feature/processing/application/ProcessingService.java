@@ -1,8 +1,8 @@
 package com.example.middleware.feature.processing.application;
-
-import com.example.middleware.feature.audit.application.port.AuditPort;
 import com.example.middleware.feature.delivery.application.port.DeliveryPlugin;
+import com.example.middleware.feature.delivery.application.port.DeliveryPort;
 import com.example.middleware.feature.delivery.application.registry.DeliveryPluginRegistry;
+import com.example.middleware.feature.audit.application.port.AuditPort;
 import com.example.middleware.feature.ingestion.application.ReceiveEventUseCase;
 import com.example.middleware.feature.processing.application.port.IdempotencyPort;
 import com.example.middleware.feature.processing.application.port.MappingPort;
@@ -26,8 +26,7 @@ public class ProcessingService implements ReceiveEventUseCase {
     private final IdempotencyPort idempotencyPort;
     private final MappingPort mappingPort;
     private final RetryPort retryPort;
-    private final DeliveryPluginRegistry deliveryPluginRegistry;
-
+	private final DeliveryPort deliveryPort;
     public ProcessingService(
 	    MappingContext context,
 	    RequestValidationService requestValidationService,
@@ -35,7 +34,7 @@ public class ProcessingService implements ReceiveEventUseCase {
 	    IdempotencyPort idempotencyPort,
 	    MappingPort mappingPort,
 	    RetryPort retryPort,
-	    DeliveryPluginRegistry deliveryPluginRegistry) {
+	    DeliveryPort deliveryPort) {
 
 	this.context = context;
 	this.requestValidationService = requestValidationService;
@@ -43,7 +42,7 @@ public class ProcessingService implements ReceiveEventUseCase {
 	this.idempotencyPort = idempotencyPort;
 	this.mappingPort = mappingPort;
 	this.retryPort = retryPort;
-	this.deliveryPluginRegistry = deliveryPluginRegistry;
+	this.deliveryPort = deliveryPort;
     }
 
 	@Override
@@ -85,13 +84,11 @@ public class ProcessingService implements ReceiveEventUseCase {
 			.body("No data after mapping.");
 	    }
 
-	    DeliveryPlugin plugin = deliveryPluginRegistry.defaultPlugin();
-
 	    String filePath = retryPort.execute(
-		    eventId,
-		    transformed.getPayload(),
-		    () -> plugin.write(transformed)
-	    );
+        eventId,
+        transformed.getPayload(),
+        () -> deliveryPort.write(transformed)
+);
 
 	    auditPort.log(eventId, PipelineStatus.WRITTEN,
 		    "CSV created", filePath);
