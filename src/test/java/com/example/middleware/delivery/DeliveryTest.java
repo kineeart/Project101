@@ -1,6 +1,6 @@
 package com.example.middleware.delivery;
 
-import com.example.middleware.delivery.factory.OutputWriterFactory;
+import com.example.middleware.feature.delivery.application.factory.OutputWriterFactory;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
 
 import org.junit.jupiter.api.Test;

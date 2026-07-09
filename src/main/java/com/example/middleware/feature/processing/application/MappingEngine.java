@@ -1,5 +1,7 @@
 package com.example.middleware.feature.processing.application;
 
+import com.example.middleware.feature.metadata.domain.FieldRule;
+import com.example.middleware.feature.metadata.domain.TableRule;
 import com.example.middleware.feature.processing.application.port.MappingPort;
 import com.example.middleware.feature.processing.domain.context.MappingContext;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
@@ -8,8 +10,7 @@ import com.example.middleware.feature.processing.domain.exception.MappingRuleNot
 import com.example.middleware.feature.processing.domain.transformation.DataTypeTransformer;
 import com.example.middleware.feature.processing.domain.transformation.XrefTransformer;
 import com.example.middleware.feature.processing.domain.validation.RequiredValidator;
-import com.example.middleware.metadata.model.FieldRule;
-import com.example.middleware.metadata.model.TableRule;
+
 import org.springframework.stereotype.Service;
 
 @Service

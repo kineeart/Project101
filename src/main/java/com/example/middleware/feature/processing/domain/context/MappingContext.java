@@ -1,9 +1,9 @@
 package com.example.middleware.feature.processing.domain.context;
 
-import com.example.middleware.metadata.model.TableRule;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.example.middleware.feature.metadata.domain.TableRule;
 
 public class MappingContext {
 

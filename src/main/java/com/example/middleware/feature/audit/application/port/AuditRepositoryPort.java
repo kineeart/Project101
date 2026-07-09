@@ -1,9 +1,9 @@
 package com.example.middleware.feature.audit.application.port;
 
-import com.example.middleware.audit.model.ErrorLog;
-import com.example.middleware.audit.model.ProcessingLog;
-
 import java.util.List;
+
+import com.example.middleware.feature.audit.domain.ErrorLog;
+import com.example.middleware.feature.audit.domain.ProcessingLog;
 
 public interface AuditRepositoryPort {
 

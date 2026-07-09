@@ -1,11 +1,12 @@
 package com.example.middleware.core.mapping;
 
+import com.example.middleware.feature.metadata.domain.FieldRule;
+import com.example.middleware.feature.metadata.domain.TableRule;
 import com.example.middleware.feature.processing.application.MappingEngine;
 import com.example.middleware.feature.processing.domain.context.MappingContext;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
-import com.example.middleware.metadata.model.FieldRule;
-import com.example.middleware.metadata.model.TableRule;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.*;

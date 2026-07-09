@@ -1,8 +1,8 @@
 package com.example.middleware.configuration;
 
+import com.example.middleware.feature.metadata.domain.FieldRule;
+import com.example.middleware.feature.metadata.domain.TableRule;
 import com.example.middleware.feature.processing.domain.context.MappingContext;
-import com.example.middleware.metadata.model.FieldRule;
-import com.example.middleware.metadata.model.TableRule;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

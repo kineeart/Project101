@@ -1,8 +1,8 @@
 package com.example.middleware.feature.delivery.infrastructure.plugin;
 
-import com.example.middleware.delivery.formatter.CsvFormatter;
-import com.example.middleware.delivery.storage.FileStorage;
 import com.example.middleware.delivery.strategy.OutputWriterStrategy;
+import com.example.middleware.feature.delivery.infrastructure.formatter.CsvFormatter;
+import com.example.middleware.feature.delivery.infrastructure.storage.FileStorage;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
 
 import org.springframework.stereotype.Component;

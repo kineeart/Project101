@@ -1,7 +1,7 @@
 package com.example.middleware.feature.processing.domain.validation;
 
+import com.example.middleware.feature.metadata.domain.FieldRule;
 import com.example.middleware.feature.processing.domain.exception.ValidationException;
-import com.example.middleware.metadata.model.FieldRule;
 
 public class RequiredValidator {
 
