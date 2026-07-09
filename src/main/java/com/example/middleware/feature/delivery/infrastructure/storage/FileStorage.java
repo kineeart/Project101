@@ -4,6 +4,9 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class FileStorage {
 
     public void write(String filePath, List<String> lines) {

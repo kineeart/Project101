@@ -44,7 +44,6 @@ com\example\middleware\feature\audit\domain\ErrorLog.class
 com\example\middleware\delivery\strategy\OutputWriterStrategy.class
 com\example\middleware\feature\metadata\domain\FieldRule.class
 com\example\middleware\feature\metadata\domain\TableRule.class
-com\example\middleware\feature\delivery\application\factory\OutputWriterFactory.class
 com\example\middleware\feature\delivery\infrastructure\formatter\CsvFormatter.class
 com\example\middleware\feature\processing\domain\validation\RequiredValidator.class
 com\example\middleware\configuration\MappingContextConfiguration.class

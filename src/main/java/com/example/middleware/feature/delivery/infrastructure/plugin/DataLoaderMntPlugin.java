@@ -13,8 +13,16 @@ import java.util.List;
 @Component
 public class DataLoaderMntPlugin implements OutputWriterStrategy {
 
-    private final CsvFormatter formatter = new CsvFormatter();
-    private final FileStorage storage = new FileStorage();
+    private final CsvFormatter formatter;
+private final FileStorage storage;
+
+public DataLoaderMntPlugin(
+        CsvFormatter formatter,
+        FileStorage storage) {
+
+    this.formatter = formatter;
+    this.storage = storage;
+}
 
     @Override
     public String type() {

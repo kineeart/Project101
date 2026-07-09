@@ -4,6 +4,9 @@ import java.util.StringJoiner;
 
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CsvFormatter {
 
     private static final String DELIMITER = ",";

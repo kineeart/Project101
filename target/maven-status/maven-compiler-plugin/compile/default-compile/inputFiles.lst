@@ -9,7 +9,6 @@ D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\audi
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\audit\domain\ErrorLog.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\audit\domain\ProcessingLog.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\audit\infrastructure\repository\AuditRepository.java
-D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\application\factory\OutputWriterFactory.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\application\port\DeliveryPlugin.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\application\registry\DeliveryPluginRegistry.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\infrastructure\formatter\CsvFormatter.java
