@@ -38,11 +38,11 @@ public class AuditService implements AuditPort {
                 )
         );
     }
-
+@Override
     public List<ProcessingLog> getProcessingLogs() {
         return repository.findAllProcessing();
     }
-
+@Override
     public List<ErrorLog> getErrorLogs() {
         return repository.findAllErrors();
     }

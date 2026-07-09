@@ -1,6 +1,7 @@
 package com.example.middleware.feature.audit.api;
 
 import com.example.middleware.feature.audit.application.AuditService;
+import com.example.middleware.feature.audit.application.port.AuditPort;
 import com.example.middleware.feature.audit.domain.ErrorLog;
 import com.example.middleware.feature.audit.domain.ProcessingLog;
 
@@ -14,19 +15,19 @@ import java.util.List;
 @RequestMapping("/api/v1/audit")
 public class AuditController {
 
-    private final AuditService auditService;
+    private final AuditPort auditPort;
 
-    public AuditController(AuditService auditService) {
-        this.auditService = auditService;
+    public AuditController(AuditPort auditPort) {
+        this.auditPort = auditPort;
     }
 
     @GetMapping("/processing")
     public List<ProcessingLog> getProcessingLogs() {
-        return auditService.getProcessingLogs();
+        return auditPort.getProcessingLogs();
     }
 
     @GetMapping("/errors")
-    public List<ErrorLog> getErrorLogs() {
-        return auditService.getErrorLogs();
-    }
+public List<ErrorLog> getErrorLogs() {
+    return auditPort.getErrorLogs();
+}
 }
