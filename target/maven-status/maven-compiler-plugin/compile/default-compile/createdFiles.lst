@@ -59,6 +59,7 @@ com\example\middleware\feature\processing\domain\exception\DuplicateEventExcepti
 com\example\middleware\feature\delivery\infrastructure\formatter\CsvFormatter.class
 com\example\middleware\feature\orchestration\application\EventOrchestratorPort.class
 com\example\middleware\feature\processing\domain\validation\RequiredValidator.class
+com\example\middleware\feature\delivery\application\usecase\DeliveryUseCase.class
 com\example\middleware\configuration\MappingContextConfiguration.class
 com\example\middleware\feature\processing\infrastructure\idempotency\IdempotencyValidator.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalEvent.class
