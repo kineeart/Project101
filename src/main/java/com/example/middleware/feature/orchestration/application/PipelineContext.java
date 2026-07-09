@@ -18,59 +18,72 @@ public class PipelineContext {
 
     private Execution execution;
 
-    private final Map<String, Object> attributes =
-            new HashMap<>();
-public PipelineContext() {
-}
-public PipelineContext(
-        RawEvent rawEvent,
-        TransformedEvent transformedEvent,
-        MappingContext mappingContext,
-        Execution execution) {
+    private final Map<String, Object> attributes = new HashMap<>();
 
-    this.rawEvent = rawEvent;
-    this.transformedEvent = transformedEvent;
-    this.mappingContext = mappingContext;
-    this.execution = execution;
-}
-public RawEvent getRawEvent() {
-    return rawEvent;
-}
+    public PipelineContext() {
+    }
 
-public void setRawEvent(RawEvent rawEvent) {
-    this.rawEvent = rawEvent;
-}
+    public PipelineContext(
+            RawEvent rawEvent,
+            TransformedEvent transformedEvent,
+            MappingContext mappingContext,
+            Execution execution) {
 
+        this.rawEvent = rawEvent;
+        this.transformedEvent = transformedEvent;
+        this.mappingContext = mappingContext;
+        this.execution = execution;
+    }
 
-public TransformedEvent getTransformedEvent() {
-    return transformedEvent;
-}
+    public RawEvent getRawEvent() {
+        return rawEvent;
+    }
 
-public void setTransformedEvent(TransformedEvent transformedEvent) {
-    this.transformedEvent = transformedEvent;
-}
+    public void setRawEvent(RawEvent rawEvent) {
+        this.rawEvent = rawEvent;
+    }
 
+    public TransformedEvent getTransformedEvent() {
+        return transformedEvent;
+    }
 
-public MappingContext getMappingContext() {
-    return mappingContext;
-}
+    public void setTransformedEvent(TransformedEvent transformedEvent) {
+        this.transformedEvent = transformedEvent;
+    }
 
-public void setMappingContext(MappingContext mappingContext) {
-    this.mappingContext = mappingContext;
-}
+    public MappingContext getMappingContext() {
+        return mappingContext;
+    }
 
-public Execution getExecution() {
-    return execution;
-}
+    public void setMappingContext(MappingContext mappingContext) {
+        this.mappingContext = mappingContext;
+    }
 
-public void setExecution(Execution execution) {
-    this.execution = execution;
-}
-public void put(String key, Object value) {
-    attributes.put(key, value);
-}
+    public Execution getExecution() {
+        return execution;
+    }
 
-public Object get(String key) {
-    return attributes.get(key);
-}
+    public void setExecution(Execution execution) {
+        this.execution = execution;
+    }
+
+    // Generic Attribute Store
+
+    public <T> void put(String key, T value) {
+        attributes.put(key, value);
+    }
+
+    public <T> T get(String key, Class<T> type) {
+        return type.cast(attributes.get(key));
+    }
+
+    // Helpers
+
+    public boolean hasTransformedEvent() {
+        return transformedEvent != null;
+    }
+
+    public boolean hasExecution() {
+        return execution != null;
+    }
 }
