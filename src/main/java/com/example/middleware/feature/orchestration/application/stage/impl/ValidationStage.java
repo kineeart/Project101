@@ -24,7 +24,7 @@ public class ValidationStage implements PipelineStage {
     @Override
  
 public StageResult execute(PipelineContext context) {
-
+System.out.println("=== ValidationStage ===");
     return validationUseCase.validate(context);
 
 }

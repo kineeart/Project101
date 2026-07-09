@@ -25,6 +25,7 @@ com\example\middleware\feature\ingestion\domain\IncomingRequest.class
 com\example\middleware\feature\processing\application\MappingEngine.class
 com\example\middleware\feature\audit\application\port\AuditRepositoryPort.class
 com\example\middleware\feature\processing\domain\exception\MappingRuleNotFoundException.class
+com\example\middleware\feature\orchestration\application\stage\impl\DeliveryStage.class
 com\example\middleware\feature\orchestration\domain\Execution.class
 com\example\middleware\feature\processing\application\ProcessingService.class
 com\example\middleware\infrastructure\filesystem\InfrastructureMarker.class

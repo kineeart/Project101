@@ -1,8 +1,6 @@
 package com.example.middleware.feature.processing.application;
-import com.example.middleware.feature.delivery.application.port.DeliveryPort;
 import com.example.middleware.feature.audit.application.port.AuditPort;
 import com.example.middleware.feature.ingestion.application.ReceiveEventUseCase;
-import com.example.middleware.feature.processing.application.port.RetryPort;
 import com.example.middleware.feature.processing.domain.context.MappingContext;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
@@ -22,20 +20,17 @@ public class ProcessingService implements ReceiveEventUseCase {
 	private final Pipeline pipeline;
     private final MappingContext context;
     private final AuditPort auditPort;
-    private final RetryPort retryPort;
-	private final DeliveryPort deliveryPort;
+
 	
     public ProcessingService(
 	    MappingContext context,
 	    AuditPort auditPort,
-	    RetryPort retryPort,
-	    DeliveryPort deliveryPort,
+	  
 	Pipeline pipeline) {
 
 	this.context = context;
 	this.auditPort = auditPort;
-	this.retryPort = retryPort;
-	this.deliveryPort = deliveryPort;
+	
 	this.pipeline = pipeline;
     }
 
@@ -90,11 +85,7 @@ TransformedEvent transformed =
 			.body("No data after mapping.");
 	    }
 
-	    String filePath = retryPort.execute(
-        eventId,
-        transformed.getPayload(),
-        () -> deliveryPort.write(transformed)
-);
+	    String filePath = pipelineContext.getFilePath();
 
 	    auditPort.log(eventId, PipelineStatus.WRITTEN,
 		    "CSV created", filePath);
