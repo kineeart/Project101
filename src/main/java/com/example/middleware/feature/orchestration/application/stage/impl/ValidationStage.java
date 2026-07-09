@@ -5,10 +5,11 @@ import com.example.middleware.feature.orchestration.application.StageResult;
 import com.example.middleware.feature.orchestration.application.stage.PipelineStage;
 import com.example.middleware.feature.processing.application.usecase.ValidationUseCase;
 import org.springframework.stereotype.Component;
+import org.springframework.core.annotation.Order;
 
 @Component
+@Order(100)
 public class ValidationStage implements PipelineStage {
-
     private final ValidationUseCase validationUseCase;
 
     public ValidationStage(ValidationUseCase validationUseCase) {

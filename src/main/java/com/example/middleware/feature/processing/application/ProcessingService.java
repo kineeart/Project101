@@ -9,6 +9,7 @@ import com.example.middleware.feature.processing.domain.event.TransformedEvent;
 import com.example.middleware.feature.processing.domain.exception.DuplicateEventException;
 import com.example.middleware.feature.orchestration.application.Pipeline;
 import com.example.middleware.feature.orchestration.application.PipelineContext;
+import com.example.middleware.feature.orchestration.application.StageResult;
 import com.example.middleware.feature.orchestration.domain.Execution;
 import com.example.middleware.shared.enums.PipelineStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,7 +73,11 @@ pipelineContext.setRawEvent(event);
 pipelineContext.setMappingContext(context);
 pipelineContext.setExecution(execution);
 
-pipeline.execute(pipelineContext);
+StageResult result = pipeline.execute(pipelineContext);
+if (result != StageResult.SUCCESS) {
+    return ResponseEntity.internalServerError()
+            .body("Pipeline execution failed.");
+}
 
 TransformedEvent transformed =
         pipelineContext.getTransformedEvent();

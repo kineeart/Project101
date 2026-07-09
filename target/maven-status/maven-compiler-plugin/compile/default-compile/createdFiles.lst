@@ -28,6 +28,7 @@ com\example\middleware\feature\processing\domain\exception\MappingRuleNotFoundEx
 com\example\middleware\feature\orchestration\domain\Execution.class
 com\example\middleware\feature\processing\application\ProcessingService.class
 com\example\middleware\infrastructure\filesystem\InfrastructureMarker.class
+com\example\middleware\feature\delivery\application\usecase\DefaultDeliveryUseCase.class
 com\example\middleware\feature\processing\application\usecase\DefaultMappingUseCase.class
 com\example\middleware\feature\delivery\infrastructure\plugin\DataLoaderMntPlugin.class
 com\example\middleware\core\dlq\DeadLetterEvent.class
