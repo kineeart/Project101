@@ -1,7 +1,6 @@
 package com.example.middleware.feature.orchestration.application;
 
 import com.example.middleware.feature.ingestion.application.ReceiveEventUseCase;
-import com.example.middleware.feature.orchestration.application.port.EventOrchestratorPort;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

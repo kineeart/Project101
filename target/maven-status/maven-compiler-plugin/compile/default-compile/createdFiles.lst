@@ -3,6 +3,8 @@ com\example\middleware\feature\delivery\infrastructure\storage\RetryableStorage.
 com\example\middleware\feature\audit\application\AuditService.class
 com\example\middleware\feature\processing\application\port\IdempotencyPort.class
 com\example\middleware\feature\processing\domain\event\TransformedEvent.class
+com\example\middleware\feature\orchestration\application\stage\impl\ValidationStage.class
+com\example\middleware\feature\processing\application\usecase\ValidationUseCase.class
 com\example\middleware\feature\metadata\domain\RuleDefinition.class
 com\example\middleware\feature\processing\domain\exception\ValidationException.class
 com\example\middleware\infrastructure\persistence\InfrastructureMarker.class
@@ -15,6 +17,7 @@ com\example\middleware\feature\metadata\application\port\MetadataRepository.clas
 com\example\middleware\feature\metadata\domain\MappingProfile.class
 com\example\middleware\feature\processing\domain\transformation\DataTypeTransformer.class
 com\example\middleware\feature\processing\domain\event\RawEvent.class
+com\example\middleware\feature\orchestration\application\StageResult.class
 com\example\middleware\feature\delivery\application\registry\DeliveryPluginRegistry.class
 com\example\middleware\feature\metadata\application\port\MetadataPort.class
 com\example\middleware\feature\ingestion\domain\IncomingRequest.class
@@ -28,7 +31,9 @@ com\example\middleware\feature\delivery\infrastructure\plugin\DataLoaderMntPlugi
 com\example\middleware\core\dlq\DeadLetterEvent.class
 com\example\middleware\feature\metadata\application\port\MetadataLoader.class
 com\example\middleware\feature\delivery\application\port\DeliveryPort.class
+com\example\middleware\feature\processing\application\usecase\DefaultValidationUseCase.class
 com\example\middleware\feature\metadata\domain\DeliveryProfile.class
+com\example\middleware\feature\orchestration\application\PipelineContext.class
 com\example\middleware\feature\ingestion\api\MappingController.class
 com\example\middleware\feature\ingestion\application\ReceiveEventUseCase.class
 com\example\middleware\feature\orchestration\domain\ExecutionStep.class
@@ -47,13 +52,16 @@ com\example\middleware\feature\audit\domain\ErrorLog.class
 com\example\middleware\delivery\strategy\OutputWriterStrategy.class
 com\example\middleware\feature\metadata\domain\FieldRule.class
 com\example\middleware\feature\metadata\domain\TableRule.class
+com\example\middleware\feature\processing\domain\exception\DuplicateEventException.class
 com\example\middleware\feature\delivery\infrastructure\formatter\CsvFormatter.class
+com\example\middleware\feature\orchestration\application\EventOrchestratorPort.class
 com\example\middleware\feature\processing\domain\validation\RequiredValidator.class
 com\example\middleware\configuration\MappingContextConfiguration.class
 com\example\middleware\feature\processing\infrastructure\idempotency\IdempotencyValidator.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalEvent.class
 com\example\middleware\feature\metadata\domain\ColumnDescriptor.class
 com\example\middleware\feature\ingestion\application\RequestValidationService.class
+com\example\middleware\feature\orchestration\application\Pipeline.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalRecord.class
 com\example\middleware\feature\metadata\application\MetadataService.class
 com\example\middleware\feature\metadata\domain\ProfileVersion.class
@@ -63,5 +71,6 @@ com\example\middleware\feature\audit\api\AuditController.class
 com\example\middleware\feature\delivery\infrastructure\storage\FileStorage.class
 com\example\middleware\feature\audit\application\port\AuditPort.class
 com\example\middleware\feature\audit\infrastructure\repository\AuditRepository.class
+com\example\middleware\feature\orchestration\application\stage\PipelineStage.class
 com\example\middleware\infrastructure\database\InfrastructureMarker.class
 com\example\middleware\shared\enums\PipelineStatus.class

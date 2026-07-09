@@ -10,7 +10,11 @@ import com.example.middleware.feature.processing.application.port.RetryPort;
 import com.example.middleware.feature.processing.domain.context.MappingContext;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
+import com.example.middleware.feature.processing.domain.exception.DuplicateEventException;
 import com.example.middleware.feature.ingestion.application.RequestValidationService;
+import com.example.middleware.feature.orchestration.application.Pipeline;
+import com.example.middleware.feature.orchestration.application.PipelineContext;
+import com.example.middleware.feature.orchestration.domain.Execution;
 import com.example.middleware.shared.enums.PipelineStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,7 +23,7 @@ import java.util.Map;
 
 @Service
 public class ProcessingService implements ReceiveEventUseCase {
-
+	private final Pipeline pipeline;
     private final MappingContext context;
     private final RequestValidationService requestValidationService;
     private final AuditPort auditPort;
@@ -27,6 +31,7 @@ public class ProcessingService implements ReceiveEventUseCase {
     private final MappingPort mappingPort;
     private final RetryPort retryPort;
 	private final DeliveryPort deliveryPort;
+	
     public ProcessingService(
 	    MappingContext context,
 	    RequestValidationService requestValidationService,
@@ -34,7 +39,8 @@ public class ProcessingService implements ReceiveEventUseCase {
 	    IdempotencyPort idempotencyPort,
 	    MappingPort mappingPort,
 	    RetryPort retryPort,
-	    DeliveryPort deliveryPort) {
+	    DeliveryPort deliveryPort,
+	Pipeline pipeline) {
 
 	this.context = context;
 	this.requestValidationService = requestValidationService;
@@ -43,6 +49,7 @@ public class ProcessingService implements ReceiveEventUseCase {
 	this.mappingPort = mappingPort;
 	this.retryPort = retryPort;
 	this.deliveryPort = deliveryPort;
+	this.pipeline = pipeline;
     }
 
 	@Override
@@ -51,17 +58,14 @@ public class ProcessingService implements ReceiveEventUseCase {
 	String eventId = "UNKNOWN";
 
 	try {
-	    requestValidationService.validate(request);
+	    
 
 	    eventId = request.get("eventId").toString();
 
 	    auditPort.log(eventId, PipelineStatus.RECEIVED,
 		    "Webhook received", null);
 
-	    if (!idempotencyPort.isNewEvent(eventId)) {
-		return ResponseEntity.status(409)
-			.body("Duplicate eventId: " + eventId);
-	    }
+	    
 
 	    auditPort.log(eventId, PipelineStatus.VALIDATED,
 		    "Validation passed", null);
@@ -72,6 +76,17 @@ public class ProcessingService implements ReceiveEventUseCase {
 		    "HQ_Price_Master",
 		    request
 	    );
+		Execution execution =
+        new Execution(eventId);
+
+PipelineContext pipelineContext =
+        new PipelineContext();
+
+pipelineContext.setRawEvent(event);
+pipelineContext.setMappingContext(context);
+pipelineContext.setExecution(execution);
+
+pipeline.execute(pipelineContext);
 
 	    TransformedEvent transformed = mappingPort.transform(event, context);
 
@@ -101,7 +116,20 @@ public class ProcessingService implements ReceiveEventUseCase {
 		    )
 	    );
 
-	} catch (Exception e) {
+	} 
+	catch (DuplicateEventException e) {
+
+    auditPort.log(
+            eventId,
+            PipelineStatus.FAILED,
+            e.getMessage(),
+            null
+    );
+
+    return ResponseEntity.status(409)
+            .body(e.getMessage());
+}
+	catch (Exception e) {
 
 	    auditPort.log(eventId, PipelineStatus.FAILED,
 		    e.getMessage(), null);

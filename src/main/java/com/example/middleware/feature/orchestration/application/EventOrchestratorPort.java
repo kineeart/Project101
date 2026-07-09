@@ -1,4 +1,4 @@
-package com.example.middleware.feature.orchestration.application.port;
+package com.example.middleware.feature.orchestration.application;
 
 import org.springframework.http.ResponseEntity;
 

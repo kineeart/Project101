@@ -1,10 +1,18 @@
 package com.example.middleware.feature.orchestration.domain;
 
+import com.example.middleware.feature.orchestration.application.StageResult;
+
 import java.time.Instant;
 
 public record ExecutionStep(
-	String name,
-	ExecutionStatus status,
-	String detail,
-	Instant occurredAt) {
+
+        String name,
+
+        StageResult result,
+
+        String detail,
+
+        Instant occurredAt
+
+) {
 }
