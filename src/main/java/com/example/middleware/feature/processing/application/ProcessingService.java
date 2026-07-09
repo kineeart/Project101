@@ -1,11 +1,8 @@
 package com.example.middleware.feature.processing.application;
-import com.example.middleware.feature.delivery.application.port.DeliveryPlugin;
 import com.example.middleware.feature.delivery.application.port.DeliveryPort;
-import com.example.middleware.feature.delivery.application.registry.DeliveryPluginRegistry;
 import com.example.middleware.feature.audit.application.port.AuditPort;
 import com.example.middleware.feature.ingestion.application.ReceiveEventUseCase;
 import com.example.middleware.feature.processing.application.port.IdempotencyPort;
-import com.example.middleware.feature.processing.application.port.MappingPort;
 import com.example.middleware.feature.processing.application.port.RetryPort;
 import com.example.middleware.feature.processing.domain.context.MappingContext;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
@@ -28,7 +25,6 @@ public class ProcessingService implements ReceiveEventUseCase {
     private final RequestValidationService requestValidationService;
     private final AuditPort auditPort;
     private final IdempotencyPort idempotencyPort;
-    private final MappingPort mappingPort;
     private final RetryPort retryPort;
 	private final DeliveryPort deliveryPort;
 	
@@ -37,7 +33,6 @@ public class ProcessingService implements ReceiveEventUseCase {
 	    RequestValidationService requestValidationService,
 	    AuditPort auditPort,
 	    IdempotencyPort idempotencyPort,
-	    MappingPort mappingPort,
 	    RetryPort retryPort,
 	    DeliveryPort deliveryPort,
 	Pipeline pipeline) {
@@ -46,7 +41,6 @@ public class ProcessingService implements ReceiveEventUseCase {
 	this.requestValidationService = requestValidationService;
 	this.auditPort = auditPort;
 	this.idempotencyPort = idempotencyPort;
-	this.mappingPort = mappingPort;
 	this.retryPort = retryPort;
 	this.deliveryPort = deliveryPort;
 	this.pipeline = pipeline;
