@@ -39,33 +39,5 @@ public StageResult validate(PipelineContext context) {
 
     return StageResult.SUCCESS;
 }
-@Service
-public class DefaultMappingUseCase implements MappingUseCase {
 
-    private final MappingPort mappingPort;
-
-    public DefaultMappingUseCase(MappingPort mappingPort) {
-        this.mappingPort = mappingPort;
-    }
-
-    @Override
-    public StageResult map(PipelineContext context) {
-
-        RawEvent event = context.getRawEvent();
-
-        MappingContext mappingContext =
-                context.getMappingContext();
-
-        TransformedEvent transformed =
-                mappingPort.transform(
-                        event,
-                        mappingContext
-                );
-
-        context.setTransformedEvent(transformed);
-
-        return StageResult.SUCCESS;
-    }
-
-}
 }

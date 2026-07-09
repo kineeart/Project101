@@ -17,7 +17,6 @@ com\example\middleware\feature\metadata\application\port\MetadataRepository.clas
 com\example\middleware\feature\metadata\domain\MappingProfile.class
 com\example\middleware\feature\processing\domain\transformation\DataTypeTransformer.class
 com\example\middleware\feature\orchestration\application\stage\impl\MappingStage.class
-com\example\middleware\feature\processing\application\usecase\DefaultValidationUseCase$DefaultMappingUseCase.class
 com\example\middleware\feature\processing\domain\event\RawEvent.class
 com\example\middleware\feature\orchestration\application\StageResult.class
 com\example\middleware\feature\delivery\application\registry\DeliveryPluginRegistry.class
@@ -29,6 +28,7 @@ com\example\middleware\feature\processing\domain\exception\MappingRuleNotFoundEx
 com\example\middleware\feature\orchestration\domain\Execution.class
 com\example\middleware\feature\processing\application\ProcessingService.class
 com\example\middleware\infrastructure\filesystem\InfrastructureMarker.class
+com\example\middleware\feature\processing\application\usecase\DefaultMappingUseCase.class
 com\example\middleware\feature\delivery\infrastructure\plugin\DataLoaderMntPlugin.class
 com\example\middleware\core\dlq\DeadLetterEvent.class
 com\example\middleware\feature\metadata\application\port\MetadataLoader.class

@@ -88,8 +88,8 @@ pipelineContext.setExecution(execution);
 
 pipeline.execute(pipelineContext);
 
-	    TransformedEvent transformed = mappingPort.transform(event, context);
-
+TransformedEvent transformed =
+        pipelineContext.getTransformedEvent();
 	    auditPort.log(eventId, PipelineStatus.TRANSFORMED,
 		    "Transformation completed", null);
 
