@@ -12,11 +12,13 @@ com\example\middleware\feature\delivery\application\service\DeliveryService.clas
 com\example\middleware\feature\processing\application\port\MappingPort.class
 com\example\middleware\feature\monitoring\application\MetricsService.class
 com\example\middleware\infrastructure\scheduler\InfrastructureMarker.class
+com\example\middleware\feature\audit\application\usecase\AuditUseCase.class
 com\example\middleware\feature\processing\application\port\RetryPort.class
 com\example\middleware\feature\metadata\application\port\MetadataRepository.class
 com\example\middleware\feature\metadata\domain\MappingProfile.class
 com\example\middleware\feature\processing\domain\transformation\DataTypeTransformer.class
 com\example\middleware\feature\orchestration\application\stage\impl\MappingStage.class
+com\example\middleware\feature\orchestration\application\stage\impl\AuditStage.class
 com\example\middleware\feature\processing\domain\event\RawEvent.class
 com\example\middleware\feature\orchestration\application\StageResult.class
 com\example\middleware\feature\delivery\application\registry\DeliveryPluginRegistry.class
@@ -74,6 +76,7 @@ com\example\middleware\feature\metadata\domain\ProfileVersion.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalPayload.class
 com\example\middleware\infrastructure\kafka\InfrastructureMarker.class
 com\example\middleware\feature\audit\api\AuditController.class
+com\example\middleware\feature\audit\application\usecase\DefaultAuditUseCase.class
 com\example\middleware\feature\delivery\infrastructure\storage\FileStorage.class
 com\example\middleware\feature\audit\application\port\AuditPort.class
 com\example\middleware\feature\audit\infrastructure\repository\AuditRepository.class
