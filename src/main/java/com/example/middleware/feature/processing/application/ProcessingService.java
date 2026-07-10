@@ -9,8 +9,10 @@ import com.example.middleware.feature.processing.domain.exception.DuplicateEvent
 import com.example.middleware.feature.orchestration.application.Pipeline;
 import com.example.middleware.feature.orchestration.application.PipelineContext;
 import com.example.middleware.feature.orchestration.application.StageResult;
+import com.example.middleware.feature.orchestration.application.builder.PipelineContextBuilder;
 import com.example.middleware.feature.orchestration.domain.Execution;
 import com.example.middleware.shared.enums.PipelineStatus;
+import com.example.middleware.feature.orchestration.application.factory.ExecutionFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +23,16 @@ public class ProcessingService implements ReceiveEventUseCase {
 	private final Pipeline pipeline;
     private final MappingContextBuilder mappingContextBuilder;
     private final AuditPort auditPort;
-	
-	
+	private final ExecutionFactory executionFactory;
+	private final PipelineContextBuilder pipelineContextBuilder;
     public ProcessingService(
 	    MappingContextBuilder mappingContextBuilder,
 	    AuditPort auditPort,
-	  
-	Pipeline pipeline) {
-
+	  ExecutionFactory executionFactory,
+	Pipeline pipeline,
+PipelineContextBuilder pipelineContextBuilder) {
+	this.pipelineContextBuilder = pipelineContextBuilder;
+this.executionFactory = executionFactory;
 	this.mappingContextBuilder = mappingContextBuilder;
 	this.auditPort = auditPort;
 	
@@ -60,19 +64,22 @@ public class ProcessingService implements ReceiveEventUseCase {
 		    request
 	    );
 		Execution execution =
-        new Execution(eventId);
+        executionFactory.create(eventId);
 
-PipelineContext pipelineContext =
-        new PipelineContext();
 
-pipelineContext.setRawEvent(event);
+
+
 MappingContext mappingContext =
         mappingContextBuilder.build("PROFILE_1");
 System.out.println(
     mappingContext.getRule("HQ_Price_Master")
 );
-pipelineContext.setMappingContext(mappingContext);pipelineContext.setExecution(execution);
-
+PipelineContext pipelineContext =
+        pipelineContextBuilder.build(
+                event,
+                mappingContext,
+                execution
+        );
 StageResult result = pipeline.execute(pipelineContext);
 if (result != StageResult.SUCCESS) {
     return ResponseEntity.internalServerError()
