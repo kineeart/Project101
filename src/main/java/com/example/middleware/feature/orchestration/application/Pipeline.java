@@ -21,27 +21,31 @@ public class Pipeline {
             execution.start();
         }
 
-        for (PipelineStage stage : stages) {
+      for (PipelineStage stage : stages) {
 
-            StageResult result = stage.execute(context);
+    if (execution != null) {
+        execution.enterStage(stage.name());
+    }
 
-            if (execution != null) {
-                execution.addStep(
-                        stage.name(),
-                        result,
-                        null
-                );
-            }
+    StageResult result = stage.execute(context);
 
-            if (result != StageResult.SUCCESS) {
+    if (execution != null) {
+        execution.addStep(
+                stage.name(),
+                result,
+                null
+        );
+    }
 
-                if (execution != null) {
-                    execution.fail();
-                }
+    if (result != StageResult.SUCCESS) {
 
-                return result;
-            }
+        if (execution != null) {
+            execution.fail();
         }
+
+        return result;
+    }
+}
 
         if (execution != null) {
             execution.complete();

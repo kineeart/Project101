@@ -3,11 +3,13 @@ package com.example.middleware.feature.orchestration.domain;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.time.Duration;
 import com.example.middleware.feature.orchestration.application.StageResult;
 
 public class Execution {
+private String currentStage;
 
+private String errorMessage;
     private String executionId;
 
     private ExecutionStatus status;
@@ -65,6 +67,27 @@ public class Execution {
     public void setFinishedAt(Instant finishedAt) {
         this.finishedAt = finishedAt;
     }
+
+    public String getCurrentStage() {
+    return currentStage;
+}
+
+public void setCurrentStage(String currentStage) {
+    this.currentStage = currentStage;
+}
+
+public String getErrorMessage() {
+    return errorMessage;
+}
+
+public void setErrorMessage(String errorMessage) {
+    this.errorMessage = errorMessage;
+}
+
+public void enterStage(String stageName) {
+    this.currentStage = stageName;
+}
+
 	public void start() {
     this.status = ExecutionStatus.RUNNING;
     this.startedAt = Instant.now();
@@ -74,7 +97,12 @@ public void complete() {
     this.finishedAt = Instant.now();
 }
 public void fail() {
+    fail(null);
+}
+
+public void fail(String errorMessage) {
     this.status = ExecutionStatus.FAILED;
+    this.errorMessage = errorMessage;
     this.finishedAt = Instant.now();
 }
 public void stop() {
@@ -94,5 +122,17 @@ public void addStep(
                     Instant.now()
             )
     );
+}
+public Duration getDuration() {
+
+    if (startedAt == null) {
+        return Duration.ZERO;
+    }
+
+    if (finishedAt == null) {
+        return Duration.between(startedAt, Instant.now());
+    }
+
+    return Duration.between(startedAt, finishedAt);
 }
 }

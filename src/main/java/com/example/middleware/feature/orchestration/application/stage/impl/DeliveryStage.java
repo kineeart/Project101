@@ -26,7 +26,6 @@ public class DeliveryStage implements PipelineStage {
 
     @Override
     public StageResult execute(PipelineContext context) {
-        System.out.println("=== DeliveryStage ===");
         return deliveryUseCase.deliver(context);
     }
 }
