@@ -6,6 +6,7 @@ import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 import com.example.middleware.feature.metadata.application.MetadataService;
+import com.example.middleware.feature.metadata.application.resolver.ProfileResolver;
 import com.example.middleware.feature.metadata.domain.EventMetadata;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
 
@@ -13,9 +14,15 @@ import com.example.middleware.feature.processing.domain.event.RawEvent;
 public class DefaultEventFactory implements EventFactory {
 
     private final MetadataService metadataService;
+    private final ProfileResolver profileResolver;
 
-    public DefaultEventFactory(MetadataService metadataService) {
+    // SỬA TẠI ĐÂY: Thêm thân hàm và gán giá trị cho các thuộc tính final
+    public DefaultEventFactory(
+        MetadataService metadataService,
+        ProfileResolver profileResolver
+    ) {
         this.metadataService = metadataService;
+        this.profileResolver = profileResolver;
     }
 
     @Override
@@ -24,13 +31,15 @@ public class DefaultEventFactory implements EventFactory {
         String eventId = Objects.toString(request.get("eventId"), null);
 
         // Lấy dữ liệu metadata trực tiếp khi hàm create() được gọi
-        EventMetadata metadata =
-metadataService.resolveEventMetadata("PROFILE_1");
+        String profileId = profileResolver.resolve(request);
+
+        EventMetadata metadata = metadataService.resolveEventMetadata(profileId);        
+        
         return new RawEvent(
-        eventId,
-        metadata.getProfileId(),
-        metadata.getSourceSystem(),
-        request
-);
+            eventId,
+            metadata.getProfileId(),
+            metadata.getSourceSystem(),
+            request
+        );
     }
 }
