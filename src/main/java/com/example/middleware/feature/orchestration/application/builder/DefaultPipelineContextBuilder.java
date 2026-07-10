@@ -23,16 +23,14 @@ public DefaultPipelineContextBuilder(
     this.mappingContextBuilder = mappingContextBuilder;
 }
     @Override
-    public PipelineContext build(
-            RawEvent event,
-            MappingContext mappingContext,
-            Execution execution) {
+public PipelineContext build(
+        RawEvent event) {
 
-        PipelineContext context =
-                new PipelineContext();
+  PipelineContext context = new PipelineContext();
 
-        context.setRawEvent(event);
-        context.setMappingContext(
+context.setRawEvent(event);
+
+context.setMappingContext(
         mappingContextBuilder.build(
                 event.getProfileId()
         )
@@ -44,6 +42,6 @@ context.setExecution(
         )
 );
 
-        return context;
+return context;
     }
 }

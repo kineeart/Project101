@@ -65,22 +65,10 @@ eventId = event.getEventId();
 		    "Validation passed", null);
 
 		
-Execution execution =
-        executionFactory.create(eventId);
 
 
-
-
-MappingContext mappingContext =
-        mappingContextBuilder.build(
-                event.getProfileId()
-        );
 PipelineContext pipelineContext =
-        pipelineContextBuilder.build(
-                event,
-                mappingContext,
-                execution
-        );
+        pipelineContextBuilder.build(event);
 StageResult result = pipeline.execute(pipelineContext);
 if (result != StageResult.SUCCESS) {
     return ResponseEntity.internalServerError()

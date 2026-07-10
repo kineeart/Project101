@@ -8,9 +8,7 @@ import com.example.middleware.feature.processing.domain.event.RawEvent;
 public interface PipelineContextBuilder {
 
     PipelineContext build(
-            RawEvent event,
-            MappingContext mappingContext,
-            Execution execution
-    );
+        RawEvent event
+);
 
 }
