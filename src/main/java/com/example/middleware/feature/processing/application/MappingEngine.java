@@ -29,6 +29,8 @@ public class MappingEngine implements MappingPort {
             RawEvent event,
             MappingContext context) {
 
+        System.out.println("Source Table = " + event.getSourceTable());
+System.out.println("Rule = " + context.getRule(event.getSourceTable()));
         TableRule tableRule =
                 context.getRule(event.getSourceTable());
 

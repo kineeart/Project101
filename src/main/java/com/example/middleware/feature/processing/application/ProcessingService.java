@@ -21,7 +21,7 @@ public class ProcessingService implements ReceiveEventUseCase {
 	private final Pipeline pipeline;
     private final MappingContextBuilder mappingContextBuilder;
     private final AuditPort auditPort;
-
+	
 	
     public ProcessingService(
 	    MappingContextBuilder mappingContextBuilder,
@@ -68,7 +68,9 @@ PipelineContext pipelineContext =
 pipelineContext.setRawEvent(event);
 MappingContext mappingContext =
         mappingContextBuilder.build("PROFILE_1");
-
+System.out.println(
+    mappingContext.getRule("HQ_Price_Master")
+);
 pipelineContext.setMappingContext(mappingContext);pipelineContext.setExecution(execution);
 
 StageResult result = pipeline.execute(pipelineContext);

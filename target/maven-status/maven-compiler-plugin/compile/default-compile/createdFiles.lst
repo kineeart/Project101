@@ -24,7 +24,6 @@ com\example\middleware\feature\orchestration\application\stage\impl\AuditStage.c
 com\example\middleware\feature\processing\domain\event\RawEvent.class
 com\example\middleware\feature\orchestration\application\StageResult.class
 com\example\middleware\feature\delivery\application\registry\DeliveryPluginRegistry.class
-com\example\middleware\feature\metadata\application\port\MetadataPort.class
 com\example\middleware\feature\ingestion\domain\IncomingRequest.class
 com\example\middleware\feature\processing\application\MappingEngine.class
 com\example\middleware\feature\audit\application\port\AuditRepositoryPort.class
@@ -50,7 +49,6 @@ com\example\middleware\feature\orchestration\application\EventOrchestrator.class
 com\example\middleware\feature\processing\domain\context\MappingContext.class
 com\example\middleware\MiddlewareApplication.class
 com\example\middleware\feature\metadata\domain\TableDescriptor.class
-com\example\middleware\feature\metadata\application\MetadataPort.class
 com\example\middleware\feature\audit\domain\ProcessingLog.class
 com\example\middleware\feature\delivery\application\port\DeliveryPlugin.class
 com\example\middleware\feature\monitoring\application\HealthService.class
