@@ -1,6 +1,7 @@
 package com.example.middleware.feature.metadata.application;
 
 import com.example.middleware.feature.metadata.application.port.MetadataRepository;
+import com.example.middleware.feature.metadata.domain.EventMetadata;
 import com.example.middleware.feature.processing.domain.context.MappingContext;
 
 public class MetadataService {
@@ -17,5 +18,12 @@ public MappingContext loadMappingContext(String profileId) {
     metadataRepository.toString();
 
     return new MappingContext();
+}
+public EventMetadata resolveEventMetadata() {
+
+    return new EventMetadata(
+            "PROFILE_1",
+            "HQ_Price_Master"
+    );
 }
 }
