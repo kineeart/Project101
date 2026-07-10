@@ -13,13 +13,16 @@ public class InMemoryMetadataRepository implements MetadataRepository {
     private final Map<String, EventMetadata> metadata = new HashMap<>();
 
     public InMemoryMetadataRepository() {
+        // Chưa load dữ liệu ở đây nữa
+    }
+
+    public void add(EventMetadata eventMetadata) {
+
         metadata.put(
-                "PROFILE_1",
-                new EventMetadata(
-                        "PROFILE_1",
-                        "HQ_Price_Master"
-                )
+                eventMetadata.getProfileId(),
+                eventMetadata
         );
+
     }
 
     @Override
