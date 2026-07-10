@@ -84,10 +84,6 @@ public void setErrorMessage(String errorMessage) {
     this.errorMessage = errorMessage;
 }
 
-public void enterStage(String stageName) {
-    this.currentStage = stageName;
-}
-
 	public void start() {
     this.status = ExecutionStatus.RUNNING;
     this.startedAt = Instant.now();

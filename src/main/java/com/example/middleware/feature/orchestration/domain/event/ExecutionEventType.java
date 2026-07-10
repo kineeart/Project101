@@ -6,7 +6,7 @@ public enum ExecutionEventType {
 
     STAGE_STARTED,
 
-    STAGE_COMPLETED,
+    STAGE_FINISHED,
 
     COMPLETED,
 

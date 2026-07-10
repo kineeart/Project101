@@ -1,5 +1,6 @@
 package com.example.middleware.feature.orchestration.application;
 
+import com.example.middleware.feature.orchestration.application.lifecycle.ExecutionLifecycleManager;
 import com.example.middleware.feature.orchestration.application.stage.PipelineStage;
 import com.example.middleware.feature.orchestration.domain.Execution;
 import org.springframework.stereotype.Service;
@@ -8,30 +9,32 @@ import java.util.List;
 public class Pipeline {
 
     private final List<PipelineStage> stages;
+private final ExecutionLifecycleManager lifecycleManager;
+   
+    public Pipeline(
+        List<PipelineStage> stages,
+        ExecutionLifecycleManager lifecycleManager) {
 
-    public Pipeline(List<PipelineStage> stages) {
-        this.stages = stages;
-    }
-    
+    this.stages = stages;
+    this.lifecycleManager = lifecycleManager;
+}
     public StageResult execute(PipelineContext context) {
 
         Execution execution = context.getExecution();
 
         if (execution != null) {
-            execution.start();
+            lifecycleManager.start(execution);
         }
 
       for (PipelineStage stage : stages) {
 
-    if (execution != null) {
-       execution.stageStarted(stage.name());
-
-    }
+    
 
     StageResult result = stage.execute(context);
 
     if (execution != null) {
-        execution.stageFinished(
+      lifecycleManager.stageFinished(
+        execution,
         stage.name(),
         result,
         null
@@ -41,7 +44,10 @@ public class Pipeline {
     if (result != StageResult.SUCCESS) {
 
         if (execution != null) {
-            execution.fail();
+            lifecycleManager.fail(
+        execution,
+        null
+);
         }
 
         return result;
@@ -49,7 +55,7 @@ public class Pipeline {
 }
 
         if (execution != null) {
-            execution.complete();
+            lifecycleManager.complete(execution);
         }
 
         return StageResult.SUCCESS;
