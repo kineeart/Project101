@@ -4,11 +4,13 @@ import com.example.middleware.feature.delivery.application.usecase.DeliveryUseCa
 import com.example.middleware.feature.orchestration.application.PipelineContext;
 import com.example.middleware.feature.orchestration.application.StageResult;
 import com.example.middleware.feature.orchestration.application.stage.PipelineStage;
+import com.example.middleware.feature.orchestration.application.stage.StageOrders;
+
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
-@Order(300)
+@Order(StageOrders.DELIVERY)
 public class DeliveryStage implements PipelineStage {
 
     private final DeliveryUseCase deliveryUseCase;
