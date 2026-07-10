@@ -46,6 +46,8 @@ D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\meta
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\infrastructure\repository\InMemoryMetadataRepository.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\monitoring\application\HealthService.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\monitoring\application\MetricsService.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\orchestration\application\assembler\DefaultResponseAssembler.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\orchestration\application\assembler\ResponseAssembler.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\orchestration\application\builder\DefaultPipelineContextBuilder.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\orchestration\application\builder\PipelineContextBuilder.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\orchestration\application\EventOrchestrator.java

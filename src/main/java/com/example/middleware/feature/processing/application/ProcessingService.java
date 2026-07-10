@@ -15,17 +15,19 @@ import com.example.middleware.shared.enums.PipelineStatus;
 import com.example.middleware.feature.orchestration.application.factory.ExecutionFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import com.example.middleware.feature.orchestration.application.assembler.ResponseAssembler;
 import java.util.Map;
 
 @Service
 public class ProcessingService implements ReceiveEventUseCase {
+	private final ResponseAssembler responseAssembler;
 	private final Pipeline pipeline;
     private final MappingContextBuilder mappingContextBuilder;
     private final AuditPort auditPort;
 	private final ExecutionFactory executionFactory;
 	private final PipelineContextBuilder pipelineContextBuilder;
     public ProcessingService(
+		ResponseAssembler responseAssembler,
 	    MappingContextBuilder mappingContextBuilder,
 	    AuditPort auditPort,
 	  ExecutionFactory executionFactory,
@@ -35,7 +37,7 @@ PipelineContextBuilder pipelineContextBuilder) {
 this.executionFactory = executionFactory;
 	this.mappingContextBuilder = mappingContextBuilder;
 	this.auditPort = auditPort;
-	
+	this.responseAssembler = responseAssembler;
 	this.pipeline = pipeline;
     }
 
@@ -71,9 +73,7 @@ this.executionFactory = executionFactory;
 
 MappingContext mappingContext =
         mappingContextBuilder.build("PROFILE_1");
-System.out.println(
-    mappingContext.getRule("HQ_Price_Master")
-);
+
 PipelineContext pipelineContext =
         pipelineContextBuilder.build(
                 event,
@@ -86,29 +86,12 @@ if (result != StageResult.SUCCESS) {
             .body("Pipeline execution failed.");
 }
 
-TransformedEvent transformed =
-        pipelineContext.getTransformedEvent();
-	    auditPort.log(eventId, PipelineStatus.TRANSFORMED,
-		    "Transformation completed", null);
 
-	    if (transformed.getPayload() == null
-		    || transformed.getPayload().isEmpty()) {
-		return ResponseEntity.badRequest()
-			.body("No data after mapping.");
-	    }
 
-	    String filePath = pipelineContext.getFilePath();
 
-	    auditPort.log(eventId, PipelineStatus.WRITTEN,
-		    "CSV created", filePath);
+	   
 
-	    return ResponseEntity.ok(
-		    Map.of(
-			    "status", "SUCCESS",
-			    "eventId", eventId,
-			    "filePath", filePath
-		    )
-	    );
+	    return responseAssembler.success(pipelineContext);
 
 	} 
 	catch (DuplicateEventException e) {
@@ -134,4 +117,5 @@ TransformedEvent transformed =
 		    .body(e.getMessage());
 	}
     }
+	
 }
