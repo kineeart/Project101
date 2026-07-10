@@ -15,7 +15,7 @@ public DefaultMappingContextBuilder(
     @Override
     public MappingContext build(String profileId) {
 metadataService.toString();
-        return new MappingContext();
+        return metadataService.loadMappingContext(profileId);
 
     }
 
