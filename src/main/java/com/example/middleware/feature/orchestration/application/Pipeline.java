@@ -24,17 +24,18 @@ public class Pipeline {
       for (PipelineStage stage : stages) {
 
     if (execution != null) {
-        execution.enterStage(stage.name());
+       execution.stageStarted(stage.name());
+
     }
 
     StageResult result = stage.execute(context);
 
     if (execution != null) {
-        execution.addStep(
-                stage.name(),
-                result,
-                null
-        );
+        execution.stageFinished(
+        stage.name(),
+        result,
+        null
+);
     }
 
     if (result != StageResult.SUCCESS) {

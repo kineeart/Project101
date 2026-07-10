@@ -135,4 +135,14 @@ public Duration getDuration() {
 
     return Duration.between(startedAt, finishedAt);
 }
+public void stageStarted(String stageName) {
+    this.currentStage = stageName;
+}
+public void stageFinished(
+        String stageName,
+        StageResult result,
+        String detail
+) {
+    addStep(stageName, result, detail);
+}
 }
