@@ -1,6 +1,7 @@
 package com.example.middleware.feature.processing.application;
 import com.example.middleware.feature.audit.application.port.AuditPort;
 import com.example.middleware.feature.ingestion.application.ReceiveEventUseCase;
+import com.example.middleware.feature.metadata.application.builder.MappingContextBuilder;
 import com.example.middleware.feature.processing.domain.context.MappingContext;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
@@ -18,17 +19,17 @@ import java.util.Map;
 @Service
 public class ProcessingService implements ReceiveEventUseCase {
 	private final Pipeline pipeline;
-    private final MappingContext context;
+    private final MappingContextBuilder mappingContextBuilder;
     private final AuditPort auditPort;
 
 	
     public ProcessingService(
-	    MappingContext context,
+	    MappingContextBuilder mappingContextBuilder,
 	    AuditPort auditPort,
 	  
 	Pipeline pipeline) {
 
-	this.context = context;
+	this.mappingContextBuilder = mappingContextBuilder;
 	this.auditPort = auditPort;
 	
 	this.pipeline = pipeline;
@@ -65,8 +66,10 @@ PipelineContext pipelineContext =
         new PipelineContext();
 
 pipelineContext.setRawEvent(event);
-pipelineContext.setMappingContext(context);
-pipelineContext.setExecution(execution);
+MappingContext mappingContext =
+        mappingContextBuilder.build("PROFILE_1");
+
+pipelineContext.setMappingContext(mappingContext);pipelineContext.setExecution(execution);
 
 StageResult result = pipeline.execute(pipelineContext);
 if (result != StageResult.SUCCESS) {
