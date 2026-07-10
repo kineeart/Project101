@@ -13,6 +13,7 @@ import com.example.middleware.feature.orchestration.application.builder.Pipeline
 import com.example.middleware.feature.orchestration.domain.Execution;
 import com.example.middleware.shared.enums.PipelineStatus;
 import com.example.middleware.feature.orchestration.application.factory.ExecutionFactory;
+import com.example.middleware.feature.ingestion.application.factory.EventFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.example.middleware.feature.orchestration.application.assembler.ResponseAssembler;
@@ -26,12 +27,14 @@ public class ProcessingService implements ReceiveEventUseCase {
     private final AuditPort auditPort;
 	private final ExecutionFactory executionFactory;
 	private final PipelineContextBuilder pipelineContextBuilder;
+	private final EventFactory eventFactory;
     public ProcessingService(
 		ResponseAssembler responseAssembler,
 	    MappingContextBuilder mappingContextBuilder,
 	    AuditPort auditPort,
 	  ExecutionFactory executionFactory,
 	Pipeline pipeline,
+	EventFactory eventFactory,
 PipelineContextBuilder pipelineContextBuilder) {
 	this.pipelineContextBuilder = pipelineContextBuilder;
 this.executionFactory = executionFactory;
@@ -39,6 +42,7 @@ this.executionFactory = executionFactory;
 	this.auditPort = auditPort;
 	this.responseAssembler = responseAssembler;
 	this.pipeline = pipeline;
+	this.eventFactory = eventFactory;
     }
 
 	@Override
@@ -49,8 +53,9 @@ this.executionFactory = executionFactory;
 	try {
 	    
 
-	    eventId = request.get("eventId").toString();
+RawEvent event = eventFactory.create(request);
 
+eventId = event.getEventId();
 	    auditPort.log(eventId, PipelineStatus.RECEIVED,
 		    "Webhook received", null);
 
@@ -59,21 +64,17 @@ this.executionFactory = executionFactory;
 	    auditPort.log(eventId, PipelineStatus.VALIDATED,
 		    "Validation passed", null);
 
-	    RawEvent event = new RawEvent(
-		    eventId,
-		    "PROFILE_1",
-		    "HQ_Price_Master",
-		    request
-	    );
-		Execution execution =
+		
+Execution execution =
         executionFactory.create(eventId);
 
 
 
 
 MappingContext mappingContext =
-        mappingContextBuilder.build("PROFILE_1");
-
+        mappingContextBuilder.build(
+                event.getProfileId()
+        );
 PipelineContext pipelineContext =
         pipelineContextBuilder.build(
                 event,
