@@ -20,8 +20,7 @@ public MappingContext loadMappingContext(String profileId) {
 
     return new MappingContext();
 }
-public EventMetadata resolveEventMetadata() {
+public EventMetadata resolveEventMetadata(String profileId) {
 
-   return metadataRepository.getEventMetadata();
-}
+return metadataRepository.getEventMetadata(profileId);}
 }

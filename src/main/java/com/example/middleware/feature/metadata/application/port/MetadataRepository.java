@@ -4,6 +4,6 @@ import com.example.middleware.feature.metadata.domain.EventMetadata;
 
 public interface MetadataRepository {
 
-    EventMetadata getEventMetadata();
+    EventMetadata getEventMetadata(String profileId);
 
 }

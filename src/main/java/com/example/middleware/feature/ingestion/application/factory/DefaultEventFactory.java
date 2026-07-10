@@ -25,8 +25,7 @@ public class DefaultEventFactory implements EventFactory {
 
         // Lấy dữ liệu metadata trực tiếp khi hàm create() được gọi
         EventMetadata metadata =
-        metadataService.resolveEventMetadata();
-
+metadataService.resolveEventMetadata("PROFILE_1");
         return new RawEvent(
         eventId,
         metadata.getProfileId(),
