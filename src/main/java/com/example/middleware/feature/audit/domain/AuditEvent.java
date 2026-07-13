@@ -6,9 +6,9 @@ public class AuditEvent {
 
     private final String executionId;
 
-    private final String step;
+    private final String activity;
 
-    private final String outcome;
+    private final String eventType;
 
     private final String message;
 
@@ -16,14 +16,14 @@ public class AuditEvent {
 
     public AuditEvent(
             String executionId,
-            String step,
-            String outcome,
+            String activity,
+            String eventType,
             String message,
             Instant timestamp) {
 
         this.executionId = executionId;
-        this.step = step;
-        this.outcome = outcome;
+        this.activity = activity;
+        this.eventType = eventType;
         this.message = message;
         this.timestamp = timestamp;
     }
@@ -32,12 +32,12 @@ public class AuditEvent {
         return executionId;
     }
 
-    public String getStep() {
-        return step;
+    public String getactivity() {
+        return activity;
     }
 
-    public String getOutcome() {
-        return outcome;
+    public String geteventType() {
+        return eventType;
     }
 
     public String getMessage() {
@@ -47,4 +47,5 @@ public class AuditEvent {
     public Instant getTimestamp() {
         return timestamp;
     }
+    
 }

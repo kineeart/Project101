@@ -45,7 +45,6 @@ com\example\middleware\feature\processing\domain\canonical\CanonicalEvent.class
 com\example\middleware\feature\metadata\domain\ColumnDescriptor.class
 com\example\middleware\infrastructure\kafka\InfrastructureMarker.class
 com\example\middleware\feature\audit\application\usecase\DefaultAuditUseCase.class
-com\example\middleware\feature\audit\infrastructure\repository\AuditRepository.class
 com\example\middleware\feature\orchestration\application\stage\PipelineStage.class
 com\example\middleware\shared\enums\PipelineStatus.class
 com\example\middleware\feature\processing\application\port\RetryPort$RetryAction.class
@@ -91,7 +90,6 @@ com\example\middleware\feature\orchestration\domain\event\ExecutionEventType.cla
 com\example\middleware\feature\processing\domain\validation\RequiredValidator.class
 com\example\middleware\feature\delivery\application\usecase\DeliveryUseCase.class
 com\example\middleware\feature\processing\infrastructure\idempotency\IdempotencyValidator.class
-com\example\middleware\feature\orchestration\domain\event\ExecutionLifecycleManager.class
 com\example\middleware\feature\ingestion\application\RequestValidationService.class
 com\example\middleware\feature\orchestration\application\Pipeline.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalRecord.class
