@@ -6,4 +6,6 @@ public interface MetadataRepository {
 
     EventMetadata getEventMetadata(String profileId);
 
+    void save(EventMetadata metadata);
+
 }

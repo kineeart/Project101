@@ -38,7 +38,7 @@ public class DefaultEventFactory implements EventFactory {
         return new RawEvent(
             eventId,
             metadata.getProfileId(),
-            metadata.getSourceSystem(),
+           "HQ_Price_Master",
             request
         );
     }

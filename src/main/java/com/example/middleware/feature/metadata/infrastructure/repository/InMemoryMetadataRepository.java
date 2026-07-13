@@ -16,17 +16,19 @@ public class InMemoryMetadataRepository implements MetadataRepository {
         // Chưa load dữ liệu ở đây nữa
     }
 
-    public void add(EventMetadata eventMetadata) {
+    @Override
+public void save(EventMetadata eventMetadata) {
 
-        metadata.put(
-                eventMetadata.getProfileId(),
-                eventMetadata
-        );
+    metadata.put(
+            eventMetadata.getProfileId(),
+            eventMetadata
+    );
 
-    }
+}
 
     @Override
     public EventMetadata getEventMetadata(String profileId) {
         return metadata.get(profileId);
     }
+    
 }
