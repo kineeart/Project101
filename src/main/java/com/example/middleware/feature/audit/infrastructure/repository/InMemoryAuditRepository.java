@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class AuditRepository implements AuditRepositoryPort {
+public class InMemoryAuditRepository implements AuditRepositoryPort {
 
     private final List<ProcessingLog> processingLogs = new ArrayList<>();
     private final List<ErrorLog> errorLogs = new ArrayList<>();
