@@ -81,6 +81,7 @@ D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\pers
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\persistence\domain\PersistenceProvider.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\persistence\infrastructure\config\PersistenceProperties.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\persistence\infrastructure\memory\MemoryPersistenceProvider.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\persistence\infrastructure\registry\PersistenceRegistry.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\processing\application\MappingEngine.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\processing\application\port\IdempotencyPort.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\processing\application\port\MappingPort.java

@@ -6,33 +6,28 @@ import org.springframework.stereotype.Service;
 
 import com.example.middleware.feature.persistence.domain.PersistenceProvider;
 import com.example.middleware.feature.persistence.infrastructure.config.PersistenceProperties;
+import com.example.middleware.feature.persistence.infrastructure.registry.PersistenceRegistry;
 
 @Service
 public class PersistenceProviderFactory {
 
-    private final List<PersistenceProvider> providers;
+    private final PersistenceRegistry registry;
 
     private final PersistenceProperties properties;
 
     public PersistenceProviderFactory(
-            List<PersistenceProvider> providers,
-            PersistenceProperties properties) {
+        PersistenceRegistry registry,
+        PersistenceProperties properties) {
 
-        this.providers = providers;
-        this.properties = properties;
-    }
+    this.registry = registry;
+    this.properties = properties;
+}
 
     public PersistenceProvider getProvider() {
 
-        String selected = properties.provider();
-
-        return providers.stream()
-                .filter(p -> p.getProviderName().equals(selected))
-                .findFirst()
-                .orElseThrow(() ->
-        new IllegalArgumentException(
-                "Unknown persistence provider: " + selected
-        ));
-    }
+    return registry.get(
+            properties.provider()
+    );
+}
 
 }
