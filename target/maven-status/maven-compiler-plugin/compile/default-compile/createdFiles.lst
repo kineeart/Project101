@@ -22,13 +22,11 @@ com\example\middleware\feature\processing\application\ProcessingService.class
 com\example\middleware\infrastructure\filesystem\InfrastructureMarker.class
 com\example\middleware\feature\delivery\application\usecase\DefaultDeliveryUseCase.class
 com\example\middleware\feature\processing\application\usecase\DefaultMappingUseCase.class
-com\example\middleware\feature\audit\infrastructure\listener\AuditListener.class
 com\example\middleware\feature\delivery\infrastructure\plugin\DataLoaderMntPlugin.class
 com\example\middleware\feature\orchestration\application\assembler\ResponseAssembler.class
 com\example\middleware\core\dlq\DeadLetterEvent.class
 com\example\middleware\feature\metadata\application\port\MetadataLoader.class
 com\example\middleware\feature\delivery\application\port\DeliveryPort.class
-com\example\middleware\feature\ingestion\api\MappingController.class
 com\example\middleware\feature\metadata\infrastructure\repository\InMemoryMetadataRepository.class
 com\example\middleware\MiddlewareApplication.class
 com\example\middleware\feature\metadata\domain\TableDescriptor.class
@@ -53,6 +51,7 @@ com\example\middleware\feature\processing\application\port\IdempotencyPort.class
 com\example\middleware\feature\processing\domain\event\TransformedEvent.class
 com\example\middleware\feature\metadata\application\resolver\ProfileResolver.class
 com\example\middleware\feature\processing\application\usecase\ValidationUseCase.class
+com\example\middleware\feature\audit\application\AuditService$1.class
 com\example\middleware\feature\metadata\domain\EventMetadata.class
 com\example\middleware\infrastructure\persistence\InfrastructureMarker.class
 com\example\middleware\feature\orchestration\domain\event\ExecutionEvent.class

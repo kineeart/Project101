@@ -15,8 +15,8 @@ public class AuditListener {
         this.auditService = auditService;
     }
 
-    @EventListener
-    public void onExecutionEvent(ExecutionEvent event) {
-        auditService.recordExecutionEvent(event);
-    }
+  @EventListener
+public void onExecutionEvent(ExecutionEvent event) {
+    auditEventPort.record(event);
+}
 }

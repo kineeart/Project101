@@ -24,7 +24,7 @@ D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\deli
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\infrastructure\plugin\DataLoaderMntPlugin.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\infrastructure\storage\FileStorage.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\infrastructure\storage\RetryableStorage.java
-D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\api\MappingController.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\api\PriceEventController.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\factory\DefaultEventFactory.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\factory\EventFactory.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\ReceiveEventUseCase.java
