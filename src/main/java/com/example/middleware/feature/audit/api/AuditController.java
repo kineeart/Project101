@@ -31,7 +31,7 @@ public class AuditController {
 public List<ErrorLog> getErrorLogs() {
     return auditPort.getErrorLogs();
 }
-@GetMapping("/events")
+@GetMapping("/price-events")
 public List<AuditEvent> getAuditEvents() {
     return auditPort.getAuditEvents();
 }

@@ -16,37 +16,26 @@ public class MetadataService {
         this.metadataRepository = metadataRepository;
     }
 
-    public MappingContext loadMappingContext(String profileId) {
-        // Khởi tạo đối tượng ngữ cảnh mapping
-        MappingContext context = new MappingContext();
+ public MappingContext loadMappingContext(String profileId) {
 
-        // Khởi tạo cấu hình luật cho bảng (TableRule)
-        TableRule rule = new TableRule();
-        rule.setSourceTable("HQ_Price_Master");
-        rule.setTargetTable("MNT");
+    EventMetadata metadata =
+            metadataRepository.getEventMetadata(profileId);
 
-        // Cấu hình luật cho field thứ nhất: itemId -> ITEM
-        FieldRule item = new FieldRule();
-        item.setSourceField("itemId");
-        item.setTargetField("ITEM");
+    MappingContext context = new MappingContext();
 
-        // Cấu hình luật cho field thứ hai: price -> PRICE
-        FieldRule price = new FieldRule();
-        price.setSourceField("price");
-        price.setTargetField("PRICE");
-
-        // Thêm các luật trường dữ liệu vào luật bảng
-        rule.getFieldRules().add(item);
-        rule.getFieldRules().add(price);
-
-        // Đăng ký luật bảng vào MappingContext dựa trên tên bảng nguồn
-        context.addRule(
-            rule.getSourceTable(),
-            rule
-        );
-
+    if (metadata == null) {
         return context;
     }
+
+    for (TableRule rule : metadata.getTableRules()) {
+        context.addRule(
+                rule.getSourceTable(),
+                rule
+        );
+    }
+
+    return context;
+}
 
     public EventMetadata resolveEventMetadata(String profileId) {
         return metadataRepository.getEventMetadata(profileId);

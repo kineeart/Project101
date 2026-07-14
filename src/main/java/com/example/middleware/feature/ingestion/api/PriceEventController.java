@@ -8,17 +8,18 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
-public class MappingController {
+public class PriceEventController {
 
     private final EventOrchestrator orchestrator;
 
-    public MappingController(EventOrchestrator orchestrator) {
+    public PriceEventController(EventOrchestrator orchestrator) {
         this.orchestrator = orchestrator;
     }
 
     @PostMapping("/events")
     public ResponseEntity<?> receive(
             @RequestBody Map<String, Object> request) {
+
         return orchestrator.orchestrate(request);
     }
 }

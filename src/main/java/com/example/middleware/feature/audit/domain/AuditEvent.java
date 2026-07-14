@@ -8,7 +8,7 @@ public class AuditEvent {
 
     private final String activity;
 
-    private final String eventType;
+    private final String outcome;
 
     private final String message;
 
@@ -17,13 +17,13 @@ public class AuditEvent {
     public AuditEvent(
             String executionId,
             String activity,
-            String eventType,
+            String outcome,
             String message,
             Instant timestamp) {
 
         this.executionId = executionId;
         this.activity = activity;
-        this.eventType = eventType;
+        this.outcome = outcome;
         this.message = message;
         this.timestamp = timestamp;
     }
@@ -36,8 +36,8 @@ public class AuditEvent {
         return activity;
     }
 
-    public String geteventType() {
-        return eventType;
+    public String getOutcome() {
+        return outcome;
     }
 
     public String getMessage() {
