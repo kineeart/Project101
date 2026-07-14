@@ -4,16 +4,17 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import com.example.middleware.feature.audit.application.AuditService;
+import com.example.middleware.feature.audit.application.port.AuditEventPort;
 import com.example.middleware.feature.orchestration.domain.event.ExecutionEvent;
 
 @Component
 public class AuditListener {
 
-    private final AuditService auditService;
+    private final AuditEventPort auditEventPort;
 
-    public AuditListener(AuditService auditService) {
-        this.auditService = auditService;
-    }
+public AuditListener(AuditEventPort auditEventPort) {
+    this.auditEventPort = auditEventPort;
+}
 
   @EventListener
 public void onExecutionEvent(ExecutionEvent event) {
