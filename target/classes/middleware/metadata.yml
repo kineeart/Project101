@@ -1,0 +1,25 @@
+middleware:
+
+  metadata:
+
+    profiles:
+
+      - profileId: PROFILE_1
+        sourceSystem: HQ
+
+        tables:
+
+          - sourceTable: HQ_Price_Master
+            targetTable: MNT
+
+            fields:
+
+              - sourceField: itemId
+                targetField: ITEM
+                dataType: STRING
+                required: true
+
+              - sourceField: BASE_PRICE
+                targetField: PRICE
+                dataType: NUMBER
+                required: true

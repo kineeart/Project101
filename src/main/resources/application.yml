@@ -1,3 +1,5 @@
+persistence:
+  provider: mysql
 spring:
   config:
-    import: classpath:middleware.yml
+    import: classpath:middleware/metadata.yml

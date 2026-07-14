@@ -1,5 +1,6 @@
 package com.example.middleware.feature.metadata.infrastructure.loader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -9,6 +10,10 @@ import com.example.middleware.feature.metadata.application.port.MetadataReposito
 import com.example.middleware.feature.metadata.domain.EventMetadata;
 import com.example.middleware.feature.metadata.domain.FieldRule;
 import com.example.middleware.feature.metadata.domain.TableRule;
+import com.example.middleware.feature.metadata.infrastructure.config.MetadataProperties;
+import com.example.middleware.feature.metadata.infrastructure.config.MetadataProfileProperties;
+import com.example.middleware.feature.metadata.infrastructure.config.TableRuleProperties;
+import com.example.middleware.feature.metadata.infrastructure.config.FieldRuleProperties;
 
 import jakarta.annotation.PostConstruct;
 
@@ -17,41 +22,75 @@ public class InMemoryMetadataLoader
         implements MetadataLoader {
 
     private final MetadataRepository repository;
+private final MetadataProperties metadataProperties;
 
-    public InMemoryMetadataLoader(
-            MetadataRepository repository) {
+public InMemoryMetadataLoader(
+        MetadataRepository repository,
+        MetadataProperties metadataProperties) {
 
-        this.repository = repository;
-    }
+    this.repository = repository;
+    this.metadataProperties = metadataProperties;
+}
 
     @PostConstruct
-    @Override
-    public void load() {
-System.out.println("Metadata loaded.");
-       TableRule tableRule = new TableRule();
-tableRule.setSourceTable("HQ_Price_Master");
-tableRule.setTargetTable("MNT");
+@Override
+public void load() {
 
-FieldRule itemRule = new FieldRule();
-itemRule.setSourceField("itemId");
-itemRule.setTargetField("ITEM");
+    System.out.println("Loading metadata...");
 
-FieldRule priceRule = new FieldRule();
-priceRule.setSourceField("price");
-priceRule.setTargetField("PRICE");
+    for (MetadataProfileProperties profile :
+            metadataProperties.getProfiles()) {
 
-tableRule.getFieldRules().add(itemRule);
-tableRule.getFieldRules().add(priceRule);
+        List<TableRule> tableRules = new ArrayList<>();
 
-EventMetadata profile =
-        new EventMetadata(
-                "PROFILE_1",
-                "HQ",
-                List.of(tableRule)
-        );
+        for (TableRuleProperties table :
+                profile.getTables()) {
 
-repository.save(profile);
+            TableRule tableRule = new TableRule();
 
+            tableRule.setSourceTable(
+                    table.getSourceTable());
+
+            tableRule.setTargetTable(
+                    table.getTargetTable());
+
+            for (FieldRuleProperties field :
+                    table.getFields()) {
+
+                FieldRule rule = new FieldRule();
+
+                rule.setSourceField(
+                        field.getSourceField());
+
+                rule.setTargetField(
+                        field.getTargetField());
+
+                rule.setDataType(
+                        field.getDataType());
+
+                rule.setRequired(
+                        field.isRequired());
+
+                rule.setDefaultValue(
+                        field.getDefaultValue());
+
+                tableRule.getFieldRules().add(rule);
+            }
+
+            tableRules.add(tableRule);
+        }
+
+        EventMetadata metadata =
+                new EventMetadata(
+                        profile.getProfileId(),
+                        profile.getSourceSystem(),
+                        tableRules
+                );
+
+        repository.save(metadata);
     }
+
+    System.out.println("Metadata loaded.");
+}
     
 }

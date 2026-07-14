@@ -46,6 +46,10 @@ D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\meta
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\domain\RuleDefinition.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\domain\TableDescriptor.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\domain\TableRule.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\infrastructure\config\FieldRuleProperties.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\infrastructure\config\MetadataProfileProperties.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\infrastructure\config\MetadataProperties.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\infrastructure\config\TableRuleProperties.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\infrastructure\loader\InMemoryMetadataLoader.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\infrastructure\repository\InMemoryMetadataRepository.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\monitoring\application\HealthService.java
