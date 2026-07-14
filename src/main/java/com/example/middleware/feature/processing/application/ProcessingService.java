@@ -83,7 +83,7 @@ if (result != StageResult.SUCCESS) {
 	    return responseAssembler.success(pipelineContext);
 
 	} 
-	catch (DuplicateEventException e) {
+catch (DuplicateEventException e) {
 
     auditPort.log(
             eventId,
@@ -92,19 +92,21 @@ if (result != StageResult.SUCCESS) {
             null
     );
 
-    return ResponseEntity.status(409)
-            .body(e.getMessage());
+    throw e;
 }
-	catch (Exception e) {
+catch (Exception e) {
 
-	    auditPort.log(eventId, PipelineStatus.FAILED,
-		    e.getMessage(), null);
+    auditPort.log(
+            eventId,
+            PipelineStatus.FAILED,
+            e.getMessage(),
+            null
+    );
 
-	    auditPort.error(eventId, e);
+    auditPort.error(eventId, e);
 
-	    return ResponseEntity.internalServerError()
-		    .body(e.getMessage());
-	}
+    throw e;
+}
     }
 	
 }
