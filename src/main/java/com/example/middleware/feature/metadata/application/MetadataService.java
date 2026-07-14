@@ -12,32 +12,55 @@ public class MetadataService {
 
     private final MetadataRepository metadataRepository;
 
-    public MetadataService(MetadataRepository metadataRepository) {
+
+    public MetadataService(
+            MetadataRepository metadataRepository) {
+
         this.metadataRepository = metadataRepository;
     }
 
- public MappingContext loadMappingContext(String profileId) {
 
-    EventMetadata metadata =
-            metadataRepository.getEventMetadata(profileId);
+    public MappingContext loadMappingContext(
+            String profileId) {
 
-    MappingContext context = new MappingContext();
 
-    if (metadata == null) {
+        EventMetadata metadata =
+                metadataRepository
+                        .getEventMetadata(profileId);
+
+
+        if (metadata == null) {
+            throw new RuntimeException(
+                    "Metadata not found: "
+                    + profileId
+            );
+        }
+
+
+        MappingContext context =
+                new MappingContext();
+
+
+        for (TableRule rule :
+                metadata.getTableRules()) {
+
+
+            context.addRule(
+                    rule.getSourceTable(),
+                    rule
+            );
+
+        }
+
+
         return context;
     }
 
-    for (TableRule rule : metadata.getTableRules()) {
-        context.addRule(
-                rule.getSourceTable(),
-                rule
-        );
-    }
 
-    return context;
-}
+    public EventMetadata resolveEventMetadata(
+            String profileId) {
 
-    public EventMetadata resolveEventMetadata(String profileId) {
-        return metadataRepository.getEventMetadata(profileId);
+        return metadataRepository
+                .getEventMetadata(profileId);
     }
 }
