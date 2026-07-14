@@ -44,7 +44,6 @@ com\example\middleware\feature\processing\domain\exception\DuplicateEventExcepti
 com\example\middleware\feature\delivery\infrastructure\formatter\CsvFormatter.class
 com\example\middleware\feature\orchestration\application\event\ExecutionEventPublisher.class
 com\example\middleware\feature\persistence\infrastructure\memory\MemoryPersistenceProvider.class
-com\example\middleware\configuration\MappingContextConfiguration.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalEvent.class
 com\example\middleware\feature\metadata\domain\ColumnDescriptor.class
 com\example\middleware\infrastructure\kafka\InfrastructureMarker.class

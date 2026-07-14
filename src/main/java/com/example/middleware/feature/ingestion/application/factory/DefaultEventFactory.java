@@ -32,9 +32,10 @@ public class DefaultEventFactory implements EventFactory {
 
         // Lấy dữ liệu metadata trực tiếp khi hàm create() được gọi
         String profileId = profileResolver.resolve(request);
+System.out.println("Profile = " + profileId);
 
         EventMetadata metadata = metadataService.resolveEventMetadata(profileId);        
-        
+        System.out.println(metadata);
         return new RawEvent(
             eventId,
             metadata.getProfileId(),

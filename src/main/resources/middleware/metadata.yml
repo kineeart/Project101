@@ -1,25 +1,29 @@
 middleware:
-
   metadata:
-
     profiles:
-
       - profileId: PROFILE_1
         sourceSystem: HQ
-
         tables:
-
           - sourceTable: HQ_Price_Master
             targetTable: MNT
-
             fields:
-
               - sourceField: itemId
                 targetField: ITEM
                 dataType: STRING
                 required: true
 
-              - sourceField: BASE_PRICE
+              - sourceField: price
                 targetField: PRICE
                 dataType: NUMBER
                 required: true
+
+              - sourceField: location
+                targetField: SHOP
+                dataType: STRING
+
+              - sourceField: status
+                targetField: STATUS
+                dataType: NUMBER
+                xref:
+                  "true": "1"
+                  "false": "0"

@@ -1,4 +1,3 @@
-D:\Datapase Project\middleware\src\main\java\com\example\middleware\configuration\MappingContextConfiguration.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\core\dlq\DeadLetterEvent.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\core\dlq\DLQRepository.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\delivery\strategy\OutputWriterStrategy.java

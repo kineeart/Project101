@@ -5,16 +5,20 @@ import java.util.Map;
 public class XrefTransformer {
 
     public Object transform(
-            Object value,
-            Map<String, String> xref) {
+        Object value,
+        Map<String,String> dictionary){
 
-        if (value == null || xref == null) {
-            return value;
-        }
-
-        return xref.getOrDefault(
-                value.toString(),
-                value.toString()
-        );
+    if(value == null){
+        return null;
     }
+
+    if(dictionary == null){
+        return value;
+    }
+
+    return dictionary.getOrDefault(
+            value.toString(),
+            value.toString()
+    );
+}
 }
