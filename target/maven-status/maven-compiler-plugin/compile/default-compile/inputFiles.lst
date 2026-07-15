@@ -30,7 +30,9 @@ D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\inge
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\RequestValidationService.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\domain\IncomingRequest.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\application\port\EventRepositoryPort.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\application\usecase\DefaultGetEventStatusUseCase.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\application\usecase\DefaultReceiveEventUseCase.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\application\usecase\GetEventStatusUseCase.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\application\usecase\ReceiveEventUseCase.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\domain\EventRecord.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\domain\EventStatus.java
