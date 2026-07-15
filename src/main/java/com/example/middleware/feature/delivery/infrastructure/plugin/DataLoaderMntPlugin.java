@@ -3,6 +3,7 @@ package com.example.middleware.feature.delivery.infrastructure.plugin;
 import com.example.middleware.delivery.strategy.OutputWriterStrategy;
 import com.example.middleware.feature.delivery.infrastructure.formatter.CsvFormatter;
 import com.example.middleware.feature.delivery.infrastructure.storage.FileStorage;
+import com.example.middleware.feature.metadata.domain.DeliveryProfile;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
 
 import org.springframework.stereotype.Component;
@@ -30,7 +31,9 @@ public DataLoaderMntPlugin(
     }
 
     @Override
-    public String write(TransformedEvent event) {
+    public String write(
+        TransformedEvent event,
+        DeliveryProfile deliveryProfile) {
 
         if (event == null || event.getPayload() == null) {
             throw new IllegalArgumentException("Invalid event payload");
@@ -40,15 +43,31 @@ public DataLoaderMntPlugin(
 
         lines.add(formatter.formatHeader(event));
         lines.add(formatter.formatRecord(event));
-        lines.add("TRAILER||RECORD_COUNT|1");
+        if (deliveryProfile.isIncludeTrailer()) {
 
+    lines.add(
+            deliveryProfile.getTrailerTemplate()
+    );
+
+}
         String filePath =
-                "D:/Xcenter/inbound/ORACLE_" +
-                        System.currentTimeMillis() +
-                        ".csv";
+        buildFilePath(deliveryProfile);
 
         storage.write(filePath, lines);
 
         return filePath;
     }
+
+
+
+    private String buildFilePath(
+        DeliveryProfile profile) {
+
+    return profile.getOutputFolder()
+            + "/"
+            + profile.getFilePrefix()
+            + System.currentTimeMillis()
+            + "."
+            + profile.getExtension();
+}
 }

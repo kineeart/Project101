@@ -3,11 +3,25 @@ middleware:
     profiles:
       - profileId: PROFILE_1
         sourceSystem: HQ
+        delivery:
+
+          outputFolder: D:/Xcenter/inbound
+
+          filePrefix: ORACLE_
+
+          extension: csv
+
+          delimiter: ","
+
+          includeHeader: true
+
+          includeTrailer: true
+
+          trailerTemplate: "TRAILER||RECORD_COUNT|{count}"
 
         tables:
           - sourceTable: HQ_Price_Master
             targetTable: MNT
-
             fields:
               - sourceField: itemId
                 targetField: ITEM
@@ -25,7 +39,7 @@ middleware:
 
               - sourceField: status
                 targetField: STATUS
-                dataType: STRING
-                xref:
-                  "true": "ACTIVE"
-                  "false": "INACTIVE"
+                dataType: NUMBER
+                xrefDictionary:
+                  "true": "1"
+                  "false": "0"

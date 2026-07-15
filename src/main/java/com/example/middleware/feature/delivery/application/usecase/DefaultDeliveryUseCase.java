@@ -34,7 +34,12 @@ public class DefaultDeliveryUseCase implements DeliveryUseCase {
                 retryPort.execute(
                         eventId,
                         transformed.getPayload(),
-                        () -> deliveryPort.write(transformed)
+                        () -> deliveryPort.write(
+        transformed,
+        context
+                .getMappingContext()
+                .getDeliveryProfile()
+)
                 );
 
         context.setFilePath(filePath);

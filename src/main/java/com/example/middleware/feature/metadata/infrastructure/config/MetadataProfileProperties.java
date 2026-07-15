@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MetadataProfileProperties {
-
+private DeliveryProperties delivery;
     private String profileId;
 
     private String sourceSystem;
@@ -15,7 +15,13 @@ public class MetadataProfileProperties {
     public String getProfileId() {
         return profileId;
     }
+public DeliveryProperties getDelivery() {
+    return delivery;
+}
 
+public void setDelivery(DeliveryProperties delivery) {
+    this.delivery = delivery;
+}
     public void setProfileId(String profileId) {
         this.profileId = profileId;
     }

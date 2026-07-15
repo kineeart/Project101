@@ -7,12 +7,14 @@ import org.springframework.stereotype.Component;
 
 import com.example.middleware.feature.metadata.application.port.MetadataLoader;
 import com.example.middleware.feature.metadata.application.port.MetadataRepository;
+import com.example.middleware.feature.metadata.domain.DeliveryProfile;
 import com.example.middleware.feature.metadata.domain.EventMetadata;
 import com.example.middleware.feature.metadata.domain.FieldRule;
 import com.example.middleware.feature.metadata.domain.TableRule;
 import com.example.middleware.feature.metadata.infrastructure.config.MetadataProperties;
 import com.example.middleware.feature.metadata.infrastructure.config.MetadataProfileProperties;
 import com.example.middleware.feature.metadata.infrastructure.config.TableRuleProperties;
+import com.example.middleware.feature.metadata.infrastructure.config.DeliveryProperties;
 import com.example.middleware.feature.metadata.infrastructure.config.FieldRuleProperties;
 
 import jakarta.annotation.PostConstruct;
@@ -40,7 +42,21 @@ public void load() {
 
     for (MetadataProfileProperties profile :
             metadataProperties.getProfiles()) {
-
+DeliveryProperties delivery = profile.getDelivery();
+if (delivery == null) {
+    throw new IllegalStateException(
+            "Missing delivery configuration for profile: "
+                    + profile.getProfileId());
+}
+DeliveryProfile deliveryProfile = new DeliveryProfile(
+        delivery.getOutputFolder(),
+        delivery.getFilePrefix(),
+        delivery.getExtension(),
+        delivery.getDelimiter(),
+        delivery.isIncludeHeader(),
+        delivery.isIncludeTrailer(),
+        delivery.getTrailerTemplate()
+);
         List<TableRule> tableRules = new ArrayList<>();
 
         for (TableRuleProperties table :
@@ -94,10 +110,11 @@ tableRule.getFieldRules().add(rule);
                 new EventMetadata(
                         profile.getProfileId(),
                         profile.getSourceSystem(),
-                        tableRules
+                        tableRules, deliveryProfile
                 );
 
         repository.save(metadata);
+        
     }
 
     System.out.println("Metadata loaded.");

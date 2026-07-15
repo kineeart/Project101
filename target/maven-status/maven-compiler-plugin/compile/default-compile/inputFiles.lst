@@ -45,6 +45,7 @@ D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\meta
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\domain\RuleDefinition.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\domain\TableDescriptor.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\domain\TableRule.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\infrastructure\config\DeliveryProperties.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\infrastructure\config\FieldRuleProperties.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\infrastructure\config\MetadataProfileProperties.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\infrastructure\config\MetadataProperties.java

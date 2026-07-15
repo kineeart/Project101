@@ -37,7 +37,9 @@ public class MetadataService {
 
         MappingContext context =
                 new MappingContext();
-
+        context.setDeliveryProfile(
+        metadata.getDeliveryProfile()
+);
 
         for (TableRule rule :
                 metadata.getTableRules()) {

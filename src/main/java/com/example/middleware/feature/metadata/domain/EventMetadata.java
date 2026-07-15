@@ -5,18 +5,24 @@ import java.util.List;
 public class EventMetadata {
 
     private final String profileId;
-    private final String sourceSystem;
-    private final List<TableRule> tableRules; // 1. Bổ sung List<TableRule> theo yêu cầu
+
+private final String sourceSystem;
+
+private final List<TableRule> tableRules;
+
+private final DeliveryProfile deliveryProfile;
 
     // 2. Định nghĩa Constructor đúng chuẩn với đầy đủ thuộc tính
     public EventMetadata(
             String profileId, 
             String sourceSystem, 
-            List<TableRule> tableRules) {
+            List<TableRule> tableRules,
+        DeliveryProfile deliveryProfile) {
         
         this.profileId = profileId;
         this.sourceSystem = sourceSystem;
-        this.tableRules = tableRules != null ? List.copyOf(tableRules) : List.of(); // Bảo vệ tính toàn vẹn của danh sách
+        this.tableRules = tableRules != null ? List.copyOf(tableRules) : List.of(); 
+        this.deliveryProfile = deliveryProfile;// Bảo vệ tính toàn vẹn của danh sách
     }
 
     // 3. Chỉ giữ lại các hàm Getter, không dùng Setter giả
@@ -31,4 +37,7 @@ public class EventMetadata {
     public List<TableRule> getTableRules() {
         return tableRules;
     }
+    public DeliveryProfile getDeliveryProfile() {
+    return deliveryProfile;
+}
 }
