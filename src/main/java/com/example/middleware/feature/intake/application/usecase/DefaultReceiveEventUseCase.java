@@ -3,25 +3,23 @@ package com.example.middleware.feature.intake.application.usecase;
 import org.springframework.stereotype.Service;
 
 import com.example.middleware.feature.intake.application.port.EventRepositoryPort;
-import com.example.middleware.feature.intake.application.port.ProcessingDispatcher;
+import com.example.middleware.feature.intake.application.registry.ProcessingDispatcherRegistry;
 import com.example.middleware.feature.intake.domain.EventRecord;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
-import com.example.middleware.feature.ingestion.application.ProcessEventUseCase; // Đã thêm import cho ProcessEventUseCase
 
 @Service
 public class DefaultReceiveEventUseCase implements ReceiveEventUseCase {
 
     private final EventRepositoryPort repository;
-    private final ProcessingDispatcher dispatcher;
+    private final ProcessingDispatcherRegistry registry; // Đổi tên thuộc tính từ dispatcher thành registry
 
-    // Inject cả repository và processEventUseCase qua Constructor
+    // Sửa tham số và gán giá trị chính xác cho registry trong Constructor
     public DefaultReceiveEventUseCase(
-        EventRepositoryPort repository,
-        ProcessingDispatcher dispatcher) {
-
-    this.repository = repository;
-    this.dispatcher = dispatcher;
-}
+            EventRepositoryPort repository,
+            ProcessingDispatcherRegistry registry) {
+        this.repository = repository;
+        this.registry = registry;
+    }
 
     @Override
     public EventRecord receive(RawEvent event) {
@@ -31,10 +29,10 @@ public class DefaultReceiveEventUseCase implements ReceiveEventUseCase {
         // Lưu bản ghi ban đầu (Trạng thái RECEIVED)
         repository.save(record);
         
-        // Kích hoạt luồng xử lý đồng bộ (hoặc bất đồng bộ tùy cấu hình)
-        dispatcher.dispatch(
-        record.getEventId()
-);
+        // Kích hoạt luồng xử lý thông qua registry.defaultDispatcher()
+        registry
+            .defaultDispatcher()
+            .dispatch(record.getEventId());
 
         return record;
     }

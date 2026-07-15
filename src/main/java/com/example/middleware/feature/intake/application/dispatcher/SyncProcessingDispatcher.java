@@ -23,4 +23,8 @@ public class SyncProcessingDispatcher
         processEventUseCase.process(eventId);
 
     }
+    @Override
+public String type() {
+    return "SYNC";
+}
 }
