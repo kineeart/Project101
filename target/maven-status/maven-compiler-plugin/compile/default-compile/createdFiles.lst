@@ -10,6 +10,7 @@ com\example\middleware\feature\persistence\application\PersistenceProviderFactor
 com\example\middleware\feature\metadata\domain\RuleDefinition.class
 com\example\middleware\feature\processing\domain\exception\ValidationException.class
 com\example\middleware\feature\metadata\application\resolver\DefaultProfileResolver.class
+com\example\middleware\feature\intake\application\usecase\ReceiveEventUseCase.class
 com\example\middleware\feature\delivery\application\service\DeliveryService.class
 com\example\middleware\feature\processing\application\port\MappingPort.class
 com\example\middleware\feature\persistence\infrastructure\jdbc\JdbcPersistenceProvider.class
@@ -31,6 +32,7 @@ com\example\middleware\feature\delivery\application\usecase\DefaultDeliveryUseCa
 com\example\middleware\feature\processing\application\usecase\DefaultMappingUseCase.class
 com\example\middleware\feature\audit\infrastructure\listener\AuditListener.class
 com\example\middleware\feature\delivery\infrastructure\plugin\DataLoaderMntPlugin.class
+com\example\middleware\feature\ingestion\application\ProcessEventUseCase.class
 com\example\middleware\feature\orchestration\application\assembler\ResponseAssembler.class
 com\example\middleware\core\dlq\DeadLetterEvent.class
 com\example\middleware\feature\metadata\application\port\MetadataLoader.class
@@ -48,6 +50,7 @@ com\example\middleware\feature\orchestration\application\lifecycle\ExecutionLife
 com\example\middleware\feature\audit\domain\ErrorLog.class
 com\example\middleware\delivery\strategy\OutputWriterStrategy.class
 com\example\middleware\feature\metadata\domain\TableRule.class
+com\example\middleware\feature\intake\application\usecase\DefaultGetEventStatusUseCase.class
 com\example\middleware\feature\processing\domain\exception\DuplicateEventException.class
 com\example\middleware\feature\delivery\infrastructure\formatter\CsvFormatter.class
 com\example\middleware\feature\orchestration\application\event\ExecutionEventPublisher.class
@@ -107,6 +110,7 @@ com\example\middleware\feature\orchestration\application\EventOrchestrator.class
 com\example\middleware\feature\intake\domain\EventStatus.class
 com\example\middleware\feature\processing\domain\context\MappingContext.class
 com\example\middleware\feature\ingestion\application\factory\DefaultEventFactory.class
+com\example\middleware\feature\intake\application\usecase\DefaultReceiveEventUseCase.class
 com\example\middleware\feature\delivery\application\port\DeliveryPlugin.class
 com\example\middleware\feature\transformation\application\TransformationRuntime.class
 com\example\middleware\feature\transformation\infrastructure\BooleanFieldTransformer.class
@@ -137,5 +141,6 @@ com\example\middleware\feature\audit\api\AuditController.class
 com\example\middleware\feature\delivery\infrastructure\storage\FileStorage.class
 com\example\middleware\feature\metadata\application\builder\DefaultMappingContextBuilder.class
 com\example\middleware\feature\audit\application\port\AuditPort.class
+com\example\middleware\feature\intake\application\usecase\GetEventStatusUseCase.class
 com\example\middleware\feature\orchestration\application\builder\DefaultPipelineContextBuilder.class
 com\example\middleware\infrastructure\database\InfrastructureMarker.class

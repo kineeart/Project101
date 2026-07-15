@@ -26,6 +26,7 @@ D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\deli
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\api\PriceEventController.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\factory\DefaultEventFactory.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\factory\EventFactory.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\ProcessEventUseCase.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\ReceiveEventUseCase.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\RequestValidationService.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\domain\IncomingRequest.java

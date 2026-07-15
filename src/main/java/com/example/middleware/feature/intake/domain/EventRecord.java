@@ -2,6 +2,8 @@ package com.example.middleware.feature.intake.domain;
 
 import java.time.LocalDateTime;
 
+import com.example.middleware.feature.processing.domain.event.RawEvent;
+
 public class EventRecord {
 
     private final String eventId;
@@ -15,18 +17,23 @@ public class EventRecord {
     private final LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
+    private final RawEvent rawEvent;
 
     public EventRecord(
-            String eventId,
-            String profileId) {
+        RawEvent rawEvent) {
 
-        this.eventId = eventId;
-        this.profileId = profileId;
-        this.status = EventStatus.RECEIVED;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
+    this.rawEvent = rawEvent;
+
+    this.eventId = rawEvent.getEventId();
+
+    this.profileId = rawEvent.getProfileId();
+
+    this.status = EventStatus.RECEIVED;
+
+    this.createdAt = LocalDateTime.now();
+
+    this.updatedAt = LocalDateTime.now();
+}
 
 
     public void markProcessing() {
@@ -35,7 +42,9 @@ public class EventRecord {
         this.updatedAt = LocalDateTime.now();
     }
 
-
+    public RawEvent getRawEvent() {
+    return rawEvent;
+}
     public void complete(
             String filePath) {
 

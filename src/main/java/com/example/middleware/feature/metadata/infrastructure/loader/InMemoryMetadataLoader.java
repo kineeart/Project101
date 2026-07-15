@@ -74,9 +74,9 @@ public class InMemoryMetadataLoader
                                         System.out.println(field.getDataType());
                                         System.out.println(field.isRequired());
                                         System.out.println(field.getDefaultValue());
-                                        System.out.println(field.getXref()); // hoặc getXrefDictionary()
+                                        System.out.println(field. getXrefDictionary()); // hoặc getXrefDictionary()
                                         FieldRule rule = new FieldRule();
-                                        rule.setXrefDictionary(field.getXref());
+                                        rule.setXrefDictionary(field. getXrefDictionary());
 
                                         tableRule.getFieldRules().add(rule);
                                         rule.setSourceField(
@@ -95,7 +95,7 @@ public class InMemoryMetadataLoader
                                                         field.getDefaultValue());
 
                                         rule.setXrefDictionary(
-                                                        field.getXref());
+                                                        field. getXrefDictionary());
                                         System.out.println(rule.getXrefDictionary());
                                 }
 
