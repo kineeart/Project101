@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.middleware.feature.metadata.application.port.MetadataLoader;
 import com.example.middleware.feature.metadata.application.port.MetadataRepository;
+import com.example.middleware.feature.metadata.application.validation.DeliveryMetadataValidator;
 import com.example.middleware.feature.metadata.domain.DeliveryProfile;
 import com.example.middleware.feature.metadata.domain.EventMetadata;
 import com.example.middleware.feature.metadata.domain.FieldRule;
@@ -21,103 +22,96 @@ import jakarta.annotation.PostConstruct;
 
 @Component
 public class InMemoryMetadataLoader
-        implements MetadataLoader {
+                implements MetadataLoader {
+        private final DeliveryMetadataValidator deliveryValidator;
+        private final MetadataRepository repository;
+        private final MetadataProperties metadataProperties;
 
-    private final MetadataRepository repository;
-private final MetadataProperties metadataProperties;
+        public InMemoryMetadataLoader(
+                        MetadataRepository repository,
+                        MetadataProperties metadataProperties,
+                        DeliveryMetadataValidator deliveryValidator) {
 
-public InMemoryMetadataLoader(
-        MetadataRepository repository,
-        MetadataProperties metadataProperties) {
-
-    this.repository = repository;
-    this.metadataProperties = metadataProperties;
-}
-
-    @PostConstruct
-@Override
-public void load() {
-
-    System.out.println("Loading metadata...");
-
-    for (MetadataProfileProperties profile :
-            metadataProperties.getProfiles()) {
-DeliveryProperties delivery = profile.getDelivery();
-if (delivery == null) {
-    throw new IllegalStateException(
-            "Missing delivery configuration for profile: "
-                    + profile.getProfileId());
-}
-DeliveryProfile deliveryProfile = new DeliveryProfile(
-        delivery.getOutputFolder(),
-        delivery.getFilePrefix(),
-        delivery.getExtension(),
-        delivery.getDelimiter(),
-        delivery.isIncludeHeader(),
-        delivery.isIncludeTrailer(),
-        delivery.getTrailerTemplate()
-);
-        List<TableRule> tableRules = new ArrayList<>();
-
-        for (TableRuleProperties table :
-                profile.getTables()) {
-
-            TableRule tableRule = new TableRule();
-
-            tableRule.setSourceTable(
-                    table.getSourceTable());
-
-            tableRule.setTargetTable(
-                    table.getTargetTable());
-
-            for (FieldRuleProperties field :
-                    table.getFields()) {
-System.out.println("-----");
-System.out.println(field.getSourceField());
-System.out.println(field.getTargetField());
-System.out.println(field.getDataType());
-System.out.println(field.isRequired());
-System.out.println(field.getDefaultValue());
-System.out.println(field.getXref()); // hoặc getXrefDictionary()
-                FieldRule rule = new FieldRule();
-rule.setXrefDictionary(field.getXref());
-
-tableRule.getFieldRules().add(rule);
-                rule.setSourceField(
-                        field.getSourceField());
-
-                rule.setTargetField(
-                        field.getTargetField());
-
-                rule.setDataType(
-                        field.getDataType());
-
-                rule.setRequired(
-                        field.isRequired());
-
-                rule.setDefaultValue(
-                        field.getDefaultValue());
-
-                rule.setXrefDictionary(
-        field.getXref()
-);System.out.println(rule.getXrefDictionary());
-            }
-
-            tableRules.add(tableRule);
+                this.repository = repository;
+                this.metadataProperties = metadataProperties;
+                this.deliveryValidator = deliveryValidator;
         }
 
-        EventMetadata metadata =
-                new EventMetadata(
-                        profile.getProfileId(),
-                        profile.getSourceSystem(),
-                        tableRules, deliveryProfile
-                );
+        @PostConstruct
+        @Override
+        public void load() {
 
-        repository.save(metadata);
-        
-    }
+                System.out.println("Loading metadata...");
 
-    System.out.println("Metadata loaded.");
-}
-    
+                for (MetadataProfileProperties profile : metadataProperties.getProfiles()) {
+                        DeliveryProperties delivery = profile.getDelivery();
+
+                        deliveryValidator.validate(delivery);
+                        DeliveryProfile deliveryProfile = new DeliveryProfile(
+                                        delivery.getOutputFolder(),
+                                        delivery.getFilePrefix(),
+                                        delivery.getExtension(),
+                                        delivery.getDelimiter(),
+                                        delivery.isIncludeHeader(),
+                                        delivery.isIncludeTrailer(),
+                                        delivery.getTrailerTemplate());
+                        List<TableRule> tableRules = new ArrayList<>();
+
+                        for (TableRuleProperties table : profile.getTables()) {
+
+                                TableRule tableRule = new TableRule();
+
+                                tableRule.setSourceTable(
+                                                table.getSourceTable());
+
+                                tableRule.setTargetTable(
+                                                table.getTargetTable());
+
+                                for (FieldRuleProperties field : table.getFields()) {
+                                        System.out.println("-----");
+                                        System.out.println(field.getSourceField());
+                                        System.out.println(field.getTargetField());
+                                        System.out.println(field.getDataType());
+                                        System.out.println(field.isRequired());
+                                        System.out.println(field.getDefaultValue());
+                                        System.out.println(field.getXref()); // hoặc getXrefDictionary()
+                                        FieldRule rule = new FieldRule();
+                                        rule.setXrefDictionary(field.getXref());
+
+                                        tableRule.getFieldRules().add(rule);
+                                        rule.setSourceField(
+                                                        field.getSourceField());
+
+                                        rule.setTargetField(
+                                                        field.getTargetField());
+
+                                        rule.setDataType(
+                                                        field.getDataType());
+
+                                        rule.setRequired(
+                                                        field.isRequired());
+
+                                        rule.setDefaultValue(
+                                                        field.getDefaultValue());
+
+                                        rule.setXrefDictionary(
+                                                        field.getXref());
+                                        System.out.println(rule.getXrefDictionary());
+                                }
+
+                                tableRules.add(tableRule);
+                        }
+
+                        EventMetadata metadata = new EventMetadata(
+                                        profile.getProfileId(),
+                                        profile.getSourceSystem(),
+                                        tableRules, deliveryProfile);
+
+                        repository.save(metadata);
+
+                }
+
+                System.out.println("Metadata loaded.");
+        }
+
 }

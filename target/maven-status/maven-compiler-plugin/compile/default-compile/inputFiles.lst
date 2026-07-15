@@ -36,6 +36,8 @@ D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\meta
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\application\port\MetadataRepository.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\application\resolver\DefaultProfileResolver.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\application\resolver\ProfileResolver.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\application\validation\DeliveryMetadataValidator.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\application\validation\MetadataValidator.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\domain\ColumnDescriptor.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\domain\DeliveryProfile.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\domain\EventMetadata.java
