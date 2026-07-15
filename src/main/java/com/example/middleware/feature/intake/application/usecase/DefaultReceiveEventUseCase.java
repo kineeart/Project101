@@ -3,6 +3,7 @@ package com.example.middleware.feature.intake.application.usecase;
 import org.springframework.stereotype.Service;
 
 import com.example.middleware.feature.intake.application.port.EventRepositoryPort;
+import com.example.middleware.feature.intake.application.port.ProcessingDispatcher;
 import com.example.middleware.feature.intake.domain.EventRecord;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
 import com.example.middleware.feature.ingestion.application.ProcessEventUseCase; // Đã thêm import cho ProcessEventUseCase
@@ -11,15 +12,16 @@ import com.example.middleware.feature.ingestion.application.ProcessEventUseCase;
 public class DefaultReceiveEventUseCase implements ReceiveEventUseCase {
 
     private final EventRepositoryPort repository;
-    private final ProcessEventUseCase processEventUseCase; // Thêm khai báo dependency
+    private final ProcessingDispatcher dispatcher;
 
     // Inject cả repository và processEventUseCase qua Constructor
     public DefaultReceiveEventUseCase(
-            EventRepositoryPort repository,
-            ProcessEventUseCase processEventUseCase) {
-        this.repository = repository;
-        this.processEventUseCase = processEventUseCase;
-    }
+        EventRepositoryPort repository,
+        ProcessingDispatcher dispatcher) {
+
+    this.repository = repository;
+    this.dispatcher = dispatcher;
+}
 
     @Override
     public EventRecord receive(RawEvent event) {
@@ -30,7 +32,9 @@ public class DefaultReceiveEventUseCase implements ReceiveEventUseCase {
         repository.save(record);
         
         // Kích hoạt luồng xử lý đồng bộ (hoặc bất đồng bộ tùy cấu hình)
-        processEventUseCase.process(record.getEventId());
+        dispatcher.dispatch(
+        record.getEventId()
+);
 
         return record;
     }
