@@ -56,9 +56,17 @@ public void load() {
 
             for (FieldRuleProperties field :
                     table.getFields()) {
-
+System.out.println("-----");
+System.out.println(field.getSourceField());
+System.out.println(field.getTargetField());
+System.out.println(field.getDataType());
+System.out.println(field.isRequired());
+System.out.println(field.getDefaultValue());
+System.out.println(field.getXref()); // hoặc getXrefDictionary()
                 FieldRule rule = new FieldRule();
+rule.setXrefDictionary(field.getXref());
 
+tableRule.getFieldRules().add(rule);
                 rule.setSourceField(
                         field.getSourceField());
 
@@ -74,7 +82,9 @@ public void load() {
                 rule.setDefaultValue(
                         field.getDefaultValue());
 
-                tableRule.getFieldRules().add(rule);
+                rule.setXrefDictionary(
+        field.getXref()
+);System.out.println(rule.getXrefDictionary());
             }
 
             tableRules.add(tableRule);

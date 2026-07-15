@@ -1,25 +1,36 @@
 package com.example.middleware.feature.transformation.infrastructure;
 
+import com.example.middleware.feature.metadata.domain.FieldRule;
+import com.example.middleware.feature.transformation.domain.TransformationStep;
 import org.springframework.stereotype.Component;
 
-import com.example.middleware.feature.transformation.domain.FieldTransformer;
-
 @Component
-public class NumberFieldTransformer
-        implements FieldTransformer {
+public class NumberFieldTransformer implements TransformationStep {
 
     @Override
-    public String type() {
-        return "NUMBER";
+    public int order() {
+        return 20; // Chạy sau Xref
     }
 
     @Override
-    public Object transform(Object value) {
+    public boolean supports(FieldRule rule) {
+        return rule != null && "NUMBER".equals(rule.getDataType());
+    }
 
+    @Override
+    public Object transform(FieldRule rule, Object value) {
         if (value == null) {
             return null;
         }
-
-        return Double.valueOf(value.toString());
+        
+        // Xử lý ép kiểu dữ liệu từ chuỗi (do Xref dịch ra) hoặc số thô thành kiểu Number chuẩn
+        if (value instanceof Number) {
+            return value;
+        }
+        try {
+            return Double.parseDouble(value.toString());
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Cannot transform value to Number: " + value);
+        }
     }
 }

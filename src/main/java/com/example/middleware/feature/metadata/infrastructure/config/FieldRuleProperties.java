@@ -1,7 +1,7 @@
 package com.example.middleware.feature.metadata.infrastructure.config;
-
+import java.util.Map;
 public class FieldRuleProperties {
-
+private Map<String, String> xref;
     private String sourceField;
 
     private String targetField;
@@ -15,7 +15,13 @@ public class FieldRuleProperties {
     public String getSourceField() {
         return sourceField;
     }
+public Map<String, String> getXref() {
+    return xref;
+}
 
+public void setXref(Map<String, String> xref) {
+    this.xref = xref;
+}
     public void setSourceField(String sourceField) {
         this.sourceField = sourceField;
     }
@@ -51,4 +57,5 @@ public class FieldRuleProperties {
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
     }
+    
 }

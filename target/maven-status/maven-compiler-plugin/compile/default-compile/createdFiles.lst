@@ -3,6 +3,8 @@ com\example\middleware\feature\audit\application\AuditService.class
 com\example\middleware\feature\metadata\application\builder\MappingContextBuilder.class
 com\example\middleware\feature\orchestration\application\assembler\DefaultResponseAssembler.class
 com\example\middleware\feature\orchestration\application\stage\StageOrders.class
+com\example\middleware\feature\transformation\domain\FieldTransformer.class
+com\example\middleware\feature\transformation\domain\TransformationStep.class
 com\example\middleware\feature\orchestration\application\stage\impl\ValidationStage.class
 com\example\middleware\feature\persistence\application\PersistenceProviderFactory.class
 com\example\middleware\feature\metadata\domain\RuleDefinition.class
@@ -14,6 +16,7 @@ com\example\middleware\feature\persistence\infrastructure\jdbc\JdbcPersistencePr
 com\example\middleware\feature\persistence\infrastructure\registry\PersistenceRegistry.class
 com\example\middleware\feature\monitoring\application\MetricsService.class
 com\example\middleware\infrastructure\scheduler\InfrastructureMarker.class
+com\example\middleware\feature\validation\application\ValidationRuntime.class
 com\example\middleware\feature\orchestration\infrastructure\event\SpringExecutionEventPublisher.class
 com\example\middleware\feature\metadata\domain\MappingProfile.class
 com\example\middleware\feature\orchestration\application\stage\impl\MappingStage.class
@@ -30,8 +33,10 @@ com\example\middleware\feature\delivery\infrastructure\plugin\DataLoaderMntPlugi
 com\example\middleware\feature\orchestration\application\assembler\ResponseAssembler.class
 com\example\middleware\core\dlq\DeadLetterEvent.class
 com\example\middleware\feature\metadata\application\port\MetadataLoader.class
+com\example\middleware\feature\validation\infrastructure\BooleanFieldValidator.class
 com\example\middleware\feature\delivery\application\port\DeliveryPort.class
 com\example\middleware\feature\audit\application\port\AuditEventPort.class
+com\example\middleware\feature\transformation\infrastructure\NumberFieldTransformer.class
 com\example\middleware\feature\metadata\infrastructure\repository\InMemoryMetadataRepository.class
 com\example\middleware\MiddlewareApplication.class
 com\example\middleware\feature\metadata\domain\TableDescriptor.class
@@ -44,6 +49,7 @@ com\example\middleware\feature\processing\domain\exception\DuplicateEventExcepti
 com\example\middleware\feature\delivery\infrastructure\formatter\CsvFormatter.class
 com\example\middleware\feature\orchestration\application\event\ExecutionEventPublisher.class
 com\example\middleware\feature\persistence\infrastructure\memory\MemoryPersistenceProvider.class
+com\example\middleware\feature\transformation\infrastructure\XrefTransformationStep.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalEvent.class
 com\example\middleware\feature\metadata\domain\ColumnDescriptor.class
 com\example\middleware\infrastructure\kafka\InfrastructureMarker.class
@@ -57,6 +63,7 @@ com\example\middleware\shared\enums\PipelineStatus.class
 com\example\middleware\feature\processing\application\port\RetryPort$RetryAction.class
 com\example\middleware\feature\audit\infrastructure\repository\InMemoryAuditRepository.class
 com\example\middleware\feature\delivery\infrastructure\storage\RetryableStorage.class
+com\example\middleware\feature\validation\infrastructure\NumberFieldValidator.class
 com\example\middleware\feature\processing\application\port\IdempotencyPort.class
 com\example\middleware\feature\processing\domain\event\TransformedEvent.class
 com\example\middleware\feature\metadata\infrastructure\config\MetadataProfileProperties.class
@@ -84,6 +91,7 @@ com\example\middleware\feature\orchestration\domain\Execution.class
 com\example\middleware\feature\processing\application\usecase\DefaultValidationUseCase.class
 com\example\middleware\feature\metadata\domain\DeliveryProfile.class
 com\example\middleware\feature\orchestration\application\PipelineContext.class
+com\example\middleware\feature\transformation\infrastructure\StringFieldTransformer.class
 com\example\middleware\feature\ingestion\application\ReceiveEventUseCase.class
 com\example\middleware\feature\metadata\infrastructure\loader\InMemoryMetadataLoader.class
 com\example\middleware\feature\orchestration\domain\ExecutionStep.class
@@ -94,12 +102,15 @@ com\example\middleware\feature\orchestration\application\EventOrchestrator.class
 com\example\middleware\feature\processing\domain\context\MappingContext.class
 com\example\middleware\feature\ingestion\application\factory\DefaultEventFactory.class
 com\example\middleware\feature\delivery\application\port\DeliveryPlugin.class
+com\example\middleware\feature\transformation\application\TransformationRuntime.class
+com\example\middleware\feature\transformation\infrastructure\BooleanFieldTransformer.class
 com\example\middleware\feature\monitoring\application\HealthService.class
 com\example\middleware\feature\processing\application\usecase\MappingUseCase.class
 com\example\middleware\feature\processing\domain\transformation\XrefTransformer.class
 com\example\middleware\feature\orchestration\domain\ExecutionStatus.class
 com\example\middleware\feature\metadata\domain\FieldRule.class
 com\example\middleware\feature\orchestration\application\builder\PipelineContextBuilder.class
+com\example\middleware\feature\validation\infrastructure\StringFieldValidator.class
 com\example\middleware\feature\metadata\infrastructure\config\MetadataProperties.class
 com\example\middleware\feature\orchestration\application\EventOrchestratorPort.class
 com\example\middleware\feature\orchestration\domain\event\ExecutionEventType.class
@@ -107,6 +118,7 @@ com\example\middleware\feature\processing\domain\validation\RequiredValidator.cl
 com\example\middleware\feature\delivery\application\usecase\DeliveryUseCase.class
 com\example\middleware\feature\processing\infrastructure\idempotency\IdempotencyValidator.class
 com\example\middleware\feature\ingestion\application\RequestValidationService.class
+com\example\middleware\feature\validation\domain\FieldValidator.class
 com\example\middleware\feature\orchestration\application\Pipeline.class
 com\example\middleware\feature\ingestion\api\PriceEventController.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalRecord.class

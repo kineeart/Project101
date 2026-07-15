@@ -3,9 +3,11 @@ middleware:
     profiles:
       - profileId: PROFILE_1
         sourceSystem: HQ
+
         tables:
           - sourceTable: HQ_Price_Master
             targetTable: MNT
+
             fields:
               - sourceField: itemId
                 targetField: ITEM
@@ -23,7 +25,7 @@ middleware:
 
               - sourceField: status
                 targetField: STATUS
-                dataType: NUMBER
+                dataType: STRING
                 xref:
-                  "true": "1"
-                  "false": "0"
+                  "true": "ACTIVE"
+                  "false": "INACTIVE"

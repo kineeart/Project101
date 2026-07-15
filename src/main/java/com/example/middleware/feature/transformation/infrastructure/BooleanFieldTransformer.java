@@ -1,30 +1,28 @@
 package com.example.middleware.feature.transformation.infrastructure;
 
+import com.example.middleware.feature.metadata.domain.FieldRule;
+import com.example.middleware.feature.transformation.domain.TransformationStep;
 import org.springframework.stereotype.Component;
 
-import com.example.middleware.feature.transformation.domain.FieldTransformer;
-
 @Component
-public class BooleanFieldTransformer
-        implements FieldTransformer {
+public class BooleanFieldTransformer implements TransformationStep {
 
     @Override
-    public String type() {
-        return "BOOLEAN";
+    public int order() {
+        return 20;
     }
 
     @Override
-    public Object transform(Object value) {
+    public boolean supports(FieldRule rule) {
+        return rule != null && "BOOLEAN".equals(rule.getDataType());
+    }
 
+    @Override
+    public Object transform(FieldRule rule, Object value) {
         if (value == null) {
             return null;
         }
-
-        if (value instanceof Boolean) {
-            return value;
-        }
-
-        return Boolean.valueOf(value.toString());
+        String strVal = value.toString().trim().toLowerCase();
+        return "true".equals(strVal) || "1".equals(strVal);
     }
-
 }

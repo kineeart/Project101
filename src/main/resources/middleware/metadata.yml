@@ -24,6 +24,6 @@ middleware:
               - sourceField: status
                 targetField: STATUS
                 dataType: NUMBER
-                xref:
+                xrefDictionary:
                   "true": "1"
                   "false": "0"
