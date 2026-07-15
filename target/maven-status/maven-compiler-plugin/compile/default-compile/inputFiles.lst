@@ -29,6 +29,12 @@ D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\inge
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\ReceiveEventUseCase.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\RequestValidationService.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\domain\IncomingRequest.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\application\port\EventRepositoryPort.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\application\usecase\DefaultReceiveEventUseCase.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\application\usecase\ReceiveEventUseCase.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\domain\EventRecord.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\domain\EventStatus.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\intake\infrastructure\repository\InMemoryEventRepository.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\application\builder\DefaultMappingContextBuilder.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\application\builder\MappingContextBuilder.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\metadata\application\MetadataService.java

@@ -22,6 +22,7 @@ com\example\middleware\feature\metadata\domain\MappingProfile.class
 com\example\middleware\feature\orchestration\application\stage\impl\MappingStage.class
 com\example\middleware\feature\orchestration\application\stage\impl\AuditStage.class
 com\example\middleware\feature\processing\domain\event\RawEvent.class
+com\example\middleware\feature\intake\domain\EventRecord.class
 com\example\middleware\feature\processing\application\MappingEngine.class
 com\example\middleware\feature\audit\application\port\AuditRepositoryPort.class
 com\example\middleware\feature\processing\application\ProcessingService.class
@@ -36,6 +37,8 @@ com\example\middleware\feature\metadata\application\port\MetadataLoader.class
 com\example\middleware\feature\validation\infrastructure\BooleanFieldValidator.class
 com\example\middleware\feature\delivery\application\port\DeliveryPort.class
 com\example\middleware\feature\audit\application\port\AuditEventPort.class
+com\example\middleware\feature\intake\infrastructure\repository\InMemoryEventRepository.class
+com\example\middleware\feature\metadata\application\validation\DeliveryMetadataValidator.class
 com\example\middleware\feature\transformation\infrastructure\NumberFieldTransformer.class
 com\example\middleware\feature\metadata\infrastructure\repository\InMemoryMetadataRepository.class
 com\example\middleware\MiddlewareApplication.class
@@ -52,6 +55,7 @@ com\example\middleware\feature\persistence\infrastructure\memory\MemoryPersisten
 com\example\middleware\feature\transformation\infrastructure\XrefTransformationStep.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalEvent.class
 com\example\middleware\feature\metadata\domain\ColumnDescriptor.class
+com\example\middleware\feature\intake\application\port\EventRepositoryPort.class
 com\example\middleware\infrastructure\kafka\InfrastructureMarker.class
 com\example\middleware\feature\audit\application\usecase\DefaultAuditUseCase.class
 com\example\middleware\feature\persistence\domain\PersistenceProvider.class
@@ -100,6 +104,7 @@ com\example\middleware\feature\metadata\infrastructure\config\TableRulePropertie
 com\example\middleware\feature\security\infrastructure\ApiKeyFilter.class
 com\example\middleware\core\dlq\DLQRepository.class
 com\example\middleware\feature\orchestration\application\EventOrchestrator.class
+com\example\middleware\feature\intake\domain\EventStatus.class
 com\example\middleware\feature\processing\domain\context\MappingContext.class
 com\example\middleware\feature\ingestion\application\factory\DefaultEventFactory.class
 com\example\middleware\feature\delivery\application\port\DeliveryPlugin.class
@@ -124,6 +129,7 @@ com\example\middleware\feature\orchestration\application\Pipeline.class
 com\example\middleware\feature\ingestion\api\PriceEventController.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalRecord.class
 com\example\middleware\feature\metadata\application\MetadataService.class
+com\example\middleware\feature\metadata\application\validation\MetadataValidator.class
 com\example\middleware\feature\metadata\domain\ProfileVersion.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalPayload.class
 com\example\middleware\feature\ingestion\application\factory\EventFactory.class
