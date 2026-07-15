@@ -41,8 +41,14 @@ public DataLoaderMntPlugin(
 
         List<String> lines = new ArrayList<>();
 
-        lines.add(formatter.formatHeader(event));
-        lines.add(formatter.formatRecord(event));
+        lines.add(formatter.formatHeader(
+        event,
+        deliveryProfile
+));
+        lines.add(formatter.formatRecord(
+        event,
+        deliveryProfile
+));
         if (deliveryProfile.isIncludeTrailer()) {
 
     lines.add(
