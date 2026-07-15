@@ -1,5 +1,6 @@
 com\example\middleware\feature\orchestration\application\lifecycle\DefaultExecutionLifecycleManager.class
 com\example\middleware\feature\audit\application\AuditService.class
+com\example\middleware\feature\intake\application\port\ProcessingDispatcher.class
 com\example\middleware\feature\metadata\application\builder\MappingContextBuilder.class
 com\example\middleware\feature\orchestration\application\assembler\DefaultResponseAssembler.class
 com\example\middleware\feature\orchestration\application\stage\StageOrders.class
@@ -42,6 +43,7 @@ com\example\middleware\feature\audit\application\port\AuditEventPort.class
 com\example\middleware\feature\intake\infrastructure\repository\InMemoryEventRepository.class
 com\example\middleware\feature\metadata\application\validation\DeliveryMetadataValidator.class
 com\example\middleware\feature\transformation\infrastructure\NumberFieldTransformer.class
+com\example\middleware\feature\delivery\infrastructure\builder\CsvFileBuilder.class
 com\example\middleware\feature\metadata\infrastructure\repository\InMemoryMetadataRepository.class
 com\example\middleware\MiddlewareApplication.class
 com\example\middleware\feature\metadata\domain\TableDescriptor.class
@@ -103,6 +105,8 @@ com\example\middleware\feature\transformation\infrastructure\StringFieldTransfor
 com\example\middleware\feature\ingestion\application\ReceiveEventUseCase.class
 com\example\middleware\feature\metadata\infrastructure\loader\InMemoryMetadataLoader.class
 com\example\middleware\feature\orchestration\domain\ExecutionStep.class
+com\example\middleware\feature\delivery\domain\OutputFile.class
+com\example\middleware\feature\intake\application\registry\ProcessingDispatcherRegistry.class
 com\example\middleware\feature\metadata\infrastructure\config\TableRuleProperties.class
 com\example\middleware\feature\security\infrastructure\ApiKeyFilter.class
 com\example\middleware\core\dlq\DLQRepository.class
@@ -123,6 +127,7 @@ com\example\middleware\feature\orchestration\application\builder\PipelineContext
 com\example\middleware\feature\validation\infrastructure\StringFieldValidator.class
 com\example\middleware\feature\metadata\infrastructure\config\MetadataProperties.class
 com\example\middleware\feature\orchestration\application\EventOrchestratorPort.class
+com\example\middleware\feature\intake\application\dispatcher\SyncProcessingDispatcher.class
 com\example\middleware\feature\orchestration\domain\event\ExecutionEventType.class
 com\example\middleware\feature\processing\domain\validation\RequiredValidator.class
 com\example\middleware\feature\delivery\application\usecase\DeliveryUseCase.class
@@ -138,6 +143,7 @@ com\example\middleware\feature\metadata\domain\ProfileVersion.class
 com\example\middleware\feature\processing\domain\canonical\CanonicalPayload.class
 com\example\middleware\feature\ingestion\application\factory\EventFactory.class
 com\example\middleware\feature\audit\api\AuditController.class
+com\example\middleware\feature\delivery\application\port\FileBuilder.class
 com\example\middleware\feature\delivery\infrastructure\storage\FileStorage.class
 com\example\middleware\feature\metadata\application\builder\DefaultMappingContextBuilder.class
 com\example\middleware\feature\audit\application\port\AuditPort.class
