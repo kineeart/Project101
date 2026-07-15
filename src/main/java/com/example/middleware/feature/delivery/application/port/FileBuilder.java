@@ -8,7 +8,7 @@ public interface FileBuilder {
 
     OutputFile build(
             TransformedEvent event,
-            DeliveryProfile profile
+            DeliveryProfile deliveryProfile
     );
 
 }
