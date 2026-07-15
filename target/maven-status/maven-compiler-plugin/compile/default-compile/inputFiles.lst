@@ -16,6 +16,7 @@ D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\audi
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\application\port\DeliveryPlugin.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\application\port\DeliveryPort.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\application\port\FileBuilder.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\application\port\OutputFileWriter.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\application\registry\DeliveryPluginRegistry.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\application\service\DeliveryService.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\application\usecase\DefaultDeliveryUseCase.java
@@ -24,8 +25,8 @@ D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\deli
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\infrastructure\builder\CsvFileBuilder.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\infrastructure\formatter\CsvFormatter.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\infrastructure\plugin\DataLoaderMntPlugin.java
-D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\infrastructure\storage\FileStorage.java
-D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\infrastructure\storage\RetryableStorage.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\infrastructure\writer\LocalOutputFileWriter.java
+D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\delivery\infrastructure\writer\RetryableStorage.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\api\PriceEventController.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\factory\DefaultEventFactory.java
 D:\Datapase Project\middleware\src\main\java\com\example\middleware\feature\ingestion\application\factory\EventFactory.java

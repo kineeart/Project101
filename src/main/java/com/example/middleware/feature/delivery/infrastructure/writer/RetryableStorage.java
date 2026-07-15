@@ -1,4 +1,4 @@
-package com.example.middleware.feature.delivery.infrastructure.storage;
+package com.example.middleware.feature.delivery.infrastructure.writer;
 
 import com.example.middleware.core.dlq.DLQRepository;
 import com.example.middleware.core.dlq.DeadLetterEvent;

@@ -2,8 +2,8 @@ package com.example.middleware.feature.delivery.infrastructure.plugin;
 
 import com.example.middleware.delivery.strategy.OutputWriterStrategy;
 import com.example.middleware.feature.delivery.application.port.FileBuilder;
-import com.example.middleware.feature.delivery.domain.OutputFile; // Thêm import cho lớp chứa dữ liệu đầu ra file
-import com.example.middleware.feature.delivery.infrastructure.storage.FileStorage;
+import com.example.middleware.feature.delivery.application.port.OutputFileWriter; // Import interface mới
+import com.example.middleware.feature.delivery.domain.OutputFile;
 import com.example.middleware.feature.metadata.domain.DeliveryProfile;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
 
@@ -12,16 +12,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataLoaderMntPlugin implements OutputWriterStrategy {
 
-    // Bước 5.1: Thay thế CsvFormatter bằng FileBuilder làm dependency mới
     private final FileBuilder fileBuilder;
-    private final FileStorage storage;
+    private final OutputFileWriter fileWriter; // Thay thế hoàn toàn FileStorage bằng OutputFileWriter
 
-    // Bước 5.2: Constructor được cập nhật khớp với danh sách thuộc tính mới
+    // Cập nhật Constructor nhận đúng cặp dependency mới
     public DataLoaderMntPlugin(
             FileBuilder fileBuilder,
-            FileStorage storage) {
+            OutputFileWriter fileWriter) {
         this.fileBuilder = fileBuilder;
-        this.storage = storage;
+        this.fileWriter = fileWriter;
     }
 
     @Override
@@ -34,23 +33,17 @@ public class DataLoaderMntPlugin implements OutputWriterStrategy {
             TransformedEvent event,
             DeliveryProfile deliveryProfile) {
 
-        // Giữ lại bước validate đầu vào quan trọng
         if (event == null || event.getPayload() == null) {
             throw new IllegalArgumentException("Invalid event payload");
         }
 
-        // Bước 5.3: Xóa toàn bộ hơn 20 dòng logic tạo danh sách dòng cũ, giao nhiệm vụ cho fileBuilder
+        // Tạo ra object OutputFile chứa trọn vẹn data và path
         OutputFile outputFile = fileBuilder.build(event, deliveryProfile);
 
-        // Bước 5.4: Đổi từ việc truyền biến rời rạc sang đọc từ record dữ liệu của outputFile
-        storage.write(
-                outputFile.filePath(),
-                outputFile.lines()
-        );
+        // Truyền thẳng cả object outputFile vào hàm write gọn gàng
+        fileWriter.write(outputFile);
 
-        // Bước 5.5: Thay đổi giá trị trả về tương ứng sang filePath() mới tạo ra từ builder
+        // Trả về đường dẫn file theo đúng yêu cầu
         return outputFile.filePath();
     }
-
-    // Bước 5.6: Đã loại bỏ hoàn toàn phương thức buildFilePath() vì nó đã được chuyển giao cho CsvFileBuilder
 }
