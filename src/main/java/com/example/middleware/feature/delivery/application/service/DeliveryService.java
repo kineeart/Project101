@@ -4,10 +4,10 @@ import com.example.middleware.feature.delivery.application.port.DeliveryPlugin;
 import com.example.middleware.feature.delivery.application.port.DeliveryPort;
 import com.example.middleware.feature.delivery.application.registry.DeliveryPluginRegistry;
 import com.example.middleware.feature.delivery.domain.DeliveryResult;
+import com.example.middleware.feature.delivery.domain.OutputFile;
 import com.example.middleware.feature.metadata.domain.DeliveryProfile;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
 import org.springframework.stereotype.Service;
-import com.example.middleware.feature.delivery.domain.DeliveryResult;
 @Service
 public class DeliveryService implements DeliveryPort {
 
@@ -20,14 +20,14 @@ public class DeliveryService implements DeliveryPort {
     }
 
    @Override
-public DeliveryResult write(
+public OutputFile build(
         TransformedEvent event,
         DeliveryProfile deliveryProfile) {
 
     DeliveryPlugin plugin =
             registry.defaultPlugin();
 
-    return plugin.write(
+    return plugin.build(
             event,
             deliveryProfile
     );
