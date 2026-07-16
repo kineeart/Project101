@@ -3,3 +3,4 @@ D:\Datapase Project\middleware\src\test\java\com\example\middleware\feature\deli
 D:\Datapase Project\middleware\src\test\java\com\example\middleware\feature\delivery\usecase\DefaultDeliveryUseCaseTest.java
 D:\Datapase Project\middleware\src\test\java\com\example\middleware\feature\delivery\workspace\DefaultWorkspaceManagerTest.java
 D:\Datapase Project\middleware\src\test\java\com\example\middleware\feature\delivery\writer\LocalOutputFileWriterTest.java
+D:\Datapase Project\middleware\src\test\java\com\example\middleware\feature\processing\retry\RetryableStorageTest.java

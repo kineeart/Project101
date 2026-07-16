@@ -2,6 +2,7 @@ package com.example.middleware.feature.delivery.infrastructure.writer;
 
 import com.example.middleware.core.dlq.DLQRepository;
 import com.example.middleware.core.dlq.DeadLetterEvent;
+import com.example.middleware.feature.processing.application.port.RetryDelay;
 import com.example.middleware.feature.processing.application.port.RetryPort;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,16 @@ import java.util.Map;
 @Service
 public class RetryableStorage implements RetryPort {
 
-    private final DLQRepository dlqRepository = new DLQRepository();
-    private static final int MAX_RETRY = 3;
+private final DLQRepository dlqRepository;
+private final RetryDelay retryDelay;    
+private static final int MAX_RETRY = 3;
+public RetryableStorage(
+        DLQRepository dlqRepository,
+        RetryDelay retryDelay) {
 
+    this.dlqRepository = dlqRepository;
+    this.retryDelay = retryDelay;
+}
 @Override
 public <T> T execute(
         String eventId,
@@ -55,17 +63,7 @@ public <T> T execute(
                 );
             }
 
-            try {
-
-                Thread.sleep(
-                    1000L * attempt
-                );
-
-            } catch (InterruptedException ignored) {
-
-                Thread.currentThread()
-                        .interrupt();
-            }
+            retryDelay.sleep(1000L * attempt);
         }
     }
 
