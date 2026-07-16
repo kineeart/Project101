@@ -1,11 +1,7 @@
 package com.example.middleware.feature.orchestration.application.builder;
 import com.example.middleware.feature.orchestration.application.factory.ExecutionFactory;
 import com.example.middleware.feature.metadata.application.builder.MappingContextBuilder;
-import com.example.middleware.feature.metadata.application.builder.MappingContextBuilder;
 import com.example.middleware.feature.orchestration.application.PipelineContext;
-import com.example.middleware.feature.orchestration.application.factory.ExecutionFactory;
-import com.example.middleware.feature.orchestration.domain.Execution;
-import com.example.middleware.feature.processing.domain.context.MappingContext;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
 import org.springframework.stereotype.Service;
 

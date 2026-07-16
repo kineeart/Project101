@@ -3,7 +3,6 @@ package com.example.middleware.feature.delivery.application.service;
 import com.example.middleware.feature.delivery.application.port.DeliveryPlugin;
 import com.example.middleware.feature.delivery.application.port.DeliveryPort;
 import com.example.middleware.feature.delivery.application.registry.DeliveryPluginRegistry;
-import com.example.middleware.feature.delivery.domain.DeliveryResult;
 import com.example.middleware.feature.delivery.domain.OutputFile;
 import com.example.middleware.feature.metadata.domain.DeliveryProfile;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;

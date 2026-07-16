@@ -1,8 +1,6 @@
 package com.example.middleware.feature.orchestration.application.builder;
 
 import com.example.middleware.feature.orchestration.application.PipelineContext;
-import com.example.middleware.feature.orchestration.domain.Execution;
-import com.example.middleware.feature.processing.domain.context.MappingContext;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
 
 public interface PipelineContextBuilder {
