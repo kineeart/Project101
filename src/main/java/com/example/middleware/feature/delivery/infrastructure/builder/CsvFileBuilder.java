@@ -38,19 +38,19 @@ public class CsvFileBuilder implements FileBuilder {
             lines.add(deliveryProfile.getTrailerTemplate());
         }
 
-        // Tạo đường dẫn file
-        String filePath = buildFilePath(deliveryProfile);
+        // ĐỔI TÊN BIẾN VÀ METHOD: Gọi buildFileName() để lấy tên file mới
+        String fileName = buildFileName(deliveryProfile);
         
-        // ĐÃ SỬA: Trả về đối tượng OutputFile nằm trọn vẹn bên trong method build()
-        return new OutputFile(filePath, lines);
+        // BUILDER TRẢ VỀ: Trả về đối tượng OutputFile chứa tên file và dữ liệu các dòng
+        return new OutputFile(fileName, lines);
     }
 
-    private String buildFilePath(DeliveryProfile profile) {
-        return profile.getOutputFolder()
-                + "/"
-                + profile.getFilePrefix()
-                + System.currentTimeMillis()
-                + "."
-                + profile.getExtension();
-    }
+  private String buildFileName(DeliveryProfile profile) {
+
+    return profile.getFilePrefix()
+            + System.currentTimeMillis()
+            + "."
+            + profile.getExtension();
+
+}
 }

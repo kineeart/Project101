@@ -44,6 +44,6 @@ public class DataLoaderMntPlugin implements OutputWriterStrategy {
         fileWriter.write(outputFile);
 
         // Trả về đường dẫn file theo đúng yêu cầu
-        return outputFile.filePath();
+        return outputFile.fileName();
     }
 }

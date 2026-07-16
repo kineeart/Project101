@@ -4,9 +4,9 @@ import java.util.List;
 
 public record OutputFile(
 
-        String filePath,
+    String fileName,
 
-        List<String> lines
+    List<String> lines
 
 ) {
 }
