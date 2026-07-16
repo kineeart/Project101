@@ -22,12 +22,6 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
-
         <!-- Spring Web (QUAN TRỌNG NHẤT) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
