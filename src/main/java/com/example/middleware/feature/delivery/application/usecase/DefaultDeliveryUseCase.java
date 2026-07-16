@@ -35,27 +35,64 @@ public class DefaultDeliveryUseCase implements DeliveryUseCase {
         TransformedEvent transformed = context.getTransformedEvent();
         String eventId = context.getRawEvent().getEventId();
 
-        // Gọi qua RetryPort bọc ngoài cùng logic gửi nhận dữ liệu
-       DeliveryResult deliveryResult = retryPort.execute(
-        eventId,
-        transformed.getPayload(),
-        () -> deliveryPort.write(
-                transformed,
-                context.getMappingContext().getDeliveryProfile()
-        )
-);
+DeliveryResult deliveryResult;
 
-        // Lưu thông tin file đã tạo vào Pipeline Context phục vụ các Stage phía sau
-        context.setFilePath(deliveryResult.fileName());
-        DeliveryArtifact artifact =
-        new DeliveryArtifact(
-                eventId,
-                deliveryResult.fileName()
-        );
+try {
 
-artifact.markPublished();
+    deliveryResult =
+            retryPort.execute(
+                    eventId,
+                    transformed.getPayload(),
+                    () -> deliveryPort.write(
+                            transformed,
+                            context
+                                    .getMappingContext()
+                                    .getDeliveryProfile()
+                    )
+            );
+
+
+DeliveryArtifact artifact =
+        new DeliveryArtifact(eventId);
+
+artifact.markFailed();
 
 artifactRepository.save(artifact);
+
+
+    artifact.markPublished();
+
+    artifactRepository.save(
+            artifact
+    );
+
+
+    context.setFilePath(
+            deliveryResult.fileName()
+    );
+
+
+} catch (Exception ex) {
+
+
+DeliveryArtifact artifact =
+        new DeliveryArtifact(eventId);
+
+artifact.markFailed();
+
+artifactRepository.save(artifact);
+
+
+    artifact.markFailed();
+
+
+    artifactRepository.save(
+            artifact
+    );
+
+
+    throw ex;
+}
         return StageResult.SUCCESS;
         
     }

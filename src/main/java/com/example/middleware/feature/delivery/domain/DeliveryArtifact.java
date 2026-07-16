@@ -6,7 +6,7 @@ public class DeliveryArtifact {
 
     private final String eventId;
 
-    private final String fileName;
+    private String fileName;
 
     private ArtifactStatus status;
 
@@ -14,11 +14,9 @@ public class DeliveryArtifact {
 
 
     public DeliveryArtifact(
-            String eventId,
-            String fileName) {
+            String eventId) {
 
         this.eventId = eventId;
-        this.fileName = fileName;
         this.status = ArtifactStatus.CREATED;
         this.createdAt = LocalDateTime.now();
     }
@@ -52,4 +50,5 @@ public class DeliveryArtifact {
     public void markFailed() {
         this.status = ArtifactStatus.FAILED;
     }
+    
 }
