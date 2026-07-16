@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MiddlewareApplication<middleware>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.middleware.MiddlewareApplication",
+            "projectName": "middleware",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
