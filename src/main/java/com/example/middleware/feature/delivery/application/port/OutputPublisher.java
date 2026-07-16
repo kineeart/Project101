@@ -6,8 +6,8 @@ import com.example.middleware.feature.metadata.domain.DeliveryProfile;
 public interface OutputPublisher {
 
     void publish(
-            OutputFile outputFile,
-            DeliveryProfile deliveryProfile
-    );
+    WorkspaceFile workspaceFile,
+    DeliveryProfile profile
+);
 
 }

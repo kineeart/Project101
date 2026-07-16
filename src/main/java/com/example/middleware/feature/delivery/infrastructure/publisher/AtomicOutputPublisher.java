@@ -11,8 +11,9 @@ public class AtomicOutputPublisher implements OutputPublisher {
 
     @Override
     public void publish(
-            OutputFile outputFile,
-            DeliveryProfile deliveryProfile) {
+    WorkspaceFile workspaceFile,
+    DeliveryProfile profile
+) {
 
         // TODO P7.2
     }

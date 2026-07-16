@@ -22,7 +22,7 @@ public class LocalOutputFileWriter implements OutputFileWriter {
     }
 
     @Override
-    public void write(OutputFile outputFile) {
+    public Path write(OutputFile outputFile) {
         // Task 2 — Đổi sang Path (Lấy đường dẫn từ WorkspaceManager ở đầu method)
         Path workspaceFile = workspaceManager.workspaceFile(outputFile);
 
