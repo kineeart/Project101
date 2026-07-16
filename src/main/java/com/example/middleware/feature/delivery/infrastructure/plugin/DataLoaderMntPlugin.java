@@ -8,6 +8,8 @@ import com.example.middleware.feature.delivery.domain.OutputFile;
 import com.example.middleware.feature.metadata.domain.DeliveryProfile;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
 
+import java.nio.file.Path;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -44,12 +46,14 @@ public class DataLoaderMntPlugin implements OutputWriterStrategy {
         OutputFile outputFile = fileBuilder.build(event, deliveryProfile);
 
         // Truyền thẳng cả object outputFile vào hàm write gọn gàng
+       Path workspaceFile =
         fileWriter.write(outputFile);
-        outputPublisher.publish(
-        outputFile,
+
+outputPublisher.publish(
+        workspaceFile,
         deliveryProfile
 );
-        // Trả về đường dẫn file theo đúng yêu cầu
-        return outputFile.fileName();
+
+return workspaceFile.toString();
     }
 }

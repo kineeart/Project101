@@ -35,7 +35,7 @@ public class LocalOutputFileWriter implements OutputFileWriter {
             
             // Ghi toàn bộ các dòng dữ liệu vào file vật lý với chuẩn UTF-8
             Files.write(workspaceFile, outputFile.lines(), StandardCharsets.UTF_8);
-
+return workspaceFile;
         } catch (IOException e) {
             throw new RuntimeException("Failed to write file via NIO: " + outputFile.fileName(), e);
         }
