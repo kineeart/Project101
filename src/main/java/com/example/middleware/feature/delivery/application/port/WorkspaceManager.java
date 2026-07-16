@@ -6,6 +6,6 @@ import com.example.middleware.feature.delivery.domain.OutputFile;
 
 public interface WorkspaceManager {
 
-    Path resolve(OutputFile outputFile);
+    Path workspaceFile(OutputFile outputFile);
 
 }
