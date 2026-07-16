@@ -2,7 +2,9 @@ package com.example.middleware.feature.delivery.application.usecase;
 
 import org.springframework.stereotype.Service;
 
+import com.example.middleware.feature.delivery.application.port.DeliveryArtifactRepository;
 import com.example.middleware.feature.delivery.application.port.DeliveryPort;
+import com.example.middleware.feature.delivery.domain.DeliveryArtifact;
 import com.example.middleware.feature.delivery.domain.DeliveryResult;
 import com.example.middleware.feature.orchestration.application.PipelineContext;
 import com.example.middleware.feature.orchestration.application.StageResult;
@@ -16,13 +18,16 @@ public class DefaultDeliveryUseCase implements DeliveryUseCase {
 
     private final DeliveryPort deliveryPort;
     private final RetryPort retryPort;
+    private final DeliveryArtifactRepository artifactRepository;    
+   public DefaultDeliveryUseCase(
+        DeliveryPort deliveryPort,
+        RetryPort retryPort,
+        DeliveryArtifactRepository artifactRepository) {
 
-    public DefaultDeliveryUseCase(
-            DeliveryPort deliveryPort,
-            RetryPort retryPort) {
-        this.deliveryPort = deliveryPort;
-        this.retryPort = retryPort;
-    }
+    this.deliveryPort = deliveryPort;
+    this.retryPort = retryPort;
+    this.artifactRepository = artifactRepository;
+}
 
     @Override
     public StageResult deliver(PipelineContext context) {
@@ -42,7 +47,16 @@ public class DefaultDeliveryUseCase implements DeliveryUseCase {
 
         // Lưu thông tin file đã tạo vào Pipeline Context phục vụ các Stage phía sau
         context.setFilePath(deliveryResult.fileName());
+        DeliveryArtifact artifact =
+        new DeliveryArtifact(
+                eventId,
+                deliveryResult.fileName()
+        );
 
+artifact.markPublished();
+
+artifactRepository.save(artifact);
         return StageResult.SUCCESS;
+        
     }
 }
