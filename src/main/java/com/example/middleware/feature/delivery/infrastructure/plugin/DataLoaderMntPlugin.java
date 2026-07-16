@@ -7,7 +7,7 @@ import com.example.middleware.feature.delivery.application.port.OutputPublisher;
 import com.example.middleware.feature.delivery.domain.OutputFile;
 import com.example.middleware.feature.metadata.domain.DeliveryProfile;
 import com.example.middleware.feature.processing.domain.event.TransformedEvent;
-
+import com.example.middleware.feature.delivery.domain.DeliveryResult;
 import java.nio.file.Path;
 
 import org.springframework.stereotype.Component;
@@ -34,7 +34,7 @@ public class DataLoaderMntPlugin implements OutputWriterStrategy {
     }
 
     @Override
-    public String write(
+    public DeliveryResult write(
             TransformedEvent event,
             DeliveryProfile deliveryProfile) {
 
@@ -54,6 +54,7 @@ outputPublisher.publish(
         deliveryProfile
 );
 
-return workspaceFile.toString();
-    }
+return new DeliveryResult(
+        outputFile.fileName()
+);    }
 }

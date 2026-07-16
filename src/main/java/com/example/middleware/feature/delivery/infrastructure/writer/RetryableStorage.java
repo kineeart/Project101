@@ -13,49 +13,65 @@ public class RetryableStorage implements RetryPort {
     private final DLQRepository dlqRepository = new DLQRepository();
     private static final int MAX_RETRY = 3;
 
-        public String execute(
-            String eventId,
-            Map<String, Object> payload,
-            RetryAction action
-        ) {
+@Override
+public <T> T execute(
+        String eventId,
+        Map<String, Object> payload,
+        RetryAction<T> action
+) {
 
-        int attempt = 0;
+    int attempt = 0;
 
-        while (attempt < MAX_RETRY) {
-            try {
-                return action.execute(); // SUCCESS
-            } catch (Exception ex) {
+    while (attempt < MAX_RETRY) {
 
-                attempt++;
+        try {
 
-                System.out.println(
-                        "[RETRY] attempt " + attempt +
-                                " failed: " + ex.getMessage()
+            return action.execute();
+
+        } catch (Exception ex) {
+
+            attempt++;
+
+            System.out.println(
+                    "[RETRY] attempt "
+                    + attempt
+                    + " failed: "
+                    + ex.getMessage()
+            );
+
+            if (attempt >= MAX_RETRY) {
+
+                dlqRepository.save(
+                        new DeadLetterEvent(
+                                eventId,
+                                ex.getMessage(),
+                                payload,
+                                attempt
+                        )
                 );
 
-                if (attempt >= MAX_RETRY) {
+                throw new RuntimeException(
+                        "Sent to DLQ: " + eventId
+                );
+            }
 
-                    dlqRepository.save(
-                            new DeadLetterEvent(
-                                    eventId,
-                                    ex.getMessage(),
-                                    payload,
-                                    attempt
-                            )
-                    );
+            try {
 
-                    throw new RuntimeException(
-                            "Sent to DLQ: " + eventId
-                    );
-                }
+                Thread.sleep(
+                    1000L * attempt
+                );
 
-                try {
-                    Thread.sleep(1000L * attempt);
-                } catch (InterruptedException ignored) {}
+            } catch (InterruptedException ignored) {
+
+                Thread.currentThread()
+                        .interrupt();
             }
         }
-
-        throw new RuntimeException("Unexpected failure");
     }
+
+    throw new RuntimeException(
+            "Unexpected failure"
+    );
+}
 
 }

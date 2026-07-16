@@ -4,10 +4,16 @@ import java.util.Map;
 
 public interface RetryPort {
 
-    String execute(String eventId, Map<String, Object> payload, RetryAction action);
+    <T> T execute(
+            String eventId,
+            Map<String, Object> payload,
+            RetryAction<T> action
+    );
 
     @FunctionalInterface
-    interface RetryAction {
-        String execute();
+    interface RetryAction<T> {
+
+        T execute();
+
     }
 }

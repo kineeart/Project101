@@ -1,6 +1,5 @@
 package com.example.middleware.feature.audit.api;
 
-import com.example.middleware.feature.audit.application.AuditService;
 import com.example.middleware.feature.audit.application.port.AuditPort;
 import com.example.middleware.feature.audit.domain.AuditEvent;
 import com.example.middleware.feature.audit.domain.ErrorLog;
