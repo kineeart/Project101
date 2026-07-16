@@ -1,37 +1,35 @@
 package com.example.middleware.feature.delivery.infrastructure.repository;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
 import com.example.middleware.feature.delivery.application.port.DeliveryArtifactRepository;
 import com.example.middleware.feature.delivery.domain.DeliveryArtifact;
 
+
 @Component
-public class InMemoryDeliveryArtifactRepository
+public class InMemoryDeliveryArtifactRepository 
         implements DeliveryArtifactRepository {
 
 
-    private final Map<String, DeliveryArtifact> artifacts =
-            new ConcurrentHashMap<>();
+    private final List<DeliveryArtifact> artifacts =
+            new ArrayList<>();
 
 
     @Override
     public void save(
             DeliveryArtifact artifact) {
 
-        artifacts.put(
-                artifact.eventId(),
-                artifact
-        );
+        artifacts.add(artifact);
     }
 
 
     @Override
-    public DeliveryArtifact findByEventId(
-            String eventId) {
+    public List<DeliveryArtifact> findAll() {
 
-        return artifacts.get(eventId);
+        return List.copyOf(artifacts);
     }
 }
