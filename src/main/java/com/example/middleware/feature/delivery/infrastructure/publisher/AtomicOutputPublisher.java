@@ -3,7 +3,8 @@ package com.example.middleware.feature.delivery.infrastructure.publisher;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.StandardCopyOption;
 import org.springframework.stereotype.Component;
 
 import com.example.middleware.feature.delivery.application.port.OutputPublisher;
@@ -25,7 +26,23 @@ public class AtomicOutputPublisher implements OutputPublisher {
             }
 
             // Task 3: Di chuyển file từ Workspace sang OutputFolder (chưa dùng ATOMIC_MOVE để test luồng)
-            Files.move(workspaceFile, targetFile);
+           try {
+
+    Files.move(
+            workspaceFile,
+            targetFile,
+            StandardCopyOption.ATOMIC_MOVE
+    );
+
+} catch (AtomicMoveNotSupportedException ex) {
+
+    Files.move(
+            workspaceFile,
+            targetFile,
+            StandardCopyOption.REPLACE_EXISTING
+    );
+
+}
 
         } catch (IOException ex) {
             // Task 4: Bọc IOException thành RuntimeException để không đổi signature của interface
