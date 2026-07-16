@@ -118,4 +118,39 @@ void shouldBuildWithoutTrailerWhenTrailerDisabled() {
             outputFile.lines().get(1)
     );
 }
+@Test
+void shouldWriteEmptyStringForNullValues() {
+
+    CsvFormatter formatter = new CsvFormatter();
+    CsvFileBuilder builder = new CsvFileBuilder(formatter);
+
+    TransformedEvent event = new TransformedEvent();
+
+    Map<String, Object> payload = new LinkedHashMap<>();
+
+    payload.put("ITEM", "1001");
+    payload.put("PRICE", null);
+    payload.put("SHOP", "HCM01");
+
+    event.setPayload(payload);
+
+    DeliveryProfile profile =
+            new DeliveryProfile(
+                    "D:/ignore",
+                    "ORACLE_",
+                    "csv",
+                    ",",
+                    true,
+                    true,
+                    "TRAILER||RECORD_COUNT|{count}"
+            );
+
+    OutputFile outputFile =
+            builder.build(event, profile);
+
+    assertEquals(
+            "1001,,HCM01",
+            outputFile.lines().get(1)
+    );
+}
 }
