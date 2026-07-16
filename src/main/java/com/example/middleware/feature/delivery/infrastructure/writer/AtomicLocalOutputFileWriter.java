@@ -7,7 +7,7 @@ import com.example.middleware.feature.delivery.application.port.OutputFileWriter
 import com.example.middleware.feature.delivery.domain.OutputFile; // Thêm import cho OutputFile
 
 @Component
-public class LocalOutputFileWriter implements OutputFileWriter {
+public class AtomicLocalOutputFileWriter implements OutputFileWriter {
 
     @Override
     public void write(OutputFile outputFile) {

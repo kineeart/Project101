@@ -3,3 +3,7 @@ persistence:
 spring:
   config:
     import: classpath:middleware/metadata.yml
+    
+middleware:
+  workspace:
+    folder: D:/middleware/workspace
