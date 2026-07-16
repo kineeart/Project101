@@ -3,7 +3,6 @@ package com.example.middleware.feature.transformation.infrastructure;
 import com.example.middleware.feature.metadata.domain.FieldRule;
 import com.example.middleware.feature.transformation.domain.TransformationStep;
 import org.springframework.stereotype.Component;
-import java.util.Map;
 
 @Component
 public class XrefTransformationStep implements TransformationStep {
