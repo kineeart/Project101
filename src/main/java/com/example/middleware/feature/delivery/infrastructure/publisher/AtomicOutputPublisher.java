@@ -8,6 +8,7 @@ import java.nio.file.StandardCopyOption;
 import org.springframework.stereotype.Component;
 
 import com.example.middleware.feature.delivery.application.port.OutputPublisher;
+import com.example.middleware.feature.delivery.domain.PublishException;
 import com.example.middleware.feature.metadata.domain.DeliveryProfile;
 
 @Component
@@ -46,7 +47,11 @@ public class AtomicOutputPublisher implements OutputPublisher {
 
         } catch (IOException ex) {
             // Task 4: Bọc IOException thành RuntimeException để không đổi signature của interface
-            throw new RuntimeException("Publish failed", ex);
+          throw new PublishException(
+    "Failed to publish file: "
+        + workspaceFile,
+    ex
+);
         }
         // TODO P7.2:
 // replace with ATOMIC_MOVE after compatibility testing
