@@ -4,7 +4,7 @@ import com.example.middleware.feature.intake.application.port.EventRepositoryPor
 import com.example.middleware.feature.intake.domain.EventRecord;
 import com.example.middleware.feature.orchestration.application.Pipeline;
 import com.example.middleware.feature.orchestration.application.builder.PipelineContextBuilder;
-import com.example.middleware.feature.orchestration.application.PipelineContext; // Hãy kiểm tra lại package chính xác của class này
+import com.example.middleware.feature.orchestration.application.PipelineContext; 
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +14,6 @@ public class ProcessEventUseCase {
     private final PipelineContextBuilder contextBuilder;
     private final Pipeline pipeline;
 
-    // Bước 1: Constructor tương ứng để Spring tự động inject dependency
     public ProcessEventUseCase(
             EventRepositoryPort repository,
             PipelineContextBuilder contextBuilder,
@@ -25,26 +24,24 @@ public class ProcessEventUseCase {
     }
 
     public void process(String eventId) {
-        // Bước 2: Tìm Event và validate
+        // Tìm Event và validate
         EventRecord record = repository.findById(eventId);
 
         if (record == null) {
             throw new IllegalArgumentException("Event not found: " + eventId);
         }
 
-        // Bước 3: Đổi trạng thái sang PROCESSING và lưu lại
-        record.markProcessing();
-        repository.save(record);
+        // Quyền đổi trạng thái sang PROCESSING đã được xóa bỏ hoàn toàn tại đây.
+        // Luồng xử lý chuyển thẳng sang bước build context và chạy pipeline.
 
-        // Bước 8: Bao quanh bằng khối try/catch từ bước build context trở xuống
         try {
-            // Bước 4 & 5: Lấy RawEvent từ record và Build PipelineContext
+            // Build PipelineContext từ RawEvent của record
             PipelineContext context = contextBuilder.build(record.getRawEvent());
 
-            // Bước 6: Chạy Pipeline
+            // Chạy Pipeline
             pipeline.execute(context);
 
-            // Bước 7: Hoàn thành, cập nhật filePath và lưu lại trạng thái COMPLETED
+            // Hoàn thành, cập nhật filePath và lưu lại trạng thái COMPLETED
             record.complete(context.getFilePath());
             repository.save(record);
 

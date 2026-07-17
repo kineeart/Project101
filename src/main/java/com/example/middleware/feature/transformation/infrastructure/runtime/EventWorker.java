@@ -1,6 +1,7 @@
 package com.example.middleware.feature.transformation.infrastructure.runtime;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -25,24 +26,25 @@ public class EventWorker {
         this.dispatcherRegistry = dispatcherRegistry;
     }
 
-    @Scheduled(fixedDelay = 1000)
-    public void poll() {
+@Scheduled(fixedDelay = 3000)
+public void poll() {
 
-        // Log khi worker bắt đầu mỗi chu kỳ quét (mỗi 1 giây)
-        System.out.println("=== Worker Polling ===");
+    ProcessingDispatcher dispatcher =
+            dispatcherRegistry.defaultDispatcher();
 
-        List<EventRecord> events =
-                repository.findByStatus(EventStatus.RECEIVED);
+    while (true) {
 
-        ProcessingDispatcher dispatcher =
-                dispatcherRegistry.defaultDispatcher();
+        Optional<EventRecord> claimed =
+                repository.claimNext();
 
-        for (EventRecord event : events) {
-
-            dispatcher.dispatch(event.getEventId());
-
+        if (claimed.isEmpty()) {
+            break;
         }
 
+        dispatcher.dispatch(
+                claimed.get().getEventId()
+        );
     }
+}
 
 }
