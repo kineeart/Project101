@@ -51,7 +51,7 @@ repository.save(record);
 
         } catch (Exception ex) {
             // Nếu xảy ra lỗi: chuyển trạng thái sang FAILED, lưu lại và throw tiếp ngoại lệ
-            record.markFailed();
+            record.markFailed(eventId);
 
 repository.save(record);
             throw ex;

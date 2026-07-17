@@ -1,7 +1,6 @@
 package com.example.middleware.feature.intake.domain;
 
 import java.time.LocalDateTime;
-
 import com.example.middleware.feature.processing.domain.event.RawEvent;
 
 public class EventRecord {
@@ -10,6 +9,7 @@ public class EventRecord {
     private final String profileId;
     private EventStatus status;
     private String filePath;
+    private String errorMessage; // Thêm trường lưu vết message lỗi
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private final RawEvent rawEvent;
@@ -28,8 +28,15 @@ public class EventRecord {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void markWriting() {
-        this.status = EventStatus.WRITING;
+    // Cơ chế Dynamic Stage Mapping dựa trên kiến trúc của Architect
+    public void enterStage(String stageName) {
+        switch (stageName) {
+            case "Validation" -> this.status = EventStatus.VALIDATING;
+            case "Mapping" -> this.status = EventStatus.MAPPING;
+            case "Delivery" -> this.status = EventStatus.BUILDING;
+            case "Writing" -> this.status = EventStatus.WRITING;
+            // Dễ dàng bổ sung các trường hợp dynamic khác tại đây (Scheduler, Retry, Lease...)
+        }
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -45,28 +52,17 @@ public class EventRecord {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void markFailed() {
+    public void markFailed(String message) {
         this.status = EventStatus.FAILED;
+        this.errorMessage = message;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public RawEvent getRawEvent() {
-        return rawEvent;
-    }
-
-    public String getEventId() {
-        return eventId;
-    }
-
-    public String getProfileId() {
-        return profileId;
-    }
-
-    public EventStatus getStatus() {
-        return status;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
+    // --- Getters ---
+    public RawEvent getRawEvent() { return rawEvent; }
+    public String getEventId() { return eventId; }
+    public String getProfileId() { return profileId; }
+    public EventStatus getStatus() { return status; }
+    public String getFilePath() { return filePath; }
+    public String getErrorMessage() { return errorMessage; }
 }

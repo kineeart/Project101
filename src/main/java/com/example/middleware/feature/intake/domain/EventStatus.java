@@ -6,6 +6,12 @@ public enum EventStatus {
 
     PROCESSING,
 
+    VALIDATING,
+
+    MAPPING,
+
+    BUILDING,
+
     WRITING,
 
     WRITTEN,
@@ -13,5 +19,4 @@ public enum EventStatus {
     PARTIAL,
 
     FAILED
-
 }
