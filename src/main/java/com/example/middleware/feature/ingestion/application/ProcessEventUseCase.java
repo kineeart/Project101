@@ -42,13 +42,18 @@ public class ProcessEventUseCase {
             pipeline.execute(context);
 
             // Hoàn thành, cập nhật filePath và lưu lại trạng thái COMPLETED
-            record.complete(context.getFilePath());
+            record.markWritten(
+        context.getFilePath()
+);
+
+repository.save(record);
             repository.save(record);
 
         } catch (Exception ex) {
             // Nếu xảy ra lỗi: chuyển trạng thái sang FAILED, lưu lại và throw tiếp ngoại lệ
-            record.fail();
-            repository.save(record);
+            record.markFailed();
+
+repository.save(record);
             throw ex;
         }
     }

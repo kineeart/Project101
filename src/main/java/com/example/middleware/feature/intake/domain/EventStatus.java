@@ -6,7 +6,12 @@ public enum EventStatus {
 
     PROCESSING,
 
-    COMPLETED,
+    WRITING,
+
+    WRITTEN,
+
+    PARTIAL,
 
     FAILED
+
 }
