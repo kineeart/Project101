@@ -14,9 +14,12 @@ public enum EventStatus {
 
     WRITING,
 
+    PENDING_WRITE,
+
     WRITTEN,
 
     PARTIAL,
 
     FAILED
+
 }
