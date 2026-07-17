@@ -3,7 +3,6 @@ package com.example.middleware.feature.intake.application.usecase;
 import org.springframework.stereotype.Service;
 
 import com.example.middleware.feature.intake.application.port.EventRepositoryPort;
-import com.example.middleware.feature.intake.application.registry.ProcessingDispatcherRegistry;
 import com.example.middleware.feature.intake.domain.EventRecord;
 import com.example.middleware.feature.processing.domain.event.RawEvent;
 
@@ -11,14 +10,10 @@ import com.example.middleware.feature.processing.domain.event.RawEvent;
 public class DefaultReceiveEventUseCase implements ReceiveEventUseCase {
 
     private final EventRepositoryPort repository;
-    private final ProcessingDispatcherRegistry registry; // Đổi tên thuộc tính từ dispatcher thành registry
 
-    // Sửa tham số và gán giá trị chính xác cho registry trong Constructor
-    public DefaultReceiveEventUseCase(
-            EventRepositoryPort repository,
-            ProcessingDispatcherRegistry registry) {
+    // Đã loại bỏ hoàn toàn ProcessingDispatcherRegistry vì không còn sử dụng
+    public DefaultReceiveEventUseCase(EventRepositoryPort repository) {
         this.repository = repository;
-        this.registry = registry;
     }
 
     @Override
@@ -29,10 +24,8 @@ public class DefaultReceiveEventUseCase implements ReceiveEventUseCase {
         // Lưu bản ghi ban đầu (Trạng thái RECEIVED)
         repository.save(record);
         
-        // Kích hoạt luồng xử lý thông qua registry.defaultDispatcher()
-        registry
-            .defaultDispatcher()
-            .dispatch(record.getEventId());
+        // Luồng xử lý bất đồng bộ (dispatcher) đã được gỡ bỏ tại đây
+        // Request kết thúc ngay sau khi lưu thành công
 
         return record;
     }

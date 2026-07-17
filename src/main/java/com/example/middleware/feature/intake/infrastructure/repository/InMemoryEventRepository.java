@@ -29,12 +29,7 @@ public class InMemoryEventRepository
                 event
         );
     }
-    @Override
-public List<EventRecord> findAll() {
-
-    return new ArrayList<>(store.values());
-
-}
+ 
 @Override
 public List<EventRecord> findByStatus(EventStatus status) {
 

@@ -11,8 +11,6 @@ public interface EventRepositoryPort {
 
     EventRecord findById(String eventId);
 
-    List<EventRecord> findAll();
-
     List<EventRecord> findByStatus(EventStatus status);
 
 }
