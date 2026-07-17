@@ -1,8 +1,6 @@
 package com.example.middleware.feature.ingestion.application.factory;
 
 import java.util.Map;
-import java.util.Objects;
-
 import org.springframework.stereotype.Component;
 
 import com.example.middleware.feature.metadata.application.MetadataService;
@@ -16,7 +14,6 @@ public class DefaultEventFactory implements EventFactory {
     private final MetadataService metadataService;
     private final ProfileResolver profileResolver;
 
-    // SỬA TẠI ĐÂY: Thêm thân hàm và gán giá trị cho các thuộc tính final
     public DefaultEventFactory(
         MetadataService metadataService,
         ProfileResolver profileResolver
@@ -26,21 +23,40 @@ public class DefaultEventFactory implements EventFactory {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public RawEvent create(Map<String, Object> request) {
-        // Tránh lỗi NullPointerException nếu map không chứa key "eventId"
-        String eventId = Objects.toString(request.get("eventId"), null);
+        // [LOG DEBUG] In ra request gốc từ Postman để kiểm tra trực quan
+        System.out.println("=== DEFAULT EVENT FACTORY DEBUG ===");
+        System.out.println("Request gốc: " + request);
 
-        // Lấy dữ liệu metadata trực tiếp khi hàm create() được gọi
+        // Lấy các trường định danh từ request gốc (Tránh dùng Objects.toString dễ sinh chuỗi "null")
+        String eventId = request.get("eventId") != null ? request.get("eventId").toString() : null;
+        String sourceTable = request.get("sourceTable") != null ? request.get("sourceTable").toString() : null;
+
+        System.out.println("Extracted eventId: " + eventId);
+        System.out.println("Extracted sourceTable: " + sourceTable);
+
+        // Giải quyết thông tin profile và metadata
         String profileId = profileResolver.resolve(request);
-System.out.println("Profile = " + profileId);
-
         EventMetadata metadata = metadataService.resolveEventMetadata(profileId);        
-        System.out.println(metadata);
+        
+        // Trích xuất cấu trúc payload lõi từ request gốc
+        Map<String, Object> payload = (Map<String, Object>) request.get("payload");
+        System.out.println("Extracted payload: " + payload);
+
+        // [HƯỚNG SỬA NẾU VALIDATOR QUÉT TRONG PAYLOAD]: 
+        // Nếu tầng sau (Validator) bị lỗi vì tìm eventId trong payload, ta chủ động bù lại eventId vào payload
+        if (payload != null && !payload.containsKey("eventId") && eventId != null) {
+            payload.put("eventId", eventId);
+        }
+
+        System.out.println("=== END DEBUG ===");
+
         return new RawEvent(
             eventId,
             metadata.getProfileId(),
-           "HQ_Price_Master",
-            request
+            sourceTable,
+            payload
         );
     }
 }

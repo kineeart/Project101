@@ -47,11 +47,14 @@ public class MappingEngine implements MappingPort {
         TransformedEvent result = new TransformedEvent();
         result.setProfileId(event.getProfileId());
         result.setTargetTable(tableRule.getTargetTable());
-
+System.out.println("Raw payload = " + event.getPayload());
         for (FieldRule rule : tableRule.getFieldRules()) {
+             System.out.println("--------------------");
+    System.out.println("SourceField = " + rule.getSourceField());
             String sourceFieldName = rule.getSourceField();
+            
             Object value = event.getPayload().get(sourceFieldName);
-
+ System.out.println("Value = " + value);
             if (value == null) {
                 value = rule.getDefaultValue();
             }
@@ -75,6 +78,8 @@ public class MappingEngine implements MappingPort {
                         value
                 );
             }
+            
+            
         }
 
         return result;

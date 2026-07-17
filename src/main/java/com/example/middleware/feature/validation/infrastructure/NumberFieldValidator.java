@@ -22,7 +22,7 @@ public class NumberFieldValidator implements FieldValidator {
         }
 
         double numericValue = ((Number) value).doubleValue();
-        if (numericValue <= 0) {
+        if (numericValue < 0) {
             throw new IllegalArgumentException(fieldName + " must be greater than 0");
         }
     }

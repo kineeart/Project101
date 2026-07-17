@@ -26,7 +26,7 @@ middleware:
               - sourceField: itemId
                 targetField: ITEM
                 dataType: STRING
-                required: true
+                required: true  
 
               - sourceField: price
                 targetField: PRICE
@@ -41,5 +41,7 @@ middleware:
                 targetField: STATUS
                 dataType: NUMBER
                 xrefDictionary:
-                  "true": "1"
-                  "false": "0"
+                  "success": "1"
+                  "failed": "0"
+                
+

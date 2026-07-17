@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.example.middleware.feature.metadata.domain.DeliveryProfile;
 import com.example.middleware.feature.metadata.domain.TableRule;
-import com.example.middleware.feature.metadata.domain.DeliveryProfile;
 public class MappingContext {
 
     private final Map<String, TableRule> tableRules = new HashMap<>();
