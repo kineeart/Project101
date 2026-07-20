@@ -2,7 +2,7 @@ package com.example.middleware.feature.runtime.domain.history;
 
 import java.time.LocalDateTime;
 
-import com.example.middleware.feature.runtime.domain.BatchStatus;
+import com.example.middleware.feature.runtime.domain.batch.BatchStatus; 
 
 public class BatchHistoryRecord {
 

@@ -1,5 +1,5 @@
 package com.example.middleware.feature.runtime.domain;
-
+import com.example.middleware.feature.runtime.domain.batch.BatchStatus; 
 import java.time.LocalDateTime;
 
 public class BatchRecord {
@@ -37,29 +37,11 @@ public class BatchRecord {
         this.updatedAt = updatedAt;
     }
 
-    // ==========================================
-    // CÁC HÀM ĐỔI TRẠNG THÁI (DOMAIN METHODS) MỚI THÊM VÀO
-    // ==========================================
-    
-    public void markProcessing() {
-        this.status = BatchStatus.PROCESSING;
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public void markWriting() {
-        this.status = BatchStatus.WRITING;
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public void markWritten() {
-        this.status = BatchStatus.WRITTEN;
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public void markFailed() {
-        this.status = BatchStatus.FAILED;
-        this.updatedAt = LocalDateTime.now();
-    }
+   // Trong file BatchRecord.java: Tìm hàm changeStatus và sửa chính xác thành public như thế này:
+public void changeStatus(com.example.middleware.feature.runtime.domain.batch.BatchStatus status) {
+    this.status = status;
+    this.updatedAt = java.time.LocalDateTime.now();
+}
 
     // ==========================================
     // GETTERS & SETTERS

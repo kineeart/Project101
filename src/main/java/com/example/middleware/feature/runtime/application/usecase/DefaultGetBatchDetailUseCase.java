@@ -10,7 +10,7 @@ import com.example.middleware.feature.runtime.application.model.BatchDetail;
 import com.example.middleware.feature.runtime.application.model.BatchSummary;
 import com.example.middleware.feature.runtime.domain.BatchRecord;
 import com.example.middleware.feature.runtime.domain.history.BatchHistoryRecord;
-import com.example.middleware.feature.runtime.domain.BatchStatus; // SỬA: Đổi từ .domain.batch.BatchStatus sang .domain.BatchStatus
+import com.example.middleware.feature.runtime.domain.batch.BatchStatus; // SỬA CHUẨN: Đổi sang .domain.batch.BatchStatus
 
 @Service
 public class DefaultGetBatchDetailUseCase implements GetBatchDetailUseCase {
@@ -34,7 +34,6 @@ public class DefaultGetBatchDetailUseCase implements GetBatchDetailUseCase {
 
         List<BatchHistoryRecord> history = batchHistoryRepository.findByBatchId(batchId);
 
-        // Hết lỗi: Các kiểu dữ liệu BatchStatus giờ đã trùng khớp hoàn toàn
         return new BatchDetail(
                 batch.getBatchId(),
                 batch.getStatus(),

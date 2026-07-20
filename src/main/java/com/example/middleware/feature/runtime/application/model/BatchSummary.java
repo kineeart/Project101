@@ -1,11 +1,11 @@
 package com.example.middleware.feature.runtime.application.model;
 
 import java.time.LocalDateTime;
-import com.example.middleware.feature.runtime.domain.BatchStatus;
 
 public record BatchSummary(
         String batchId,
-        BatchStatus status,
+        // Ép viết cụ thể đường dẫn tuyệt đối của enum để không bao giờ bị lệch gói
+        com.example.middleware.feature.runtime.domain.batch.BatchStatus status,
         LocalDateTime updatedAt
 ) {
 }
