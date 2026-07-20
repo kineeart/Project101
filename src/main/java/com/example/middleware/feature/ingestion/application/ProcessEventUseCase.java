@@ -4,13 +4,8 @@ import com.example.middleware.feature.intake.application.port.EventRepositoryPor
 import com.example.middleware.feature.intake.domain.EventRecord;
 import com.example.middleware.feature.orchestration.application.Pipeline;
 import com.example.middleware.feature.orchestration.application.builder.PipelineContextBuilder;
-import com.example.middleware.feature.runtime.application.port.BatchRepositoryPort;
 import com.example.middleware.feature.orchestration.application.PipelineContext; 
-import com.example.middleware.feature.runtime.domain.BatchRecord; 
-import com.example.middleware.feature.runtime.domain.history.BatchHistoryRecord;
-import com.example.middleware.feature.runtime.domain.batch.BatchStatus; 
-import com.example.middleware.feature.runtime.application.port.BatchHistoryRepositoryPort; 
-import com.example.middleware.feature.runtime.domain.state.RuntimeStateMachine; // THÊM IMPORT: Để hiểu State Machine
+import com.example.middleware.feature.runtime.application.service.RuntimeStateService; // IMPORT dịch vụ lifecycle mới
 
 import org.springframework.stereotype.Service;
 
@@ -20,24 +15,18 @@ public class ProcessEventUseCase {
     private final EventRepositoryPort repository;
     private final PipelineContextBuilder contextBuilder;
     private final Pipeline pipeline;
-    private final BatchRepositoryPort batchRepository;
-    private final BatchHistoryRepositoryPort historyRepository; 
-    private final RuntimeStateMachine stateMachine; // 1. INJECT THÊM BIẾN STATE MACHINE
+    private final RuntimeStateService stateService; // Tinh giản: Chỉ giữ lại service vòng đời tập trung
 
-    // 2. CẬP NHẬT CONSTRUCTOR: Nhận thêm RuntimeStateMachine từ Spring
+    // Constructor mới: Gọn gàng, Inject RuntimeStateService từ Spring Boot
     public ProcessEventUseCase(
             EventRepositoryPort repository,
-            BatchRepositoryPort batchRepository,
-            BatchHistoryRepositoryPort historyRepository, 
             PipelineContextBuilder contextBuilder,
             Pipeline pipeline,
-            RuntimeStateMachine stateMachine) { // Nhận thêm ở đây
+            RuntimeStateService stateService) {
         this.repository = repository;
-        this.batchRepository = batchRepository;
-        this.historyRepository = historyRepository; 
         this.contextBuilder = contextBuilder;
         this.pipeline = pipeline;
-        this.stateMachine = stateMachine; // Gán giá trị vào biến final
+        this.stateService = stateService;
     }
 
     public void process(String eventId) {
@@ -47,77 +36,46 @@ public class ProcessEventUseCase {
             throw new IllegalArgumentException("Event not found: " + eventId);
         }
 
-        // Bước 2: Lấy BatchRecord bằng eventId
-        BatchRecord batch = batchRepository.findById(eventId);
-        if (batch == null) {
-            throw new IllegalArgumentException("Batch not found: " + eventId);
-        }
+        // LƯU Ý: Lệnh check tìm BatchRecord thủ công đã được xóa bỏ tại đây, 
+        // vì RuntimeStateService bên trong sẽ tự động chịu trách nhiệm tìm kiếm và ném lỗi nếu không thấy Batch.
 
         try {
-            // Bước 3: Khi Worker nhận Batch -> Đổi sang PROCESSING qua State Machine
+            // == BƯỚC 1: PROCESSING ==
             record.markProcessing();
             repository.save(record);
+            stateService.processing(eventId); 
 
-            // THAY ĐỔI: Sử dụng stateMachine để kiểm duyệt và đổi trạng thái thay vì gọi hàm mark trực tiếp
-            stateMachine.transit(batch, BatchStatus.PROCESSING);
-            batchRepository.save(batch); 
-
-            historyRepository.save(
-                new BatchHistoryRecord(
-                    batch.getBatchId(),
-                    BatchStatus.PROCESSING,
-                    "Worker claimed batch"
-                )
-            );
+            // == BƯỚC 2: VALIDATED ==
+            // (Đứng sau khi Worker nhận nhưng trước khi Mapping dữ liệu)
+            stateService.validated(eventId);
 
             // Build PipelineContext từ RawEvent của record
             PipelineContext context = contextBuilder.build(record.getRawEvent());
 
-            // Bước 4: Trước Delivery -> Đổi sang WRITING qua State Machine
-            stateMachine.transit(batch, BatchStatus.WRITING); // THAY ĐỔI Ở ĐÂY
-            batchRepository.save(batch); 
+            // == BƯỚC 3: MAPPED & BUILT ==
+            // (Xảy ra ngay khi hàm build dữ liệu chạy xong thành công)
+            stateService.mapped(eventId);
+            stateService.built(eventId);
 
-            historyRepository.save(
-                new BatchHistoryRecord(
-                    batch.getBatchId(),
-                    BatchStatus.WRITING,
-                    "Start writing output"
-                )
-            );
+            // == BƯỚC 4: WRITING ==
+            // (Đánh dấu hệ thống bắt đầu đẩy dữ liệu đi ghi)
+            stateService.writing(eventId);
 
-            // Chạy Pipeline
+            // Chạy Pipeline (thực thi bước Delivery/Write cuối)
             pipeline.execute(context);
 
-            // Bước 5: Thành công -> Đổi sang WRITTEN qua State Machine
+            // == BƯỚC 5: WRITTEN (THÀNH CÔNG) ==
             record.markWritten(context.getFilePath());
             repository.save(record);
-
-            stateMachine.transit(batch, BatchStatus.WRITTEN); // THAY ĐỔI Ở ĐÂY
-            batchRepository.save(batch); 
-
-            historyRepository.save(
-                new BatchHistoryRecord(
-                    batch.getBatchId(),
-                    BatchStatus.WRITTEN,
-                    "Output written successfully"
-                )
-            );
+            stateService.written(eventId);
 
         } catch (Exception ex) {
-            // Bước 6: Thất bại -> Đổi sang FAILED qua State Machine
+            // == BƯỚC 6: FAILED (THẤT BẠI) ==
             record.markFailed(eventId);
             repository.save(record);
 
-            stateMachine.transit(batch, BatchStatus.FAILED); // THAY ĐỔI Ở ĐÂY
-            batchRepository.save(batch); 
-
-            historyRepository.save(
-                new BatchHistoryRecord(
-                    batch.getBatchId(),
-                    BatchStatus.FAILED,
-                    ex.getMessage()
-                )
-            );
+            // Ghi nhận chính xác lỗi sập tại giai đoạn nào kèm message lỗi hệ thống
+            stateService.failed(eventId, ex.getMessage());
 
             throw ex;
         }
