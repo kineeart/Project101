@@ -6,22 +6,23 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Repository;
 
 import com.example.middleware.feature.runtime.application.port.BatchRepositoryPort;
+import com.example.middleware.feature.runtime.domain.BatchRecord;
 import com.example.middleware.feature.runtime.domain.batch.Batch;
 
 @Repository
 public class InMemoryBatchRepository
         implements BatchRepositoryPort {
 
-    private final Map<String, Batch> store =
+    private final Map<String, BatchRecord> store =
             new ConcurrentHashMap<>();
 
     @Override
-    public void save(Batch batch) {
+    public void save(BatchRecord batch) {
         store.put(batch.getBatchId(), batch);
     }
 
     @Override
-    public Batch findById(String batchId) {
+    public BatchRecord findById(String batchId) {
         return store.get(batchId);
     }
 }
