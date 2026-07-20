@@ -5,7 +5,10 @@ import com.example.middleware.feature.intake.domain.EventRecord;
 import com.example.middleware.feature.orchestration.application.Pipeline;
 import com.example.middleware.feature.orchestration.application.builder.PipelineContextBuilder;
 import com.example.middleware.feature.orchestration.application.PipelineContext; 
-import com.example.middleware.feature.runtime.application.service.RuntimeStateService; // IMPORT dịch vụ lifecycle mới
+import com.example.middleware.feature.runtime.application.service.RuntimeStateService;
+import com.example.middleware.feature.runtime.application.port.BatchRepositoryPort; // Thêm import này
+import com.example.middleware.feature.runtime.domain.BatchRecord; // Thêm import này
+import com.example.middleware.feature.runtime.domain.batch.BatchStatus; // Thêm import này
 
 import org.springframework.stereotype.Service;
 
@@ -15,18 +18,20 @@ public class ProcessEventUseCase {
     private final EventRepositoryPort repository;
     private final PipelineContextBuilder contextBuilder;
     private final Pipeline pipeline;
-    private final RuntimeStateService stateService; // Tinh giản: Chỉ giữ lại service vòng đời tập trung
+    private final RuntimeStateService stateService;
+    private final BatchRepositoryPort batchRepository; // Bổ sung để load batch kiểm tra trạng thái
 
-    // Constructor mới: Gọn gàng, Inject RuntimeStateService từ Spring Boot
     public ProcessEventUseCase(
             EventRepositoryPort repository,
             PipelineContextBuilder contextBuilder,
             Pipeline pipeline,
-            RuntimeStateService stateService) {
+            RuntimeStateService stateService,
+            BatchRepositoryPort batchRepository) { // Nhận thêm vào đây
         this.repository = repository;
         this.contextBuilder = contextBuilder;
         this.pipeline = pipeline;
         this.stateService = stateService;
+        this.batchRepository = batchRepository;
     }
 
     public void process(String eventId) {
@@ -36,32 +41,38 @@ public class ProcessEventUseCase {
             throw new IllegalArgumentException("Event not found: " + eventId);
         }
 
-        // LƯU Ý: Lệnh check tìm BatchRecord thủ công đã được xóa bỏ tại đây, 
-        // vì RuntimeStateService bên trong sẽ tự động chịu trách nhiệm tìm kiếm và ném lỗi nếu không thấy Batch.
+        // Bước 5: BỔ SUNG GUARD - Load Batch lên kiểm tra nhãn Claim
+        BatchRecord batch = batchRepository.findById(eventId);
+        if (batch == null) {
+            throw new IllegalArgumentException("Batch not found: " + eventId);
+        }
+
+        // Nếu Batch chưa được bốc bởi một Claim hợp lệ, nghiêm cấm chạy Pipeline
+        if (batch.getStatus() != BatchStatus.PROCESSING) {
+            throw new IllegalStateException("Batch has not been claimed: " + eventId);
+        }
 
         try {
-            // == BƯỚC 1: PROCESSING ==
+            // XÓA BỎ LỆNH stateService.processing CŨ TẠI ĐÂY (Vì Claim đã lo rồi)
+            
+            // Đồng bộ trạng thái của EventRecord tương ứng
             record.markProcessing();
             repository.save(record);
-            stateService.processing(eventId); 
 
-            // == BƯỚC 2: VALIDATED ==
-            // (Đứng sau khi Worker nhận nhưng trước khi Mapping dữ liệu)
+            // == GIAI ĐOẠN 2: VALIDATED ==
             stateService.validated(eventId);
 
             // Build PipelineContext từ RawEvent của record
             PipelineContext context = contextBuilder.build(record.getRawEvent());
 
             // == BƯỚC 3: MAPPED & BUILT ==
-            // (Xảy ra ngay khi hàm build dữ liệu chạy xong thành công)
             stateService.mapped(eventId);
             stateService.built(eventId);
 
             // == BƯỚC 4: WRITING ==
-            // (Đánh dấu hệ thống bắt đầu đẩy dữ liệu đi ghi)
             stateService.writing(eventId);
 
-            // Chạy Pipeline (thực thi bước Delivery/Write cuối)
+            // Chạy Pipeline
             pipeline.execute(context);
 
             // == BƯỚC 5: WRITTEN (THÀNH CÔNG) ==
@@ -73,10 +84,8 @@ public class ProcessEventUseCase {
             // == BƯỚC 6: FAILED (THẤT BẠI) ==
             record.markFailed(eventId);
             repository.save(record);
-
-            // Ghi nhận chính xác lỗi sập tại giai đoạn nào kèm message lỗi hệ thống
+            
             stateService.failed(eventId, ex.getMessage());
-
             throw ex;
         }
     }
