@@ -1,5 +1,6 @@
 package com.example.middleware.feature.runtime.infrastructure.persistence;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,7 +16,6 @@ public class InMemoryBatchRepository
 
     private final Map<String, BatchRecord> store =
             new ConcurrentHashMap<>();
-
     @Override
     public void save(BatchRecord batch) {
         store.put(batch.getBatchId(), batch);
@@ -25,4 +25,8 @@ public class InMemoryBatchRepository
     public BatchRecord findById(String batchId) {
         return store.get(batchId);
     }
+    @Override
+public Collection<BatchRecord> findAll() {
+    return store.values();
+}
 }

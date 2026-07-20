@@ -1,7 +1,6 @@
 package com.example.middleware.feature.runtime.domain;
 
 import java.time.LocalDateTime;
-import com.example.middleware.feature.runtime.domain.batch.BatchStatus;
 
 public class BatchRecord {
 
