@@ -22,7 +22,7 @@ public class DefaultGetEventStatusUseCase
 
         EventRecord record =
                 repository.findById(eventId);
-
+        
         if (record == null) {
             throw new IllegalArgumentException(
                     "Event not found: " + eventId);
