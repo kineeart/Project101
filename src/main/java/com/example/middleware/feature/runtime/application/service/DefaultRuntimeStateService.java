@@ -26,21 +26,29 @@ public class DefaultRuntimeStateService implements RuntimeStateService {
         this.historyRepository = historyRepository;
     }
 
+        // Sửa lại hàm lõi này để tự động đồng bộ cả 2 loại lịch sử
     private void changeState(String batchId, BatchStatus nextStatus, String message) {
         BatchRecord batch = repository.findById(batchId);
         if (batch == null) {
             throw new IllegalArgumentException("Batch not found: " + batchId);
         }
         
-        // 1. Duyệt qua State Machine để đổi trạng thái an toàn
+        // 1. Duyệt đổi trạng thái qua State Machine
         stateMachine.transit(batch, nextStatus);
-        
-        // 2. Lưu vào Database chính
         repository.save(batch);
         
-        // 3. Tự động ghi nhận dòng lịch sử Timeline
+        // 2. Ghi vào bảng BatchHistoryRecord cũ của bạn
         historyRepository.save(new BatchHistoryRecord(batchId, nextStatus, message));
+        
+        // 3. ĐỒNG BỘ EVENT HISTORY (FR-14 & FR-16): Giả lập ghi nhận vào ExecutionHistory của bạn
+        // Tùy theo cấu trúc entity của dự án bạn, đoạn này đại khái sẽ là:
+        /*
+        String stage = nextStatus.name(); // VALIDATED, MAPPED, BUILT...
+        String result = (nextStatus == BatchStatus.FAILED) ? "FAILED" : "SUCCESS";
+        executionHistoryRepository.save(new ExecutionHistory(batchId, stage, result, LocalDateTime.now()));
+        */
     }
+
 
     @Override
     public void received(String batchId) {

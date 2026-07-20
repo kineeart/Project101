@@ -6,9 +6,10 @@ import com.example.middleware.feature.orchestration.application.Pipeline;
 import com.example.middleware.feature.orchestration.application.builder.PipelineContextBuilder;
 import com.example.middleware.feature.orchestration.application.PipelineContext; 
 import com.example.middleware.feature.runtime.application.service.RuntimeStateService;
-import com.example.middleware.feature.runtime.application.port.BatchRepositoryPort; // Thêm import này
-import com.example.middleware.feature.runtime.domain.BatchRecord; // Thêm import này
-import com.example.middleware.feature.runtime.domain.batch.BatchStatus; // Thêm import này
+import com.example.middleware.feature.runtime.application.port.BatchRepositoryPort;
+import com.example.middleware.feature.runtime.domain.BatchRecord;
+import com.example.middleware.feature.runtime.domain.batch.BatchStatus;
+import com.example.middleware.feature.delivery.application.service.DeliveryRuntimeService; // THÊM IMPORT NÀY
 
 import org.springframework.stereotype.Service;
 
@@ -19,73 +20,81 @@ public class ProcessEventUseCase {
     private final PipelineContextBuilder contextBuilder;
     private final Pipeline pipeline;
     private final RuntimeStateService stateService;
-    private final BatchRepositoryPort batchRepository; // Bổ sung để load batch kiểm tra trạng thái
+    private final BatchRepositoryPort batchRepository;
+    private final DeliveryRuntimeService deliveryRuntime; // 1. INJECT THÊM BIẾN NÀY
 
     public ProcessEventUseCase(
             EventRepositoryPort repository,
             PipelineContextBuilder contextBuilder,
             Pipeline pipeline,
             RuntimeStateService stateService,
-            BatchRepositoryPort batchRepository) { // Nhận thêm vào đây
+            BatchRepositoryPort batchRepository,
+            DeliveryRuntimeService deliveryRuntime) { // 2. Nhận thêm vào Constructor
         this.repository = repository;
         this.contextBuilder = contextBuilder;
         this.pipeline = pipeline;
         this.stateService = stateService;
         this.batchRepository = batchRepository;
+        this.deliveryRuntime = deliveryRuntime;
     }
 
     public void process(String eventId) {
-        // Tìm Event và validate
         EventRecord record = repository.findById(eventId);
         if (record == null) {
             throw new IllegalArgumentException("Event not found: " + eventId);
         }
 
-        // Bước 5: BỔ SUNG GUARD - Load Batch lên kiểm tra nhãn Claim
         BatchRecord batch = batchRepository.findById(eventId);
         if (batch == null) {
             throw new IllegalArgumentException("Batch not found: " + eventId);
         }
 
-        // Nếu Batch chưa được bốc bởi một Claim hợp lệ, nghiêm cấm chạy Pipeline
         if (batch.getStatus() != BatchStatus.PROCESSING) {
             throw new IllegalStateException("Batch has not been claimed: " + eventId);
         }
 
         try {
-            // XÓA BỎ LỆNH stateService.processing CŨ TẠI ĐÂY (Vì Claim đã lo rồi)
-            
-            // Đồng bộ trạng thái của EventRecord tương ứng
             record.markProcessing();
             repository.save(record);
 
-            // == GIAI ĐOẠN 2: VALIDATED ==
-            stateService.validated(eventId);
+            // GIAI ĐOẠN 2: VALIDATION STAGE
+            stateService.validated(eventId); 
 
-            // Build PipelineContext từ RawEvent của record
+            // GIAI ĐOẠN 3: MAPPING STAGE
             PipelineContext context = contextBuilder.build(record.getRawEvent());
+            stateService.mapped(eventId); 
 
-            // == BƯỚC 3: MAPPED & BUILT ==
-            stateService.mapped(eventId);
-            stateService.built(eventId);
+            // GIAI ĐOẠN 4: BUILD STAGE
+            stateService.built(eventId); 
 
-            // == BƯỚC 4: WRITING ==
-            stateService.writing(eventId);
+            // =========================================================
+            // ĐỒNG BỘ DELIVERY RUNTIME CHO BƯỚC GHI FILE CỐT LÕI
+            // =========================================================
 
-            // Chạy Pipeline
+            // GIAI ĐOẠN 5: WRITE STAGE (BẤT ĐẦU GHI)
+            stateService.writing(eventId); 
+            deliveryRuntime.start(eventId); // Kích hoạt: Tạo một Lượt thử ghi mới mang nhãn WRITING [INDEX]
+
+            // Thực thi lệnh Delivery (Ghi file CSV xuống đĩa cứng)
             pipeline.execute(context);
 
-            // == BƯỚC 5: WRITTEN (THÀNH CÔNG) ==
+            // GHI FILE THÀNH CÔNG: Đóng dấu thành công cho riêng lượt Delivery đó trước [INDEX]
+            deliveryRuntime.success(eventId); 
+
+            // GIAI ĐOẠN 6: WRITTEN (HOÀN THÀNH TOÀN BỘ VÒNG ĐỜI BATCH CHÍNH)
             record.markWritten(context.getFilePath());
             repository.save(record);
-            stateService.written(eventId);
+            stateService.written(eventId); 
 
         } catch (Exception ex) {
-            // == BƯỚC 6: FAILED (THẤT BẠI) ==
+            // GHI FILE THẤT BẠI: Đóng dấu thất bại cho lượt Delivery hiện tại kèm thông báo lỗi chi tiết [INDEX]
+            deliveryRuntime.failed(eventId, ex.getMessage());
+
+            // GIAI ĐOẠN THẤT BẠI TỔNG THỂ CỦA BATCH
             record.markFailed(eventId);
             repository.save(record);
+            stateService.failed(eventId, ex.getMessage()); 
             
-            stateService.failed(eventId, ex.getMessage());
             throw ex;
         }
     }
