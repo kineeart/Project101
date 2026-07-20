@@ -1,6 +1,7 @@
 package com.example.middleware.feature.runtime.infrastructure.persistence;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,4 +30,13 @@ public class InMemoryBatchRepository
 public Collection<BatchRecord> findAll() {
     return store.values();
 }
+    // Thêm hàm này vào cuối lớp InMemoryBatchRepository
+    @Override
+    public List<BatchRecord> findByStatus(com.example.middleware.feature.runtime.domain.batch.BatchStatus status) {
+        return store.values()
+                .stream()
+                .filter(batch -> batch.getStatus() == status)
+                .collect(java.util.stream.Collectors.toList()); // Dùng chuẩn này để tương thích mọi phiên bản Java
+    }
+
 }
